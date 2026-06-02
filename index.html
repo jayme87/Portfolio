@@ -1131,6 +1131,50 @@ body {
   .comp-pair-imgs { grid-template-columns: 1fr; }
   .about-contact-btns { flex-direction: column; }
 }
+
+/* --- DETALHE HERO CAROUSEL --- */
+.detalhe-hero {
+  padding: 0 !important;
+  gap: 0 !important;
+  align-items: stretch !important;
+  overflow: hidden;
+}
+.detalhe-left-col {
+  display: flex;
+  flex-direction: column;
+  background: #0b0b0b;
+  padding: 4rem;
+  justify-content: center;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  min-width: 0;
+}
+.detalhe-right-col {
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+  background: #0b0b0b;
+}
+.id-carousel-track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+}
+.id-carousel-slide {
+  flex: 0 0 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #0b0b0b;
+}
+.id-carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  max-height: 500px;
+}
 </style>
 </head>
 <body>
@@ -1300,13 +1344,16 @@ body {
     <span class="header-section-name" id="detalhe-section-label"></span>
   </header>
   <div class="detalhe-hero">
-    <div class="detalhe-title-area">
-      <div class="detalhe-title-label" id="dt-label"></div>
-      <div id="dt-title" class="detalhe-title-text"></div>
+    <div class="detalhe-left-col">
+      <div class="detalhe-title-area">
+        <div class="detalhe-title-label" id="dt-label"></div>
+        <div id="dt-title" class="detalhe-title-text"></div>
+      </div>
+      <div class="detalhe-desc-area" style="margin-top:2rem;">
+        <p class="detalhe-desc-text" id="dt-desc"></p>
+      </div>
     </div>
-    <div class="detalhe-desc-area">
-      <p class="detalhe-desc-text" id="dt-desc"></p>
-    </div>
+    <div class="detalhe-right-col" id="dt-carousel-wrap"></div>
   </div>
   <div class="detalhe-body">
     <div class="detail-gallery" id="dt-gallery"></div>
@@ -1454,6 +1501,10 @@ setTimeout(() => { if(views[currentView]) views[currentView].classList.add('fade
 
 function showView(name) {
   if (currentView === name) return;
+  if (currentView === 'detalhe' && window._idCarouselRaf) {
+    cancelAnimationFrame(window._idCarouselRaf);
+    window._idCarouselRaf = null;
+  }
   const oldView = views[currentView];
   const nextView = views[name];
   if (!nextView) return;
@@ -1583,6 +1634,14 @@ function buildImagens() {
 
     card.addEventListener('click', () => showView(p.target));
     grid.appendChild(card);
+
+    // Autoplay
+    let autoTimer = setInterval(() => goTo(cur + 1), 2800);
+    card.addEventListener('mouseenter', () => clearInterval(autoTimer));
+    card.addEventListener('mouseleave', () => {
+      clearInterval(autoTimer);
+      autoTimer = setInterval(() => goTo(cur + 1), 2800);
+    });
   });
 }
 
@@ -1665,6 +1724,34 @@ function openDetalhe(p) {
   titleEl.textContent = p.titulo;
 
   document.getElementById('dt-desc').innerHTML = p.texto.replace(/\n/g, '<br>');
+
+  // Build infinite carousel
+  const wrap = document.getElementById('dt-carousel-wrap');
+  wrap.innerHTML = '';
+  if (window._idCarouselRaf) { cancelAnimationFrame(window._idCarouselRaf); window._idCarouselRaf = null; }
+  const track = document.createElement('div');
+  track.className = 'id-carousel-track';
+  // Duplicate for seamless loop
+  [...p.galeria, ...p.galeria].forEach(src => {
+    const slide = document.createElement('div');
+    slide.className = 'id-carousel-slide';
+    const img = document.createElement('img');
+    img.src = src; img.alt = p.titulo; img.loading = 'lazy';
+    slide.appendChild(img);
+    track.appendChild(slide);
+  });
+  wrap.appendChild(track);
+  let pos = 0;
+  const speed = 0.3;
+  function animIdCarousel() {
+    pos += speed;
+    const slideW = wrap.offsetWidth || 600;
+    const loopW = slideW * p.galeria.length;
+    if (pos >= loopW) pos -= loopW;
+    track.style.transform = 'translateX(-' + pos + 'px)';
+    window._idCarouselRaf = requestAnimationFrame(animIdCarousel);
+  }
+  window._idCarouselRaf = requestAnimationFrame(animIdCarousel);
 
   const gallery = document.getElementById('dt-gallery');
   gallery.innerHTML = '';
@@ -1856,15 +1943,13 @@ modalEmail.addEventListener('click', () => {
   }
 })();
 
-    // ---- AUDIO (restaurado do portfólio original) ----
+    // ---- AUDIO (sons originais) ----
     let audioCtx=null,soundEnabled=false,entrancePlayed=false;
     function initAudio(){audioCtx||(audioCtx=new(window.AudioContext||window.webkitAudioContext));soundEnabled=true;}
     function playSound(t){soundEnabled?generateSound(t):(initAudio(),audioCtx.state==="suspended"&&audioCtx.resume().then(()=>generateSound(t)));}
     function generateSound(t){if(!audioCtx)return;const n=audioCtx.currentTime;if(t==="click"){const e=audioCtx.createGain();e.connect(audioCtx.destination);e.gain.value=0;const o=audioCtx.createOscillator();o.type="sine",o.connect(e),o.frequency.value=523.25,e.gain.setValueAtTime(.1,n),e.gain.exponentialRampToValueAtTime(1e-4,n+.2),o.start(n),o.stop(n+.2);}else if(t==="hover"){const e=audioCtx.createGain();e.connect(audioCtx.destination);e.gain.value=0;const o=audioCtx.createOscillator();o.type="sine",o.connect(e),o.frequency.setValueAtTime(392,n),o.frequency.exponentialRampToValueAtTime(523.25,n+.15),e.gain.setValueAtTime(.08,n),e.gain.exponentialRampToValueAtTime(1e-4,n+.25),o.start(n),o.stop(n+.25);}else if(t==="entrance"){[392,493.88,587.33,783.99].forEach((e,o)=>{const i=audioCtx.createGain();i.connect(audioCtx.destination);i.gain.value=0;const a=audioCtx.createOscillator();a.type="sine",a.connect(i);const c=n+o*.1;i.gain.setValueAtTime(.05,c),i.gain.exponentialRampToValueAtTime(1e-4,c+.3),a.frequency.value=e,a.start(c),a.stop(c+.3);});}}
     function playEntranceSound(){!entrancePlayed&&soundEnabled&&audioCtx&&audioCtx.state==="running"&&(playSound("entrance"),entrancePlayed=true);}
-    // Inicializar no primeiro clique (exigido pelos navegadores modernos)
     document.body.addEventListener("click",()=>{if(!audioCtx)initAudio();if(audioCtx?.state==="suspended")audioCtx.resume().then(()=>{currentView==="index"&&playEntranceSound();});else if(audioCtx?.state==="running"&&currentView==="index")playEntranceSound();},{once:true});
-    // Hooks de som em todos os elementos interativos
     document.querySelectorAll("button,a,[data-view]").forEach(el=>{
         el.addEventListener("mouseenter",()=>playSound("hover"));
         el.addEventListener("click",()=>playSound("click"));
