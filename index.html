@@ -1144,7 +1144,7 @@ body {
   <div class="index-center">
     <div class="index-eyebrow">DESIGNER</div>
     <button class="index-logo-wrap" id="btn-logo-about" data-view="apresentacao" style="background:transparent;border:none;">
-      <img src="1x/Ibrahim.webp" alt="Ibrahim" id="index-logo-img">
+      <img src="1x/IBRAHIM.webp" alt="Ibrahim" id="index-logo-img">
       <div class="logo-hint">Ver perfil</div>
     </button>
     <nav class="index-nav">
@@ -1855,6 +1855,20 @@ modalEmail.addEventListener('click', () => {
     FORM_BTN_ORIG._oldHandler = secureHandler;
   }
 })();
+
+    // ---- AUDIO (restaurado do portfólio original) ----
+    let audioCtx=null,soundEnabled=false,entrancePlayed=false;
+    function initAudio(){audioCtx||(audioCtx=new(window.AudioContext||window.webkitAudioContext));soundEnabled=true;}
+    function playSound(t){soundEnabled?generateSound(t):(initAudio(),audioCtx.state==="suspended"&&audioCtx.resume().then(()=>generateSound(t)));}
+    function generateSound(t){if(!audioCtx)return;const n=audioCtx.currentTime;if(t==="click"){const e=audioCtx.createGain();e.connect(audioCtx.destination);e.gain.value=0;const o=audioCtx.createOscillator();o.type="sine",o.connect(e),o.frequency.value=523.25,e.gain.setValueAtTime(.1,n),e.gain.exponentialRampToValueAtTime(1e-4,n+.2),o.start(n),o.stop(n+.2);}else if(t==="hover"){const e=audioCtx.createGain();e.connect(audioCtx.destination);e.gain.value=0;const o=audioCtx.createOscillator();o.type="sine",o.connect(e),o.frequency.setValueAtTime(392,n),o.frequency.exponentialRampToValueAtTime(523.25,n+.15),e.gain.setValueAtTime(.08,n),e.gain.exponentialRampToValueAtTime(1e-4,n+.25),o.start(n),o.stop(n+.25);}else if(t==="entrance"){[392,493.88,587.33,783.99].forEach((e,o)=>{const i=audioCtx.createGain();i.connect(audioCtx.destination);i.gain.value=0;const a=audioCtx.createOscillator();a.type="sine",a.connect(i);const c=n+o*.1;i.gain.setValueAtTime(.05,c),i.gain.exponentialRampToValueAtTime(1e-4,c+.3),a.frequency.value=e,a.start(c),a.stop(c+.3);});}}
+    function playEntranceSound(){!entrancePlayed&&soundEnabled&&audioCtx&&audioCtx.state==="running"&&(playSound("entrance"),entrancePlayed=true);}
+    // Inicializar no primeiro clique (exigido pelos navegadores modernos)
+    document.body.addEventListener("click",()=>{if(!audioCtx)initAudio();if(audioCtx?.state==="suspended")audioCtx.resume().then(()=>{currentView==="index"&&playEntranceSound();});else if(audioCtx?.state==="running"&&currentView==="index")playEntranceSound();},{once:true});
+    // Hooks de som em todos os elementos interativos
+    document.querySelectorAll("button,a,[data-view]").forEach(el=>{
+        el.addEventListener("mouseenter",()=>playSound("hover"));
+        el.addEventListener("click",()=>playSound("click"));
+    });
 </script>
 </body>
 </html>
