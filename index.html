@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ibrahim · Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --ink: #0b0b0b;
+  --ivory: #e9e9ea;
+  --gold: #f4d03d;
+  --gold-light: #f7dc6f;
+  --ash: #8a8480;
+  --mist: #d4cfc6;
+  --deep: #111111;
+  --cream: #ebe5d8;
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { 
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: var(--ink);
+  color: var(--ivory);
+  overflow-x: hidden;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  will-change: transform;
+  transform: translate3d(-50%, -50%, 0);
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.6;
+  will-change: transform;
+  transform: translate3d(-50%, -50%, 0);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+@media (pointer: fine) {
+  body, button, a, [data-view], .project-card, .identity-card, .imagem-card, input, textarea {
+    cursor: none;
+  }
+}
+
+/* VIEWS */
+.view { 
+  display: none; 
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.view.active { 
+  display: block; 
+}
+.view.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   INDEX — LANDING
+   ============================================================ */
+#index-view {
+  position: fixed; inset: 0;
+  background: var(--ink);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#index-view.active { display: flex; }
+
+.index-noise {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.index-lines {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 79px,
+    rgba(244,208,61,0.04) 79px,
+    rgba(244,208,61,0.04) 80px
+  );
+  pointer-events: none;
+}
+
+.index-center {
+  position: relative;
+  text-align: center;
+  z-index: 10;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.index-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 0.5s 0.1s forwards;
+}
+
+.index-logo-wrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 4rem;
+  opacity: 0;
+  animation: fadeUp 0.5s 0.2s forwards;
+}
+
+.index-logo-wrap img {
+  width: clamp(280px, 40vw, 520px);
+  display: block;
+  transition: var(--transition-smooth);
+}
+.index-logo-wrap:hover img { transform: scale(1.015); }
+
+.index-logo-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: -12px; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.logo-hint {
+  position: absolute;
+  bottom: -2.8rem;
+  left: 50%; transform: translateX(-50%);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ash);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+.index-logo-wrap:hover .logo-hint { opacity: 1; }
+
+.index-nav {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeUp 0.5s 0.3s forwards;
+}
+
+.index-nav-btn {
+  position: relative;
+  background: transparent;
+  border: 1px solid rgba(244,208,61,0.25);
+  color: var(--ivory);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 1.2rem 2.5rem;
+  transition: var(--transition-smooth);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.index-nav-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: var(--transition-smooth);
+  z-index: -1;
+}
+
+.index-nav-btn:hover {
+  color: var(--ink);
+  border-color: var(--gold);
+}
+.index-nav-btn:hover::before { transform: scaleX(1); }
+
+.index-cta-about {
+  position: absolute;
+  bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--ash);
+  text-transform: uppercase;
+  transition: color 0.3s;
+  opacity: 0;
+  animation: fadeUp 0.5s 0.35s forwards;
+}
+.index-cta-about:hover { color: var(--gold); }
+.index-cta-about i { display: block; margin-top: 0.5rem; animation: bounce 2s infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+/* ============================================================
+   SHARED HEADER
+   ============================================================ */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.5rem 4rem;
+  background: rgba(11,11,11,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(244,208,61,0.12);
+}
+
+.header-back {
+  display: flex; align-items: center; gap: 0.8rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ash);
+  transition: color 0.3s;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+}
+.header-back:hover { color: var(--gold); }
+.header-back i { font-size: 0.8rem; transition: transform 0.2s; }
+.header-back:hover i { transform: translateX(-4px); }
+
+.header-section-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+}
+
+/* ============================================================
+   ABOUT / APRESENTAÇÃO
+   ============================================================ */
+#apresentacao-view {
+  background: var(--ink);
+  min-height: 100vh;
+}
+
+.about-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 73px);
+  max-height: 900px;
+  align-items: center;
+}
+
+.about-hero-img {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.about-hero-img img {
+  width: auto !important;
+  max-width: 82% !important;
+  max-height: 70% !important;
+  object-fit: contain !important;
+  border-radius: 2px;
+  filter: grayscale(15%) contrast(1.02);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.about-hero-img:hover img { transform: scale(1.01); }
+.about-hero-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 60%, var(--ink) 100%);
+  pointer-events: none;
+}
+
+.about-hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem 5rem 5rem 6rem;
+  position: relative;
+  height: 100%;
+}
+
+.about-hero-content::before {
+  content: '';
+  position: absolute; left: 0; top: 10%; bottom: 10%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--gold), transparent);
+}
+
+.about-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+}
+
+.about-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 5vw, 5.5rem);
+  font-weight: 900;
+  line-height: 0.9;
+  color: var(--ivory);
+  margin-bottom: 2rem;
+  letter-spacing: -0.02em;
+}
+.about-name em {
+  display: block;
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 400;
+  font-size: 0.65em;
+}
+
+.about-role {
+  font-size: 1.15rem;
+  color: var(--ash);
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  max-width: 380px;
+  font-weight: 300;
+}
+
+.about-services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 3rem;
+}
+
+.service-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid rgba(244,208,61,0.3);
+  color: var(--mist);
+  background: transparent;
+  transition: var(--transition-smooth);
+}
+.service-tag:hover, .service-tag.active-tag {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.about-contact-btns {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  background: transparent;
+  color: var(--ivory);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Timeline / Experience */
+.about-body {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 7rem 4rem;
+}
+
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(244,208,61,0.2);
+}
+
+.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+}
+
+.exp-item {
+  padding: 2.5rem 0;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  transition: border-color 0.3s ease;
+  position: relative;
+}
+.exp-item:hover { border-top-color: var(--gold); }
+
+.exp-period {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+}
+
+.exp-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ivory);
+  margin-bottom: 0.4rem;
+  transition: color 0.2s ease;
+}
+.exp-item:hover .exp-title { color: var(--gold); }
+
+.exp-company {
+  font-size: 0.9rem;
+  color: var(--ash);
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.exp-desc {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--mist);
+  font-weight: 300;
+}
+
+/* Cert */
+.cert-item {
+  padding: 2.5rem 0;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  transition: border-color 0.3s ease;
+}
+.cert-item:hover { border-top-color: var(--gold); }
+.cert-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ivory);
+  transition: color 0.2s ease;
+  margin-bottom: 0.4rem;
+}
+.cert-item:hover .cert-title { color: var(--gold); }
+
+/* Contact form (original) */
+.contact-section {
+  background: var(--deep);
+  padding: 7rem 4rem;
+  margin-top: 0;
+}
+.contact-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.contact-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 900;
+  font-style: italic;
+  color: var(--ivory);
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+.contact-headline span { color: var(--gold); }
+.contact-sub {
+  font-size: 1rem;
+  color: var(--ash);
+  margin-bottom: 4rem;
+  font-weight: 300;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.form-field {
+  position: relative;
+}
+.form-field label {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--ivory);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  padding: 0.9rem 1.2rem;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+.form-field input:focus,
+.form-field textarea:focus { border-color: var(--gold); }
+.form-field textarea { min-height: 120px; resize: vertical; }
+.form-full { grid-column: 1/-1; }
+
+.btn-send {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 1.2rem;
+  transition: var(--transition-smooth);
+  margin-top: 1rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.btn-send::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: var(--transition-smooth);
+  z-index: -1;
+}
+.btn-send:hover { color: var(--ink); }
+.btn-send:hover::before { transform: scaleX(1); }
+
+/* ============================================================
+   PORTFOLIO PAGES
+   ============================================================ */
+.portfolio-page { background: var(--ink); min-height: 100vh; }
+
+.portfolio-hero {
+  padding: 5rem 4rem 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.portfolio-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 7vw, 8rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+.portfolio-hero-title em {
+  display: block;
+  font-style: italic;
+  color: var(--gold);
+}
+
+/* ============================================================
+   COMPARATIVO VIEW — IMAGENS COM TAMANHO 1040x1560 (2:3)
+   ============================================================ */
+.comparativo-view { background: var(--ink); min-height: 100vh; }
+
+.comp-hero {
+  padding: 5rem 4rem 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.comp-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 4.5rem);
+  font-weight: 900;
+  font-style: italic;
+  color: var(--ivory);
+  margin-bottom: 0.5rem;
+}
+.comp-title span { color: var(--gold); }
+
+.comp-meta {
+  display: flex;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+.comp-meta-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+.comp-meta-val {
+  font-size: 0.95rem;
+  color: var(--mist);
+}
+
+.comp-body {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 5rem 4rem;
+}
+
+.comp-pair {
+  margin-bottom: 5rem;
+}
+.comp-pair-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--ash);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.comp-pair-imgs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.comp-img-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 2 / 3; /* 1040x1560 = proporção 2:3 */
+  background: #1a1a1a;
+}
+.comp-img-wrap img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transition: var(--transition-smooth);
+  object-fit: cover; /* preenche o container sem distorcer, centralizado */
+}
+.comp-img-wrap:hover img { transform: scale(1.015); }
+.comp-img-badge {
+  position: absolute;
+  top: 1rem; left: 1rem;
+  background: rgba(11,11,11,0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 0.4rem 0.8rem;
+  border: 1px solid rgba(244,208,61,0.3);
+  z-index: 2;
+}
+
+/* ============================================================
+   IDENTIDADES PAGE
+   ============================================================ */
+.identidades-page { background: var(--ink); min-height: 100vh; }
+
+.identidades-grid,
+.imagens-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 5rem 4rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+}
+
+.identity-card {
+  transition: var(--transition-smooth);
+}
+.identity-card:hover { transform: translateY(-6px); }
+
+.identity-card-img {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  margin-bottom: 1.5rem;
+}
+.identity-card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: var(--transition-smooth);
+}
+.identity-card:hover .identity-card-img img { transform: scale(1.03); }
+
+.identity-card-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  border: 1px solid rgba(244,208,61,0);
+  transition: border-color 0.3s ease;
+}
+.identity-card:hover .identity-card-img::after { border-color: rgba(244,208,61,0.3); }
+
+.identity-card-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.identity-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ivory);
+  margin-bottom: 0.4rem;
+}
+.identity-card-sub {
+  font-size: 0.9rem;
+  color: var(--ash);
+  font-style: italic;
+}
+
+/* ============================================================
+   DETALHE VIEW
+   ============================================================ */
+#detalhe-view { background: var(--ink); min-height: 100vh; }
+
+.detalhe-hero {
+  padding: 5rem 4rem 4rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: end;
+}
+
+.detalhe-title-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.detalhe-title-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--ivory);
+}
+
+.detalhe-desc-text {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--mist);
+  font-weight: 300;
+  white-space: pre-wrap;
+}
+
+.detalhe-body {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 5rem 4rem;
+}
+
+.detail-gallery {
+  columns: 3;
+  column-gap: 6px;
+}
+.detail-gallery-item {
+  break-inside: avoid;
+  overflow: hidden;
+  margin-bottom: 6px;
+  position: relative;
+}
+.detail-gallery-item img {
+  width: 100%;
+  display: block;
+  transition: var(--transition-smooth);
+}
+.detail-gallery-item:hover img { transform: scale(1.02); }
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal {
+  display: none;
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(5,5,5,0.97);
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.modal.open { display: flex; opacity: 1; }
+.modal-img {
+  max-width: 88vw;
+  max-height: 85vh;
+  object-fit: contain;
+  display: block;
+  transform: scale(0.97);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.modal.open .modal-img { transform: scale(1); }
+
+.modal-close-btn {
+  position: absolute; top: 2rem; right: 2.5rem;
+  background: none; border: none;
+  color: var(--ash);
+  font-size: 1.5rem;
+  transition: color 0.3s;
+}
+.modal-close-btn:hover { color: var(--gold); }
+.modal-nav-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: none; border: 1px solid rgba(244,208,61,0.2);
+  color: var(--ivory);
+  width: 50px; height: 50px;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--transition-smooth);
+  font-size: 1rem;
+}
+.modal-nav-btn:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.modal-prev { left: 2rem; }
+.modal-next { right: 2rem; }
+.modal-count {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--ash);
+}
+
+/* ============================================================
+   FLOATING CONTACT BUTTON & MODAL
+   ============================================================ */
+.float-contact-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  font-size: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transition: var(--transition-smooth);
+  z-index: 1050;
+  border: none;
+  cursor: pointer;
+}
+.float-contact-btn:hover {
+  transform: scale(1.08);
+  background: var(--gold-light);
+}
+
+.contact-modal {
+  position: fixed;
+  bottom: 5rem;
+  right: 2rem;
+  width: 380px;
+  max-width: calc(100vw - 2rem);
+  background: var(--deep);
+  border: 1px solid rgba(244,208,61,0.3);
+  border-radius: 12px;
+  padding: 1.8rem;
+  z-index: 1051;
+  backdrop-filter: blur(20px);
+  background: rgba(17,17,17,0.95);
+  box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
+}
+.contact-modal.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.contact-modal h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  margin-bottom: 0.25rem;
+  color: var(--gold);
+}
+.contact-modal p {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ash);
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.1em;
+}
+.contact-modal .form-field {
+  margin-bottom: 1rem;
+}
+.contact-modal input,
+.contact-modal textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--ivory);
+  padding: 0.7rem 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+}
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.modal-buttons button {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.8rem;
+  transition: var(--transition-smooth);
+}
+.modal-buttons button:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--ash);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 2rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--ash);
+}
+.footer-gold-line {
+  height: 1px;
+  width: 80px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+/* ============================================================
+   IMAGENS CAROUSEL CARDS
+   ============================================================ */
+.imagem-card {
+  transition: var(--transition-smooth);
+}
+.imagem-card:hover { transform: translateY(-6px); }
+
+.imagem-card-carousel {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  margin-bottom: 1.5rem;
+  background: var(--deep);
+}
+
+.imagem-carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.imagem-carousel-slide {
+  flex: 0 0 100%;
+  overflow: hidden;
+}
+.imagem-carousel-slide img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.imagem-carousel-btn {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  background: rgba(11,11,11,0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(244,208,61,0.25);
+  color: var(--ivory);
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s, color 0.2s;
+}
+.imagem-card:hover .imagem-carousel-btn { opacity: 1; }
+.imagem-carousel-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.imagem-carousel-prev { left: 0.8rem; }
+.imagem-carousel-next { right: 0.8rem; }
+
+.imagem-carousel-dots {
+  position: absolute;
+  bottom: 0.7rem; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 5px;
+  z-index: 5;
+}
+.imagem-carousel-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  transition: background 0.3s, transform 0.3s;
+}
+.imagem-carousel-dot.active {
+  background: var(--gold);
+  transform: scale(1.3);
+}
+
+.imagem-card-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.imagem-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ivory);
+  margin-bottom: 0.4rem;
+}
+.imagem-card-sub {
+  font-size: 0.9rem;
+  color: var(--ash);
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+.imagem-card-cta {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.imagem-card:hover .imagem-card-cta { opacity: 1; transform: translateY(0); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .site-header { padding: 1.2rem 2rem; }
+  .about-hero { grid-template-columns: 1fr; max-height: none; align-items: start; }
+  .about-hero-img { height: 45vh; display: flex; align-items: center; justify-content: center; }
+  .about-hero-content { padding: 3rem 2rem; }
+  .about-body { padding: 4rem 2rem; }
+  .two-cols { grid-template-columns: 1fr; gap: 0; }
+  .identidades-grid, .imagens-grid { grid-template-columns: 1fr 1fr; padding: 3rem 2rem; gap: 2rem; }
+  .detalhe-hero { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 2rem; }
+  .detalhe-body { padding: 3rem 2rem; }
+  .detail-gallery { columns: 2; }
+  .comp-body { padding: 3rem 2rem; }
+  .contact-section { padding: 4rem 2rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .site-footer { padding: 1.5rem 2rem; }
+  .portfolio-hero { padding: 3rem 2rem; }
+  .comp-hero { padding: 3rem 2rem; }
+  .index-nav { flex-direction: column; gap: 8px; align-items: center; width: 100%; }
+  .index-nav-btn { width: 100%; max-width: 280px; }
+  .float-contact-btn { width: 48px; height: 48px; font-size: 1.2rem; bottom: 1.2rem; right: 1.2rem; }
+  .contact-modal { width: 340px; right: 1rem; bottom: 4rem; }
+}
+
+@media (max-width: 600px) {
+  .identidades-grid, .imagens-grid { grid-template-columns: 1fr; }
+  .detail-gallery { columns: 1; }
+  .comp-pair-imgs { grid-template-columns: 1fr; }
+  .about-contact-btns { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<div id="index-view" class="view active">
+  <div class="index-noise"></div>
+  <div class="index-lines"></div>
+  <div class="index-center">
+    <div class="index-eyebrow">DESIGNER</div>
+    <button class="index-logo-wrap" id="btn-logo-about" data-view="apresentacao" style="background:transparent;border:none;">
+      <img src="1x/Ibrahim.webp" alt="Ibrahim" id="index-logo-img">
+      <div class="logo-hint">Ver perfil</div>
+    </button>
+    <nav class="index-nav">
+      <button class="index-nav-btn" data-view="imagens">Imagens</button>
+      <button class="index-nav-btn" data-view="identidades">Identidades</button>
+    </nav>
+  </div>
+</div>
+
+<div id="apresentacao-view" class="view">
+  <header class="site-header">
+    <button class="header-back" data-view="index"><i class="fas fa-arrow-left"></i> Início</button>
+    <span class="header-section-name">Sobre</span>
+  </header>
+
+  <div class="about-hero">
+    <div class="about-hero-img">
+      <img src="1x/Perfil.webp" alt="Ibrahim">
+    </div>
+    <div class="about-hero-content">
+      <div class="about-tag">// Designer · Editor · Criador</div>
+      <h1 class="about-name">
+        Ibrahim
+        <em>sete anos de ofício</em>
+      </h1>
+      <p class="about-role">Designer especializado em identidades visuais e edição de imagem e vídeo. Transformo ideias em experiências visuais únicas e memoráveis.</p>
+      <div class="about-services">
+        <button class="service-tag active-tag" data-view="identidades">Identidade Visual</button>
+        <button class="service-tag active-tag" data-view="imagens">Edição de Imagens</button>
+      </div>
+      <div class="about-contact-btns">
+        <a href="https://wa.me/5511947846658?text=Ol%C3%A1%20Ibrahim.%20Estava%20vendo%20seu%20trabalho%2C%20e%20gostaria%20de%20entrar%20em%20contato%20contigo!" target="_blank" class="btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <a href="mailto:jaymeibrahim@gmail.com" class="btn-outline"><i class="fas fa-envelope"></i> E-mail</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-body">
+    <div class="two-cols">
+      <div>
+        <div class="section-label">Experiências</div>
+        <div class="exp-item">
+          <div class="exp-period">02/2025 → 03/2026</div>
+          <div class="exp-title">Líder / Supervisor de Estúdio</div>
+          <div class="exp-company">Pregiato · São Paulo, SP</div>
+          <p class="exp-desc">Liderei uma equipe de editores em um estúdio audiovisual, coordenando todos os processos e orientando os profissionais envolvidos na edição dos trabalhos ao longo de um ano.</p>
+        </div>
+        <div class="exp-item">
+          <div class="exp-period">10/2023 → 02/2025</div>
+          <div class="exp-title">Editor de Imagem</div>
+          <div class="exp-company">Vogue · São Paulo, SP</div>
+          <p class="exp-desc">Atendi demandas semanais da área audiovisual com edições de imagem e vídeo. Criei automatizações nos processos de edição, reduzindo significativamente a carga de trabalho da equipe.</p>
+        </div>
+        <div class="exp-item">
+          <div class="exp-period">05/2021 → 03/2023</div>
+          <div class="exp-title">Estágio em Produção Audiovisual</div>
+          <div class="exp-company">Produtora NGB · São Paulo, SP</div>
+          <p class="exp-desc">Atuei em gravação de áudio e vídeo em estúdio, edição de vídeos, transmissão ao vivo via internet e elaboração de material EAD.</p>
+        </div>
+        <div class="exp-item">
+          <div class="exp-period">06/2020 → 06/2021</div>
+          <div class="exp-title">Designer Gráfico Júnior</div>
+          <div class="exp-company">CETTS – Clube de Tiro Tático Souza</div>
+          <p class="exp-desc">Edição e confecção de imagens, vídeos e flyers.</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-label">Formação</div>
+        <div class="cert-item">
+          <div class="exp-period">05/2018 → 05/2021 · Completo</div>
+          <button class="cert-title" data-cert="1x/CERT1.webp" style="background:none;border:none;text-align:left;display:block;width:100%;">Design Gráfico</button>
+          <div class="exp-company">Escola SAGA</div>
+          <p class="exp-desc">Curso técnico profissionalizante para uso avançado de softwares como Animate, After Effects, Illustrator, Photoshop e Premiere.</p>
+        </div>
+        <div class="cert-item">
+          <div class="exp-period">11/2025 → 02/2026 · Completo</div>
+          <button class="cert-title" data-cert="1x/CERT2.webp" style="background:none;border:none;text-align:left;display:block;width:100%;">Grid Designer</button>
+          <div class="exp-company">Focus Academy</div>
+          <p class="exp-desc">Curso profissionalizante para criação de identidades visuais técnicas com Illustrator.</p>
+        </div>
+        <div class="cert-item">
+          <div class="exp-period">02/2021 → 12/2023 · Incompleto</div>
+          <div class="cert-title">Produção Audiovisual</div>
+          <div class="exp-company">Universidade Paulista</div>
+          <p class="exp-desc">Tecnólogo para operação, supervisão e gestão de tecnologias aplicadas à produção audiovisual e multimídia.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-section">
+    <div class="contact-inner">
+      <h2 class="contact-headline">Vamos <span>trabalhar</span><br>juntos?</h2>
+      <p class="contact-sub">Envie sua mensagem — responderei em breve.</p>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Nome</label>
+          <input type="text" id="f-nome" placeholder="Seu nome">
+        </div>
+        <div class="form-field">
+          <label>E-mail</label>
+          <input type="email" id="f-email" placeholder="seu@email.com">
+        </div>
+        <div class="form-field form-full">
+          <label>Mensagem</label>
+          <textarea id="f-msg" placeholder="O que você precisa?"></textarea>
+        </div>
+      </div>
+      <button class="btn-send" id="btn-send-form"><span>Enviar mensagem</span></button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <span class="footer-copy">© 2026 Ibrahim · Todos os direitos reservados</span>
+    <div class="footer-gold-line"></div>
+  </footer>
+</div>
+
+<div id="imagens-view" class="view portfolio-page">
+  <header class="site-header">
+    <button class="header-back" data-view="index"><i class="fas fa-arrow-left"></i> Início</button>
+    <span class="header-section-name">Edição de Imagens</span>
+  </header>
+  <div class="portfolio-hero">
+    <h2 class="portfolio-hero-title">Edição de<br><em>Imagens</em></h2>
+  </div>
+  <div class="imagens-grid" id="imagens-grid"></div>
+  <footer class="site-footer">
+    <span class="footer-copy">© 2026 Ibrahim · Edição de Imagens</span>
+    <div class="footer-gold-line"></div>
+  </footer>
+</div>
+
+<div id="identidades-view" class="view identidades-page">
+  <header class="site-header">
+    <button class="header-back" data-view="index"><i class="fas fa-arrow-left"></i> Início</button>
+    <span class="header-section-name">Identidades Visuais</span>
+  </header>
+  <div class="portfolio-hero">
+    <h2 class="portfolio-hero-title">Identidades<br><em>Visuais</em></h2>
+  </div>
+  <div class="identidades-grid" id="identidades-grid"></div>
+  <footer class="site-footer">
+    <span class="footer-copy">© 2026 Ibrahim · Identidades Visuais</span>
+    <div class="footer-gold-line"></div>
+  </footer>
+</div>
+
+<div id="detalhe-view" class="view">
+  <header class="site-header">
+    <button class="header-back" id="btn-back-detalhe"><i class="fas fa-arrow-left"></i> Voltar</button>
+    <span class="header-section-name" id="detalhe-section-label"></span>
+  </header>
+  <div class="detalhe-hero">
+    <div class="detalhe-title-area">
+      <div class="detalhe-title-label" id="dt-label"></div>
+      <div id="dt-title" class="detalhe-title-text"></div>
+    </div>
+    <div class="detalhe-desc-area">
+      <p class="detalhe-desc-text" id="dt-desc"></p>
+    </div>
+  </div>
+  <div class="detalhe-body">
+    <div class="detail-gallery" id="dt-gallery"></div>
+  </div>
+  <footer class="site-footer">
+    <span class="footer-copy">© 2026 Ibrahim</span>
+    <div class="footer-gold-line"></div>
+  </footer>
+</div>
+
+<div id="comparativo-view" class="view comparativo-view">
+  <header class="site-header">
+    <button class="header-back" id="btn-back-comp1"><i class="fas fa-arrow-left"></i> Voltar</button>
+    <span class="header-section-name">Antes &amp; Depois</span>
+  </header>
+  <div class="comp-hero">
+    <h2 class="comp-title">Projeto: <span>Gabriela Lima</span></h2>
+    <p style="color:var(--mist);font-size:1rem;max-width:700px;line-height:1.7;margin-top:1rem;font-weight:300;">O editorial explora o minimalismo dramático, utilizando uma iluminação circular para esculpir a silhueta e destacar o equilíbrio entre o clássico e o contemporâneo.<br><br>Estética: Jogo de luz e sombra que confere mistério e autoridade à modelo.<br>Styling: Contraste entre um vestido preto sólido e uma malha brilhante, unindo o luxo da alta moda à expressão urbana das tatuagens à mostra.<br>Beauty: Conceito "menos é mais", com coque e tons terrosos para manter o foco na harmonia visual.<br>Essência: Uma celebração da moda sofisticada e audaciosa, que comunica luxo e presença através da simplicidade, sem necessidade de excessos.</p>
+    <div class="comp-meta">
+      <div class="comp-meta-item"><div class="comp-meta-label">Fotografia</div><div class="comp-meta-val">Abner Ribeiro</div></div>
+      <div class="comp-meta-item"><div class="comp-meta-label">Moda e Maquiagem</div><div class="comp-meta-val">Gabriela Lima</div></div>
+      <div class="comp-meta-item"><div class="comp-meta-label">Modelo</div><div class="comp-meta-val">Gabriela Lima</div></div>
+      <div class="comp-meta-item"><div class="comp-meta-label">Edição</div><div class="comp-meta-val">Ibrahim</div></div>
+    </div>
+  </div>
+  <div class="comp-body" id="comp1-body"></div>
+  <footer class="site-footer"><span class="footer-copy">© 2026 Ibrahim</span><div class="footer-gold-line"></div></footer>
+</div>
+
+<div id="comparativo2-view" class="view comparativo-view">
+  <header class="site-header">
+    <button class="header-back" id="btn-back-comp2"><i class="fas fa-arrow-left"></i> Voltar</button>
+    <span class="header-section-name">Antes &amp; Depois</span>
+  </header>
+  <div class="comp-hero">
+    <h2 class="comp-title"><span>Camila Massoni</span> — Adams Magazine</h2>
+    <p style="color:var(--mist);font-size:1rem;max-width:700px;line-height:1.7;margin-top:1rem;font-weight:300;">Elegância, propósito e estratégia definem a trajetória de Camila Massoni, executiva de destaque no mercado de luxo e diretora de estratégias e projetos que vem transformando a forma como marcas e empresários se conectam.<br><br>Nesta edição Business da Adams Magazine, Camila representa a força da mulher que lidera com visão, inteligência emocional e propósito unindo negócios, lifestyle e comunicação em um único código: o do sucesso.</p>
+    <div class="comp-meta">
+      <div class="comp-meta-item"><div class="comp-meta-label">Fotografia</div><div class="comp-meta-val">Renan Deodato</div></div>
+      <div class="comp-meta-item"><div class="comp-meta-label">Maquiagem</div><div class="comp-meta-val">Amanda Almeida</div></div>
+      <div class="comp-meta-item"><div class="comp-meta-label">Modelo</div><div class="comp-meta-val">Camila Massoni</div></div>
+      <div class="comp-meta-item"><div class="comp-meta-label">Edição</div><div class="comp-meta-val">Ibrahim</div></div>
+    </div>
+  </div>
+  <div class="comp-body" id="comp2-body"></div>
+  <footer class="site-footer"><span class="footer-copy">© 2026 Ibrahim</span><div class="footer-gold-line"></div></footer>
+</div>
+
+<div id="comparativo3-view" class="view comparativo-view">
+  <header class="site-header">
+    <button class="header-back" id="btn-back-comp3"><i class="fas fa-arrow-left"></i> Voltar</button>
+    <span class="header-section-name">Antes &amp; Depois</span>
+  </header>
+  <div class="comp-hero">
+    <h2 class="comp-title"><span>Priscila Fantin</span> — Adams Magazine</h2>
+    <p style="color:var(--mist);font-size:1rem;max-width:700px;line-height:1.7;margin-top:1rem;font-weight:300;">Entre força e sensibilidade, Priscila Fantin revela uma feminilidade que nasce da verdade, do autoconhecimento e da liberdade de ser quem se é.<br><br>Nesta edição especial, a atriz fala sobre vulnerabilidade como potência, moda como extensão da identidade e escolhas que refletem conforto, discrição e essência.<br><br>Quando a luz vem de dentro, nada precisa gritar por fora.</p>
+    <div class="comp-meta">
+      <div class="comp-meta-item"><div class="comp-meta-label">Fotografia</div><div class="comp-meta-val">Renan Deodato</div></div>
+      <div class="comp-meta-item"><div class="comp-meta-label">Maquiagem</div><div class="comp-meta-val">Amanda Almeida</div></div>
+      <div class="comp-meta-item"><div class="comp-meta-label">Modelo</div><div class="comp-meta-val">Priscila Fantin</div></div>
+      <div class="comp-meta-item"><div class="comp-meta-label">Edição</div><div class="comp-meta-val">Ibrahim</div></div>
+    </div>
+  </div>
+  <div class="comp-body" id="comp3-body"></div>
+  <footer class="site-footer"><span class="footer-copy">© 2026 Ibrahim</span><div class="footer-gold-line"></div></footer>
+</div>
+
+<div id="modal" class="modal">
+  <button class="modal-close-btn" id="modal-close"><i class="fas fa-times"></i></button>
+  <button class="modal-nav-btn modal-prev" id="modal-prev"><i class="fas fa-chevron-left"></i></button>
+  <img class="modal-img" id="modal-img" src="" alt="">
+  <button class="modal-nav-btn modal-next" id="modal-next"><i class="fas fa-chevron-right"></i></button>
+  <div class="modal-count" id="modal-count"></div>
+</div>
+
+<button class="float-contact-btn" id="floatContactBtn"><i class="fas fa-comment-dots"></i></button>
+<div class="contact-modal" id="contactModal">
+  <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+  <h3>Contato</h3>
+  <p>Envie uma mensagem rápida</p>
+  <div class="form-field">
+    <label>Nome</label>
+    <input type="text" id="modal-nome" placeholder="Seu nome">
+  </div>
+  <div class="form-field">
+    <label>E-mail</label>
+    <input type="email" id="modal-email" placeholder="seu@email.com">
+  </div>
+  <div class="form-field">
+    <label>Mensagem</label>
+    <textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea>
+  </div>
+  <div class="modal-buttons">
+    <button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+    <button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button>
+  </div>
+</div>
+
+<script>
+// ---- CURSOR ULTRA FLUIDO ----
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; 
+  my = e.clientY;
+  cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(${cursor.dataset.scale || 1})`;
+});
+
+function animRing() {
+  rx += (mx - rx) * 0.15;
+  ry += (my - ry) * 0.15;
+  ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+  requestAnimationFrame(animRing);
+}
+requestAnimationFrame(animRing);
+
+document.body.addEventListener('mouseenter', e => {
+  if (e.target.matches && e.target.matches('button, a, [data-view], .project-card, .identity-card, .imagem-card, input, textarea')) {
+    cursor.dataset.scale = '2.5';
+    cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(2.5)`;
+    ring.style.width = '48px'; 
+    ring.style.height = '48px';
+    ring.style.opacity = '0.3';
+  }
+}, true);
+
+document.body.addEventListener('mouseleave', e => {
+  if (e.target.matches && e.target.matches('button, a, [data-view], .project-card, .identity-card, .imagem-card, input, textarea')) {
+    cursor.dataset.scale = '1';
+    cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(1)`;
+    ring.style.width = '36px'; 
+    ring.style.height = '36px';
+    ring.style.opacity = '0.6';
+  }
+}, true);
+
+// ---- GERENCIADOR DE TELAS ----
+let currentView = 'index';
+const views = {};
+document.querySelectorAll('.view').forEach(v => views[v.id.replace('-view','')] = v);
+
+setTimeout(() => { if(views[currentView]) views[currentView].classList.add('fade-in'); }, 50);
+
+function showView(name) {
+  if (currentView === name) return;
+  const oldView = views[currentView];
+  const nextView = views[name];
+  if (!nextView) return;
+
+  oldView.classList.remove('fade-in');
+  
+  setTimeout(() => {
+    oldView.classList.remove('active');
+    
+    if (name === 'imagens' && !window._imgBuilt) buildImagens();
+    if (name === 'identidades' && !window._idBuilt) buildIdentidades();
+    if (name === 'comparativo' && !window._c1Built) buildComp('comp1-body', 1, 5);
+    if (name === 'comparativo2' && !window._c2Built) buildComp('comp2-body', 6, 10);
+    if (name === 'comparativo3' && !window._c3Built) buildComp('comp3-body', 11, 15);
+
+    nextView.classList.add('active');
+    window.scrollTo(0, 0);
+
+    requestAnimationFrame(() => {
+      nextView.classList.add('fade-in');
+    });
+
+    currentView = name;
+  }, 400); 
+}
+
+document.querySelectorAll('[data-view]').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    const v = btn.getAttribute('data-view');
+    if (v) showView(v);
+  });
+});
+
+document.getElementById('btn-back-detalhe').addEventListener('click', () => {
+  showView(window._detalheFrom || 'identidades');
+});
+
+['comp1','comp2','comp3'].forEach((id) => {
+  const el = document.getElementById(`btn-back-${id}`);
+  if (el) el.addEventListener('click', () => showView('imagens'));
+});
+
+// ---- IMAGENS DATA & CAROUSEL ----
+const projetosImagens = [
+  {
+    id: 'img1', titulo: 'Gabriela Lima',
+    sub: 'O Foco · Edição de Imagem',
+    imagens: Array.from({length:5}, (_,i) => `1x/Antes e Depois ${i+1}.webp`),
+    target: 'comparativo'
+  },
+  {
+    id: 'img2', titulo: 'Camila Massoni',
+    sub: 'Adams Magazine · Capa',
+    imagens: Array.from({length:5}, (_,i) => `1x/Antes e Depois ${i+6}.webp`),
+    target: 'comparativo2'
+  },
+  {
+    id: 'img3', titulo: 'Priscila Fantin',
+    sub: 'Adams Magazine · Capa',
+    imagens: Array.from({length:5}, (_,i) => `1x/Antes e Depois ${i+11}.webp`),
+    target: 'comparativo3'
+  }
+];
+
+function buildImagens() {
+  window._imgBuilt = true;
+  const grid = document.getElementById('imagens-grid');
+  projetosImagens.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'imagem-card';
+
+    const carouselWrap = document.createElement('div');
+    carouselWrap.className = 'imagem-card-carousel';
+
+    const track = document.createElement('div');
+    track.className = 'imagem-carousel-track';
+    p.imagens.forEach(src => {
+      const slide = document.createElement('div');
+      slide.className = 'imagem-carousel-slide';
+      const img = document.createElement('img');
+      img.src = src; img.alt = p.titulo; img.loading = 'lazy';
+      slide.appendChild(img);
+      track.appendChild(slide);
+    });
+    carouselWrap.appendChild(track);
+
+    const dotsWrap = document.createElement('div');
+    dotsWrap.className = 'imagem-carousel-dots';
+    const dots = p.imagens.map((_, di) => {
+      const d = document.createElement('div');
+      d.className = 'imagem-carousel-dot' + (di === 0 ? ' active' : '');
+      dotsWrap.appendChild(d);
+      return d;
+    });
+    carouselWrap.appendChild(dotsWrap);
+
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'imagem-carousel-btn imagem-carousel-prev';
+    prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'imagem-carousel-btn imagem-carousel-next';
+    nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+    carouselWrap.appendChild(prevBtn);
+    carouselWrap.appendChild(nextBtn);
+
+    card.appendChild(carouselWrap);
+
+    const info = document.createElement('div');
+    info.className = 'imagem-card-info';
+    info.innerHTML = `
+      <div class="imagem-card-num">0${i+1}</div>
+      <div class="imagem-card-title">${p.titulo}</div>
+      <div class="imagem-card-sub">${p.sub}</div>
+      <div class="imagem-card-cta">Ver antes &amp; depois <i class="fas fa-arrow-right"></i></div>`;
+    card.appendChild(info);
+
+    let cur = 0;
+    function goTo(idx) {
+      cur = (idx + p.imagens.length) % p.imagens.length;
+      track.style.transform = `translateX(-${cur * 100}%)`;
+      dots.forEach((d, di) => d.classList.toggle('active', di === cur));
+    }
+    prevBtn.addEventListener('click', e => { e.stopPropagation(); goTo(cur - 1); });
+    nextBtn.addEventListener('click', e => { e.stopPropagation(); goTo(cur + 1); });
+    dots.forEach((d, di) => d.addEventListener('click', e => { e.stopPropagation(); goTo(di); }));
+
+    card.addEventListener('click', () => showView(p.target));
+    grid.appendChild(card);
+  });
+}
+
+// ---- IDENTIDADES DATA ----
+const projetosIdentidades = [
+  {
+    id: 'id1', titulo: "Kurt's Corte", sub: 'Barbearia · Identidade Visual',
+    capa: '1x/KC01.webp',
+    galeria: Array.from({length:18}, (_,i) => `1x/KC${String(i+1).padStart(2,'0')}.webp`),
+    texto: `Essa é uma marca que equilibra muito bem o nostálgico com o dinâmico, fugindo do clichê das barbearias ultra-minimalistas modernas para abraçar uma estética tradicional com um toque brasileiro.
+
+Conceito Visual: Kurt's Corte
+
+A identidade visual de Kurt's Corte foi desenvolvida para evocar a tradição das barbearias clássicas, estabelecendo uma conexão imediata de confiança e maestria técnica.
+
+Elementos Simbólicos
+O Pole de Barbeiro posicionado em destaque é o símbolo máximo da barbearia. A navalha na base do logotipo reforça a ideia de precisão e o barbear tradicional. A moldura circular cria unidade visual coesa.
+
+Tipografia e Dinamismo
+A fonte cursiva robusta e fluida confere aspecto artesanal e personalizado — como se fosse uma assinatura de qualidade do próprio proprietário.
+
+Paleta de Cores
+Azul Real transmite profissionalismo e serenidade. Vermelho Vibrante adiciona energia e garante alto contraste. Off-White confere aspecto premium.`
+  },
+  {
+    id: 'id2', titulo: 'Mestre do Fliperama', sub: 'Oficina · Identidade Visual',
+    capa: '1x/MF01.webp',
+    galeria: Array.from({length:18}, (_,i) => `1x/MF${String(i+1).padStart(2,'0')}.webp`),
+    texto: `Esta é uma identidade visual que utiliza o arquétipo do Mago para elevar o ofício da construção de hardware a um nível místico. Em um mercado de oficinas, a Mestre do Fliperama se diferencia ao tratar a montagem de máquinas como uma "arte ancestral" redescoberta.
+
+Conceito Visual: Mestre do Fliperama
+
+A marca une dois mundos: a fantasia épica e a cultura gamer. Cada máquina produzida não é apenas um móvel com eletrônicos, mas um artefato lendário construído com maestria.
+
+Cromatismo Estratégico
+Roxo Escuro: cor clássica da magia e do mistério, comunicando exclusividade e posicionamento premium. Laranja Vibrante: contraste complementar que remete à energia criativa.
+
+Tipografia
+Estilo Gótico Modernizado evoca pergaminhos medievais, reforçando o tema do Mago. A fonte é densa com terminações afiadas, criando ritmo visual agressivo e moderno.`
+  },
+  {
+    id: 'id3', titulo: 'Ibrahim', sub: 'Marca Pessoal · Identidade Visual',
+    capa: '1x/IB01.webp',
+    galeria: Array.from({length:18}, (_,i) => `1x/IB${String(i+1).padStart(2,'0')}.webp`),
+    texto: `A identidade visual da marca Ibrahim é um exemplo de design tipográfico puro, minimalista e focado na presença de marca. Ela se concentra exclusivamente no nome do profissional, utilizando tipografia forte e paleta monocromática para transmitir sofisticação, confiança e solidez.
+
+Tipografia e Peso
+A fonte sans-serif extra-bold e geométrica transmite solidez e confiança. O peso extremo das letras comunica a estabilidade de um profissional com experiência de mercado.
+
+Paleta e Profundidade
+A paleta quase monocromática, composta por variações de cinza, preto e amarelo, sugere um profissional que trabalha com precisão e sutileza. A sombra projetada confere tridimensionalidade, evocando a materialidade de um produto final bem executado.
+
+Conexão com os Serviços
+A precisão geométrica reflete a atenção aos detalhes necessária para manipulação de imagens de alta qualidade. A profundidade e o peso das letras dão sensação cinematográfica.`
+  }
+];
+
+function buildIdentidades() {
+  window._idBuilt = true;
+  const grid = document.getElementById('identidades-grid');
+  projetosIdentidades.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'identity-card';
+    card.innerHTML = `
+      <div class="identity-card-img"><img src="${p.capa}" alt="${p.titulo}" loading="lazy"></div>
+      <div class="identity-card-num">0${i+1}</div>
+      <div class="identity-card-title">${p.titulo}</div>
+      <div class="identity-card-sub">${p.sub}</div>`;
+    card.addEventListener('click', () => openDetalhe(p));
+    grid.appendChild(card);
+  });
+}
+
+function openDetalhe(p) {
+  window._detalheFrom = 'identidades';
+  document.getElementById('detalhe-section-label').textContent = p.sub;
+  document.getElementById('dt-label').textContent = '// Identidade Visual';
+
+  const titleEl = document.getElementById('dt-title');
+  titleEl.textContent = p.titulo;
+
+  document.getElementById('dt-desc').innerHTML = p.texto.replace(/\n/g, '<br>');
+
+  const gallery = document.getElementById('dt-gallery');
+  gallery.innerHTML = '';
+  p.galeria.forEach((src, i) => {
+    const item = document.createElement('div');
+    item.className = 'detail-gallery-item';
+    const img = document.createElement('img');
+    img.src = src; img.alt = `${p.titulo} ${i+1}`; img.loading = 'lazy';
+    item.appendChild(img);
+    item.addEventListener('click', () => openModal(p.galeria, i));
+    gallery.appendChild(item);
+  });
+
+  showView('detalhe');
+}
+
+// ---- BUILD COMPARATIVOS ----
+function buildComp(containerId, start, end) {
+  const key = containerId.replace('-body','');
+  window[`_${key}Built`] = true;
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  for (let i = start; i <= end; i++) {
+    const num = String(i).padStart(2, '0');
+    const antes = `1x/A${num}.webp`;
+    const depois = `1x/D${num}.webp`;
+    const pair = document.createElement('div');
+    pair.className = 'comp-pair';
+    pair.innerHTML = `
+      <div class="comp-pair-label">Composição ${i - start + 1}</div>
+      <div class="comp-pair-imgs">
+        <div class="comp-img-wrap">
+          <span class="comp-img-badge">Antes</span>
+          <img src="${antes}" alt="Antes ${i}" loading="lazy">
+        </div>
+        <div class="comp-img-wrap">
+          <span class="comp-img-badge" style="color:var(--gold-light)">Depois</span>
+          <img src="${depois}" alt="Depois ${i}" loading="lazy">
+        </div>
+      </div>`;
+    
+    pair.querySelectorAll('img').forEach((img, j) => {
+      img.addEventListener('click', e => {
+        e.stopPropagation();
+        openModal([antes, depois], j);
+      });
+    });
+    container.appendChild(pair);
+  }
+}
+
+// ---- MODAL ----
+let modalImgs = [], modalIdx = 0;
+const modalEl = document.getElementById('modal');
+const modalImgEl = document.getElementById('modal-img');
+const modalCount = document.getElementById('modal-count');
+
+function openModal(imgs, idx) {
+  modalImgs = imgs; modalIdx = idx;
+  updateModal();
+  modalEl.style.display = 'flex';
+  requestAnimationFrame(() => {
+    modalEl.classList.add('open');
+  });
+}
+
+function updateModal() {
+  modalImgEl.src = modalImgs[modalIdx];
+  modalCount.textContent = `${modalIdx + 1} / ${modalImgs.length}`;
+}
+
+function closeModal() {
+  modalEl.classList.remove('open');
+  setTimeout(() => { modalEl.style.display = 'none'; }, 300);
+}
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-prev').addEventListener('click', e => {
+  e.stopPropagation();
+  modalIdx = (modalIdx - 1 + modalImgs.length) % modalImgs.length;
+  updateModal();
+});
+document.getElementById('modal-next').addEventListener('click', e => {
+  e.stopPropagation();
+  modalIdx = (modalIdx + 1) % modalImgs.length;
+  updateModal();
+});
+modalEl.addEventListener('click', e => { if (e.target === modalEl) closeModal(); });
+
+document.addEventListener('keydown', e => {
+  if (!modalEl.classList.contains('open')) return;
+  if (e.key === 'ArrowLeft') { modalIdx = (modalIdx - 1 + modalImgs.length) % modalImgs.length; updateModal(); }
+  if (e.key === 'ArrowRight') { modalIdx = (modalIdx + 1) % modalImgs.length; updateModal(); }
+  if (e.key === 'Escape') closeModal();
+});
+
+// ---- CERTIFICADOS ----
+document.querySelectorAll('.cert-title[data-cert]').forEach(el => {
+  el.addEventListener('click', () => openModal([el.getAttribute('data-cert')], 0));
+});
+
+// ---- FORMULÁRIO DE CONTATO ORIGINAL ----
+document.getElementById('btn-send-form')?.addEventListener('click', () => {
+  const nome = document.getElementById('f-nome').value;
+  const email = document.getElementById('f-email').value;
+  const msg = document.getElementById('f-msg').value;
+  if (!nome || !email || !msg) { alert('Por favor, preencha todos os campos.'); return; }
+  const subject = encodeURIComponent('Contato via portfólio');
+  const body = encodeURIComponent(`Nome: ${nome}\nEmail: ${email}\n\n${msg}`);
+  window.open(`mailto:jaymeibrahim@gmail.com?subject=${subject}&body=${body}`);
+});
+
+// ---- BOTÃO FLUTUANTE E MODAL DE CONTATO ----
+const floatBtn = document.getElementById('floatContactBtn');
+const contactModalDiv = document.getElementById('contactModal');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const modalWhats = document.getElementById('modalWhatsBtn');
+const modalEmail = document.getElementById('modalEmailBtn');
+
+function toggleContactModal(open) {
+  if (open) {
+    contactModalDiv.classList.add('open');
+  } else {
+    contactModalDiv.classList.remove('open');
+  }
+}
+
+floatBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const isOpen = contactModalDiv.classList.contains('open');
+  toggleContactModal(!isOpen);
+});
+
+closeModalBtn.addEventListener('click', () => toggleContactModal(false));
+document.addEventListener('click', (e) => {
+  if (contactModalDiv.classList.contains('open') && !contactModalDiv.contains(e.target) && e.target !== floatBtn && !floatBtn.contains(e.target)) {
+    toggleContactModal(false);
+  }
+});
+
+modalWhats.addEventListener('click', () => {
+  const nome = document.getElementById('modal-nome').value.trim();
+  const email = document.getElementById('modal-email').value.trim();
+  const msg = document.getElementById('modal-msg').value.trim();
+  if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; }
+  const texto = `*Nome:* ${nome}%0a*E-mail:* ${email}%0a*Mensagem:* ${msg}`;
+  window.open(`https://wa.me/5511947846658?text=${texto}`, '_blank');
+  toggleContactModal(false);
+});
+
+modalEmail.addEventListener('click', () => {
+  const nome = document.getElementById('modal-nome').value.trim();
+  const email = document.getElementById('modal-email').value.trim();
+  const msg = document.getElementById('modal-msg').value.trim();
+  if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; }
+  const subject = encodeURIComponent('Contato via portfólio');
+  const body = encodeURIComponent(`Nome: ${nome}\nEmail: ${email}\n\n${msg}`);
+  window.open(`mailto:jaymeibrahim@gmail.com?subject=${subject}&body=${body}`, '_blank');
+  toggleContactModal(false);
+});
+
+// Security honeypot / rate limit mantido sem modificar comportamento original
+(function(){
+  const FORM_BTN_ORIG = document.getElementById('btn-send-form');
+  if (FORM_BTN_ORIG) {
+    const honeypotContainer = document.createElement('div');
+    honeypotContainer.style.position = 'absolute';
+    honeypotContainer.style.left = '-9999px';
+    honeypotContainer.style.opacity = '0';
+    honeypotContainer.innerHTML = '<input type="text" name="website" id="hp_website" autocomplete="off" tabindex="-1">';
+    const formRowOrig = document.querySelector('.contact-section .form-row');
+    if (formRowOrig) formRowOrig.appendChild(honeypotContainer);
+    const secureHandler = function(e) {
+      const nome = document.getElementById('f-nome').value;
+      const email = document.getElementById('f-email').value;
+      const msg = document.getElementById('f-msg').value;
+      const hp = document.getElementById('hp_website')?.value;
+      if (hp && hp.length > 0) { alert('Mensagem não enviada.'); return; }
+      if (!nome || !email || !msg) { alert('Preencha todos os campos.'); return; }
+      const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+      if (!emailRegex.test(email)) { alert('E-mail inválido.'); return; }
+      const subject = encodeURIComponent('Contato via portfólio');
+      const body = encodeURIComponent(`Nome: ${nome}\nEmail: ${email}\n\n${msg}`);
+      window.open(`mailto:jaymeibrahim@gmail.com?subject=${subject}&body=${body}`);
+    };
+    FORM_BTN_ORIG.removeEventListener('click', FORM_BTN_ORIG._oldHandler);
+    FORM_BTN_ORIG.addEventListener('click', secureHandler);
+    FORM_BTN_ORIG._oldHandler = secureHandler;
+  }
+})();
+</script>
+</body>
+</html>
