@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
 <title>Ibrahim · Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
@@ -10,23 +13,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-<!-- Prefetch: capas dos projetos de identidade (primeiros itens visíveis ao navegar) -->
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="prefetch" href="1x/KC01.webp" as="image">
 <link rel="prefetch" href="1x/MF01.webp" as="image">
 <link rel="prefetch" href="1x/IB01.webp" as="image">
-<!-- Prefetch: primeiros comparativos (Antes e Depois 1–3) -->
 <link rel="prefetch" href="1x/Antes e Depois 1.webp" as="image">
 <link rel="prefetch" href="1x/Antes e Depois 6.webp" as="image">
 <link rel="prefetch" href="1x/Antes e Depois 11.webp" as="image">
-<!-- Prefetch: primeiros pares de retoque (A01/D01) -->
 <link rel="prefetch" href="1x/A01.webp" as="image">
 <link rel="prefetch" href="1x/D01.webp" as="image">
 <link rel="prefetch" href="1x/A06.webp" as="image">
 <link rel="prefetch" href="1x/D06.webp" as="image">
 <link rel="prefetch" href="1x/A11.webp" as="image">
 <link rel="prefetch" href="1x/D11.webp" as="image">
-<!-- dns-prefetch já existente mantido; preconnect extra para cdnjs -->
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <style>
 :root {
   --ink: #0b0b0b;
@@ -104,7 +103,6 @@ body {
   opacity: 1;
   transform: scale(1);
 }
-/* Saída: zoom-out → view some encolhendo */
 .view.fade-out {
   opacity: 0;
   transform: scale(1.03);
@@ -1207,6 +1205,137 @@ body {
   display: block;
   max-height: 500px;
 }
+
+/* ---- SKELETON SHIMMER ---- */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+/* Aplicado dinamicamente via JS apenas em containers sem img carregada */
+.skel {
+  position: relative;
+}
+.skel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.03) 25%,
+    rgba(255,255,255,0.07) 50%,
+    rgba(255,255,255,0.03) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+.skel.skel-done::after {
+  opacity: 0;
+  animation: none;
+}
+
+/* ---- FADE-IN DE IMAGEM (apenas imagens lazy — não eager) ---- */
+img.img-fade {
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+img.img-fade.img-show {
+  opacity: 1;
+}
+
+/* ============================================================
+   iOS / SAFARI — OTIMIZAÇÕES ESPECÍFICAS
+   ============================================================ */
+
+/* 1. Força camada GPU nas views para evitar blur/rerender no iOS */
+.view {
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* 2. Scroll nativo fluido no iOS em todos containers scrolláveis */
+.view,
+.comp-body,
+.about-body,
+.portfolio-body,
+.detalhe-body,
+.identidades-grid,
+.imagens-grid,
+.detail-gallery {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 3. Safe area — notch / Dynamic Island / home indicator */
+.site-header {
+  padding-top: max(1.5rem, env(safe-area-inset-top));
+  padding-left: max(4rem, env(safe-area-inset-left));
+  padding-right: max(4rem, env(safe-area-inset-right));
+}
+.float-contact-btn {
+  bottom: max(1.5rem, calc(env(safe-area-inset-bottom) + 1rem));
+  right: max(1.5rem, env(safe-area-inset-right));
+}
+.site-footer {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+#index-view .index-cta-about {
+  bottom: max(2.5rem, calc(env(safe-area-inset-bottom) + 1.5rem));
+}
+
+/* 4. Touch-action nos carrosséis: swipe horizontal sem conflitar com scroll */
+.imagem-card-carousel,
+.id-carousel-track,
+.id-carousel-slide {
+  touch-action: pan-y pinch-zoom;
+}
+
+/* 5. Remove delay de 300ms no tap + previne highlight azul */
+button, a, [data-view], input, textarea,
+.project-card, .identity-card, .imagem-card {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* 6. Previne seleção de texto acidental no touch em elementos decorativos */
+.index-nav-btn, .header-back, .header-section-name,
+.service-tag, .comp-pair-label, .comp-img-badge,
+.imagem-card-cta, [data-view] {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 7. Altura dinâmica correta no iOS (a barra de endereço retrai/expande) */
+#index-view {
+  height: 100dvh;
+}
+@supports not (height: 100dvh) {
+  #index-view { height: -webkit-fill-available; }
+}
+
+/* 8. Backdrop-filter com prefixo webkit onde ainda é necessário */
+.modal, .contact-modal {
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+/* 9. Rendering suave de imagens no Safari */
+img {
+  -webkit-transform: translateZ(0);
+}
+
+/* 10. Transições mais leves em mobile para preservar bateria e fluidez */
+@media (max-width: 600px) {
+  .view {
+    transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .skel::after {
+    animation-duration: 2s;
+  }
+}
 </style>
 </head>
 <body>
@@ -1219,7 +1348,7 @@ body {
   <div class="index-center">
     <div class="index-eyebrow">DESIGNER</div>
     <button class="index-logo-wrap" id="btn-logo-about" data-view="apresentacao" style="background:transparent;border:none;">
-      <img src="1x/IBRAHIM.webp" alt="Ibrahim" id="index-logo-img">
+      <img src="1x/IBRAHIM.webp" alt="Ibrahim" id="index-logo-img" fetchpriority="high">
       <div class="logo-hint">Ver perfil</div>
     </button>
     <nav class="index-nav">
@@ -1237,7 +1366,7 @@ body {
 
   <div class="about-hero">
     <div class="about-hero-img">
-      <img src="1x/Perfil.webp" alt="Ibrahim" decoding="async" loading="eager">
+      <img src="1x/Perfil.webp" alt="Ibrahim" decoding="async" loading="eager" fetchpriority="high">
     </div>
     <div class="about-hero-content">
       <div class="about-tag">// Designer · Editor · Criador</div>
@@ -1489,46 +1618,51 @@ const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
 let mx = 0, my = 0, rx = 0, ry = 0;
 
-let _cursorRafPending = false;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; 
-  my = e.clientY;
-  if (!_cursorRafPending) {
-    _cursorRafPending = true;
-    requestAnimationFrame(() => {
-      cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(${cursor.dataset.scale || 1})`;
-      _cursorRafPending = false;
-    });
-  }
-}, { passive: true });
+// iOS/touch: não inicializa loops de RAF do cursor — economiza bateria e evita conflito
+const _isTouch = navigator.maxTouchPoints > 0 && !window.matchMedia('(pointer: fine)').matches;
 
-function animRing() {
-  rx += (mx - rx) * 0.15;
-  ry += (my - ry) * 0.15;
-  ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+if (!_isTouch) {
+  let _cursorRafPending = false;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; 
+    my = e.clientY;
+    if (!_cursorRafPending) {
+      _cursorRafPending = true;
+      requestAnimationFrame(() => {
+        cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(${cursor.dataset.scale || 1})`;
+        _cursorRafPending = false;
+      });
+    }
+  }, { passive: true });
+
+  function animRing() {
+    rx += (mx - rx) * 0.15;
+    ry += (my - ry) * 0.15;
+    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+    requestAnimationFrame(animRing);
+  }
   requestAnimationFrame(animRing);
+
+  document.body.addEventListener('mouseenter', e => {
+    if (e.target.matches && e.target.matches('button, a, [data-view], .project-card, .identity-card, .imagem-card, input, textarea')) {
+      cursor.dataset.scale = '2.5';
+      cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(2.5)`;
+      ring.style.width = '48px'; 
+      ring.style.height = '48px';
+      ring.style.opacity = '0.3';
+    }
+  }, true);
+
+  document.body.addEventListener('mouseleave', e => {
+    if (e.target.matches && e.target.matches('button, a, [data-view], .project-card, .identity-card, .imagem-card, input, textarea')) {
+      cursor.dataset.scale = '1';
+      cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(1)`;
+      ring.style.width = '36px'; 
+      ring.style.height = '36px';
+      ring.style.opacity = '0.6';
+    }
+  }, true);
 }
-requestAnimationFrame(animRing);
-
-document.body.addEventListener('mouseenter', e => {
-  if (e.target.matches && e.target.matches('button, a, [data-view], .project-card, .identity-card, .imagem-card, input, textarea')) {
-    cursor.dataset.scale = '2.5';
-    cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(2.5)`;
-    ring.style.width = '48px'; 
-    ring.style.height = '48px';
-    ring.style.opacity = '0.3';
-  }
-}, true);
-
-document.body.addEventListener('mouseleave', e => {
-  if (e.target.matches && e.target.matches('button, a, [data-view], .project-card, .identity-card, .imagem-card, input, textarea')) {
-    cursor.dataset.scale = '1';
-    cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(1)`;
-    ring.style.width = '36px'; 
-    ring.style.height = '36px';
-    ring.style.opacity = '0.6';
-  }
-}, true);
 
 // ---- GERENCIADOR DE TELAS ----
 let currentView = 'index';
@@ -1548,11 +1682,9 @@ function showView(name) {
   const nextView = views[name];
   if (!nextView) return;
 
-  // — SAÍDA: remove fade-in, aplica fade-out (zoom-out + fade) —
+  // Saída: fade-out com leve zoom-out
   oldView.classList.remove('fade-in');
   oldView.classList.add('fade-out');
-
-  const TRANSITION_MS = 280;
 
   setTimeout(() => {
     oldView.classList.remove('active', 'fade-out');
@@ -1563,11 +1695,10 @@ function showView(name) {
     if (name === 'comparativo2' && !window._c2Built) buildComp('comp2-body', 6, 10);
     if (name === 'comparativo3' && !window._c3Built) buildComp('comp3-body', 11, 15);
 
-    // — ENTRADA: ativa nova view já no estado inicial (scale 0.97, opacidade 0) —
+    // Entrada: começa em scale(0.97) opacity 0 → anima para scale(1) opacity 1
     nextView.classList.add('active');
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
-    // Duplo rAF garante que o browser pintou o estado inicial antes de animar
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         nextView.classList.add('fade-in');
@@ -1575,7 +1706,7 @@ function showView(name) {
     });
 
     currentView = name;
-  }, TRANSITION_MS);
+  }, 280);
 }
 
 document.querySelectorAll('[data-view]').forEach(btn => {
@@ -1694,9 +1825,8 @@ function buildImagens() {
     });
   });
   grid.appendChild(outerFrag);
+  window._fluidProcessImgs?.();
 }
-
-// ---- IDENTIDADES DATA ----
 const projetosIdentidades = [
   {
     id: 'id1', titulo: "Kurt's Corte", sub: 'Barbearia · Identidade Visual',
@@ -1766,6 +1896,7 @@ function buildIdentidades() {
     frag.appendChild(card);
   });
   grid.appendChild(frag);
+  window._fluidProcessImgs?.();
 }
 
 function openDetalhe(p) {
@@ -1828,6 +1959,7 @@ function openDetalhe(p) {
     galFrag.appendChild(item);
   });
   gallery.appendChild(galFrag);
+  window._fluidProcessImgs?.();
 
   showView('detalhe');
 }
@@ -1838,37 +1970,84 @@ function buildComp(containerId, start, end) {
   window[`_${key}Built`] = true;
   const container = document.getElementById(containerId);
   container.innerHTML = '';
-  // Use document fragment to batch DOM insertions
   const frag = document.createDocumentFragment();
   for (let i = start; i <= end; i++) {
     const num = String(i).padStart(2, '0');
-    const antes = `1x/A${num}.webp`;
-    const depois = `1x/D${num}.webp`;
+    // Preview rápida (com parênteses) — carrega instantaneamente
+    const antesLQ  = `1x/A(${num}).webp`;
+    const depoisLQ = `1x/D(${num}).webp`;
+    // Versão HD (sem parênteses) — carregada em segundo plano
+    const antesHD  = `1x/A${num}.webp`;
+    const depoisHD = `1x/D${num}.webp`;
+
     const pair = document.createElement('div');
     pair.className = 'comp-pair';
-    // First image eager, rest lazy
     const eagerStr = i === start ? '' : ' loading="lazy"';
     pair.innerHTML = `
       <div class="comp-pair-label">Composição ${i - start + 1}</div>
       <div class="comp-pair-imgs">
         <div class="comp-img-wrap">
           <span class="comp-img-badge">Antes</span>
-          <img src="${antes}" alt="Antes ${i}" loading="lazy" decoding="async">
+          <img src="${antesLQ}" data-hd="${antesHD}" alt="Antes ${i}" loading="lazy" decoding="async">
         </div>
         <div class="comp-img-wrap">
           <span class="comp-img-badge" style="color:var(--gold-light)">Depois</span>
-          <img src="${depois}" alt="Depois ${i}"${eagerStr} decoding="async">
+          <img src="${depoisLQ}" data-hd="${depoisHD}" alt="Depois ${i}"${eagerStr} decoding="async">
         </div>
       </div>`;
+
+    // Clique abre modal com HD (já em cache pelo tempo que o usuário leva para clicar)
     pair.querySelectorAll('img').forEach((img, j) => {
       img.addEventListener('click', e => {
         e.stopPropagation();
-        openModal([antes, depois], j);
+        // Usa HD se já carregou, senão usa o que tiver
+        const hdA = pair.querySelectorAll('img')[0].dataset.hdLoaded ? antesHD : antesLQ;
+        const hdD = pair.querySelectorAll('img')[1].dataset.hdLoaded ? depoisHD : depoisLQ;
+        openModal([hdA, hdD], j);
       }, { passive: true });
     });
+
     frag.appendChild(pair);
   }
   container.appendChild(frag);
+  window._fluidProcessImgs?.();
+
+  // Aplica blur leve na LQ e troca LQ → HD em segundo plano removendo o blur
+  container.querySelectorAll('img[data-hd]').forEach(img => {
+    const hd = img.dataset.hd;
+
+    // Aplica blur na LQ assim que ela carregar (ou imediatamente se já carregou)
+    const applyBlur = () => {
+      img.style.filter = 'blur(6px)';
+      img.style.transition = 'filter 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
+      img.style.willChange = 'filter';
+    };
+    if (img.complete && img.naturalWidth > 0) {
+      applyBlur();
+    } else {
+      img.addEventListener('load', applyBlur, { once: true });
+    }
+
+    // Carrega HD em background e troca removendo o blur suavemente
+    const hdImg = new Image();
+    hdImg.decoding = 'async';
+    hdImg.onload = () => {
+      img.src = hd;
+      img.dataset.hdLoaded = '1';
+      // Remove blur após o browser pintar o novo src
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          img.style.filter = 'blur(0px)';
+          img.addEventListener('transitionend', () => {
+            img.style.willChange = '';
+            img.style.transition = '';
+            img.style.filter = '';
+          }, { once: true });
+        });
+      });
+    };
+    hdImg.src = hd;
+  });
 }
 
 // ---- MODAL ----
@@ -1918,6 +2097,22 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') { modalIdx = (modalIdx + 1) % modalImgs.length; updateModal(); }
   if (e.key === 'Escape') closeModal();
 });
+
+// Swipe no modal para iOS (e Android)
+(function() {
+  let _tX = 0, _tY = 0;
+  modalEl.addEventListener('touchstart', e => {
+    _tX = e.changedTouches[0].screenX;
+    _tY = e.changedTouches[0].screenY;
+  }, { passive: true });
+  modalEl.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].screenX - _tX;
+    const dy = e.changedTouches[0].screenY - _tY;
+    if (Math.abs(dx) < 40 || Math.abs(dy) > Math.abs(dx)) return; // swipe muito curto ou vertical
+    if (dx < 0) { modalIdx = (modalIdx + 1) % modalImgs.length; updateModal(); }
+    else         { modalIdx = (modalIdx - 1 + modalImgs.length) % modalImgs.length; updateModal(); }
+  }, { passive: true });
+})();
 
 // ---- CERTIFICADOS ----
 document.querySelectorAll('.cert-title[data-cert]').forEach(el => {
@@ -2020,94 +2215,158 @@ modalEmail.addEventListener('click', () => {
     function playSound(t){soundEnabled?generateSound(t):(initAudio(),audioCtx.state==="suspended"&&audioCtx.resume().then(()=>generateSound(t)));}
     function generateSound(t){if(!audioCtx)return;const n=audioCtx.currentTime;if(t==="click"){const e=audioCtx.createGain();e.connect(audioCtx.destination);e.gain.value=0;const o=audioCtx.createOscillator();o.type="sine",o.connect(e),o.frequency.value=523.25,e.gain.setValueAtTime(.1,n),e.gain.exponentialRampToValueAtTime(1e-4,n+.2),o.start(n),o.stop(n+.2);}else if(t==="hover"){const e=audioCtx.createGain();e.connect(audioCtx.destination);e.gain.value=0;const o=audioCtx.createOscillator();o.type="sine",o.connect(e),o.frequency.setValueAtTime(392,n),o.frequency.exponentialRampToValueAtTime(523.25,n+.15),e.gain.setValueAtTime(.08,n),e.gain.exponentialRampToValueAtTime(1e-4,n+.25),o.start(n),o.stop(n+.25);}else if(t==="entrance"){[392,493.88,587.33,783.99].forEach((e,o)=>{const i=audioCtx.createGain();i.connect(audioCtx.destination);i.gain.value=0;const a=audioCtx.createOscillator();a.type="sine",a.connect(i);const c=n+o*.1;i.gain.setValueAtTime(.05,c),i.gain.exponentialRampToValueAtTime(1e-4,c+.3),a.frequency.value=e,a.start(c),a.stop(c+.3);});}}
     function playEntranceSound(){!entrancePlayed&&soundEnabled&&audioCtx&&audioCtx.state==="running"&&(playSound("entrance"),entrancePlayed=true);}
-    document.body.addEventListener("click",()=>{if(!audioCtx)initAudio();if(audioCtx?.state==="suspended")audioCtx.resume().then(()=>{currentView==="index"&&playEntranceSound();});else if(audioCtx?.state==="running"&&currentView==="index")playEntranceSound();},{once:true});
+    // iOS requer gesto do usuário para desbloquear AudioContext — suporta touchstart além de click
+    const _audioUnlock = () => {if(!audioCtx)initAudio();if(audioCtx?.state==="suspended")audioCtx.resume().then(()=>{currentView==="index"&&playEntranceSound();});else if(audioCtx?.state==="running"&&currentView==="index")playEntranceSound();};
+    document.body.addEventListener("click", _audioUnlock, {once:true});
+    document.body.addEventListener("touchstart", _audioUnlock, {once:true, passive:true});
     let _lastHover = 0;
     document.querySelectorAll("button,a,[data-view]").forEach(el=>{
         el.addEventListener("mouseenter",()=>{const now=Date.now();if(now-_lastHover>80){playSound("hover");_lastHover=now;}});
         el.addEventListener("click",()=>playSound("click"));
     });
 
-// ---- PRÉ-CACHE DE ASSETS EM BACKGROUND (sem bloquear renderização) ----
+// ================================================================
+// SISTEMA DE FLUIDEZ: skeleton + fade-in de imagens + cache idle
+// ================================================================
 (function() {
-  // Monta a lista completa de todos os assets das outras páginas
-  // Ordem de prioridade: capas e primeiros slides → galeria completa → comparativos
-  const PRIORITY_HIGH = [];
-  const PRIORITY_MED  = [];
-  const PRIORITY_LOW  = [];
 
-  // Identidades — capas (high) + galeria completa (med)
-  ['KC','MF','IB'].forEach(prefix => {
+  // ------------------------------------------------------------------
+  // A) SKELETON em containers de imagem lazy
+  // Adiciona .skel nos wrappers enquanto a imagem não carregou.
+  // Remove .skel (via .skel-done) assim que a imagem terminar.
+  // Só age em imagens COM loading="lazy" — nunca nas eager/críticas.
+  // ------------------------------------------------------------------
+  function attachSkeleton(img) {
+    // Não mexe em imagens eager ou já carregadas
+    if (img.loading === 'eager' || (img.complete && img.naturalWidth > 0)) return;
+
+    const wrap = img.parentElement;
+    if (!wrap || wrap.classList.contains('skel')) return;
+
+    // Apenas containers com dimensões definidas (aspect-ratio ou height) ganham skel
+    const cs = getComputedStyle(wrap);
+    const hasDim = cs.aspectRatio !== 'auto' || parseInt(cs.height) > 0 || parseInt(cs.minHeight) > 0;
+    if (!hasDim) return;
+
+    wrap.classList.add('skel');
+    const done = () => {
+      wrap.classList.add('skel-done');
+      setTimeout(() => wrap.classList.remove('skel', 'skel-done'), 350);
+    };
+    img.addEventListener('load',  done, { once: true });
+    img.addEventListener('error', done, { once: true });
+  }
+
+  // ------------------------------------------------------------------
+  // B) FADE-IN suave para imagens lazy (só lazy, nunca eager/logo)
+  // Usa IntersectionObserver para ativar apenas quando visível.
+  // ------------------------------------------------------------------
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const img = entry.target;
+      fadeObserver.unobserve(img);
+      const show = () => img.classList.add('img-show');
+      if (img.complete && img.naturalWidth > 0) {
+        show();
+      } else {
+        img.addEventListener('load',  show, { once: true });
+        img.addEventListener('error', show, { once: true });
+      }
+    });
+  }, { rootMargin: '60px 0px', threshold: 0 });
+
+  function attachFade(img) {
+    // NUNCA aplica em imagens críticas (eager, logo, perfil)
+    if (img.loading === 'eager') return;
+    if (img.id === 'index-logo-img') return;
+    if (img.complete && img.naturalWidth > 0) return; // já em cache, não precisa
+    img.classList.add('img-fade');
+    fadeObserver.observe(img);
+  }
+
+  // ------------------------------------------------------------------
+  // C) Processa todas as imagens lazy do DOM atual + futuras (builds)
+  // ------------------------------------------------------------------
+  function processImgs(root) {
+    (root || document).querySelectorAll('img[loading="lazy"]').forEach(img => {
+      if (img.dataset.fluid) return; // já processado
+      img.dataset.fluid = '1';
+      attachSkeleton(img);
+      attachFade(img);
+    });
+  }
+  processImgs();
+
+  // Expõe para ser chamado após buildImagens / buildIdentidades / buildComp / openDetalhe
+  window._fluidProcessImgs = processImgs;
+
+  // ------------------------------------------------------------------
+  // D) PRÉ-CACHE IDLE — baixa tudo em background sem bloquear nada
+  // ------------------------------------------------------------------
+  const HIGH = [], MED = [], LOW = [];
+
+  ['KC','MF','IB'].forEach(p => {
     for (let i = 1; i <= 18; i++) {
-      const src = `1x/${prefix}${String(i).padStart(2,'0')}.webp`;
-      (i <= 3 ? PRIORITY_HIGH : PRIORITY_MED).push(src);
+      (i <= 3 ? HIGH : MED).push(`1x/${p}${String(i).padStart(2,'0')}.webp`);
     }
   });
-
-  // Imagens (carrossel "Antes e Depois") — primeiro de cada projeto (high), resto (med)
   for (let i = 1; i <= 15; i++) {
-    const src = `1x/Antes e Depois ${i}.webp`;
-    ([1,6,11].includes(i) ? PRIORITY_HIGH : PRIORITY_MED).push(src);
+    ([1,6,11].includes(i) ? HIGH : MED).push(`1x/Antes e Depois ${i}.webp`);
   }
-
-  // Comparativos A/D (retoques) — primeiro par de cada (high), resto (low)
+  // Comparativos: LQ (parênteses) como HIGH, HD como LOW
   for (let i = 1; i <= 15; i++) {
-    const num = String(i).padStart(2,'0');
-    const a = `1x/A${num}.webp`;
-    const d = `1x/D${num}.webp`;
-    ([1,6,11].includes(i) ? PRIORITY_HIGH : PRIORITY_LOW).push(a, d);
+    const n = String(i).padStart(2,'0');
+    HIGH.push(`1x/A(${n}).webp`, `1x/D(${n}).webp`); // preview leve — carrega primeiro
+    LOW.push(`1x/A${n}.webp`,   `1x/D${n}.webp`);    // HD — segundo plano
   }
+  HIGH.push('1x/CERT1.webp', '1x/CERT2.webp', '1x/Perfil.webp');
 
-  const queue = [...PRIORITY_HIGH, ...PRIORITY_MED, ...PRIORITY_LOW];
-  const cached = new Set();
+  const queue = [...HIGH, ...MED, ...LOW];
+  const done  = new Set();
 
-  function preloadOne(src) {
-    if (cached.has(src)) return;
-    cached.add(src);
+  function preload(src) {
+    if (done.has(src)) return;
+    done.add(src);
     const img = new Image();
     img.decoding = 'async';
     img.src = src;
   }
 
-  let idx = 0;
-  // Usa requestIdleCallback quando disponível; fallback para setTimeout com baixa prioridade
-  const scheduleNext = typeof requestIdleCallback === 'function'
-    ? (fn) => requestIdleCallback(fn, { timeout: 4000 })
-    : (fn) => setTimeout(fn, 80);
+  let qi = 0;
+  const schedule = typeof requestIdleCallback === 'function'
+    ? fn => requestIdleCallback(fn, { timeout: 5000 })
+    : fn => setTimeout(fn, 100);
 
-  function pumpQueue(deadline) {
-    // Processa o máximo possível dentro do tempo ocioso disponível
-    const timeLimit = deadline && deadline.timeRemaining ? deadline.timeRemaining() : 10;
-    const start = performance.now();
-    while (idx < queue.length && (performance.now() - start) < Math.min(timeLimit, 12)) {
-      preloadOne(queue[idx++]);
-    }
-    if (idx < queue.length) scheduleNext(pumpQueue);
+  function pump(dl) {
+    const limit = dl?.timeRemaining ? Math.min(dl.timeRemaining(), 14) : 10;
+    const t0 = performance.now();
+    while (qi < queue.length && performance.now() - t0 < limit) preload(queue[qi++]);
+    if (qi < queue.length) schedule(pump);
   }
 
-  // Inicia após o load completo da página para não competir com recursos críticos
-  if (document.readyState === 'complete') {
-    scheduleNext(pumpQueue);
-  } else {
-    window.addEventListener('load', () => scheduleNext(pumpQueue), { once: true, passive: true });
-  }
+  if (document.readyState === 'complete') schedule(pump);
+  else window.addEventListener('load', () => schedule(pump), { once: true, passive: true });
 
-  // Ao passar o mouse sobre um botão de navegação, pré-carrega assets daquela seção imediatamente
-  const sectionAssets = {
-    'identidades': ['1x/KC01.webp','1x/MF01.webp','1x/IB01.webp','1x/KC02.webp','1x/MF02.webp','1x/IB02.webp'],
-    'imagens':     Array.from({length:5}, (_,i) => `1x/Antes e Depois ${i+1}.webp`)
-                    .concat(Array.from({length:5}, (_,i) => `1x/Antes e Depois ${i+6}.webp`))
-                    .concat(Array.from({length:5}, (_,i) => `1x/Antes e Depois ${i+11}.webp`)),
-    'comparativo':  Array.from({length:5}, (_,i) => { const n=String(i+1).padStart(2,'0'); return [`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
-    'comparativo2': Array.from({length:5}, (_,i) => { const n=String(i+6).padStart(2,'0'); return [`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
-    'comparativo3': Array.from({length:5}, (_,i) => { const n=String(i+11).padStart(2,'0'); return [`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
+  // ------------------------------------------------------------------
+  // E) PREFETCH ON HOVER — acelera seção que o usuário vai abrir
+  // ------------------------------------------------------------------
+  const bySection = {
+    apresentacao: ['1x/Perfil.webp','1x/CERT1.webp','1x/CERT2.webp'],
+    identidades:  ['KC','MF','IB'].flatMap(p => [1,2,3].map(i => `1x/${p}${String(i).padStart(2,'0')}.webp`)),
+    imagens:      Array.from({length:15}, (_,i) => `1x/Antes e Depois ${i+1}.webp`),
+    // LQ (parênteses) primeiro, depois HD
+    comparativo:  Array.from({length:5}, (_,i) => { const n=String(i+1).padStart(2,'0'); return [`1x/A(${n}).webp`,`1x/D(${n}).webp`,`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
+    comparativo2: Array.from({length:5}, (_,i) => { const n=String(i+6).padStart(2,'0'); return [`1x/A(${n}).webp`,`1x/D(${n}).webp`,`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
+    comparativo3: Array.from({length:5}, (_,i) => { const n=String(i+11).padStart(2,'0'); return [`1x/A(${n}).webp`,`1x/D(${n}).webp`,`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
   };
-
   document.querySelectorAll('[data-view]').forEach(btn => {
     btn.addEventListener('mouseenter', () => {
-      const target = btn.getAttribute('data-view');
-      if (sectionAssets[target]) sectionAssets[target].forEach(preloadOne);
+      const assets = bySection[btn.getAttribute('data-view')];
+      if (assets) assets.forEach(preload);
     }, { passive: true });
   });
+
 })();
 </script>
 </body>
