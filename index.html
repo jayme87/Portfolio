@@ -1966,77 +1966,53 @@ function openDetalhe(p) {
 
 // ---- BUILD COMPARATIVOS ----
 
-// CSS da classe de blur — injetado uma única vez, antes do primeiro buildComp
-if (!document.getElementById('_comp-blur-style')) {
-  const _bs = document.createElement('style');
-  _bs.id = '_comp-blur-style';
-  _bs.textContent = `
-    .img-blur-low {
-      filter: blur(6px);
-      transform: translateZ(0);
-      will-change: filter, transform;
-      transition: filter 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .img-blur-low.img-blur-clear {
-      filter: blur(0px);
-    }
-  `;
-  document.head.appendChild(_bs);
+// Fila global de upgrade LQ → HD: processa uma imagem de cada vez, sequencialmente,
+// iniciada após 5 segundos de permanência na página de comparativo.
+// Garante que nunca haja múltiplos downloads pesados simultâneos em nenhuma plataforma.
+const _hdQueue = [];
+let _hdQueueRunning = false;
+let _hdTimerId = null;
+
+function _hdProcessNext() {
+  if (!_hdQueue.length) { _hdQueueRunning = false; return; }
+  _hdQueueRunning = true;
+  const { img, hd } = _hdQueue.shift();
+
+  // Ignora se a imagem já foi substituída ou saiu do DOM
+  if (img.dataset.hdLoaded || !img.isConnected) { _hdProcessNext(); return; }
+
+  const hdImg = new Image();
+  hdImg.decoding = 'async';
+  hdImg.onload = () => {
+    if (!img.isConnected) { _hdProcessNext(); return; }
+    img.src = hd;
+    img.dataset.hdLoaded = '1';
+    // Aguarda o browser pintar o novo frame antes de passar para a próxima
+    requestAnimationFrame(() => _hdProcessNext());
+  };
+  hdImg.onerror = () => _hdProcessNext(); // falha silenciosa — LQ permanece
+  hdImg.src = hd;
 }
 
-// Observer dedicado para disparar o carregamento HD apenas quando o par está próximo da viewport
-const _hdObserver = new IntersectionObserver((entries, obs) => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const pair = entry.target;
-    obs.unobserve(pair);
+function _hdSchedule(containerId) {
+  // Cancela timer anterior se a função for chamada novamente (ex: reentrada)
+  if (_hdTimerId) { clearTimeout(_hdTimerId); _hdTimerId = null; }
 
-    pair.querySelectorAll('img[data-hd]').forEach(img => {
-      if (img.dataset.hdLoaded || img.dataset.hdPending) return;
-      img.dataset.hdPending = '1';
+  _hdTimerId = setTimeout(() => {
+    _hdTimerId = null;
+    const container = document.getElementById(containerId);
+    if (!container) return;
 
-      const hd = img.dataset.hd;
-      const hdImg = new Image();
-      hdImg.decoding = 'async';
-
-      hdImg.onload = () => {
-        // Ativa aceleração de hardware ANTES de trocar o src
-        img.style.transform = 'translateZ(0)';
-        img.style.willChange = 'filter, transform';
-
-        img.src = hd;
-        img.dataset.hdLoaded = '1';
-
-        // Aguarda dois frames para garantir que o browser pintou o novo src
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            img.classList.add('img-blur-clear');
-            img.addEventListener('transitionend', () => {
-              // Limpa tudo após a transição para liberar memória de GPU
-              img.classList.remove('img-blur-low', 'img-blur-clear');
-              img.style.transform   = '';
-              img.style.willChange  = '';
-              img.style.transition  = '';
-            }, { once: true });
-          });
-        });
-      };
-
-      hdImg.onerror = () => {
-        // Se HD falhar, apenas remove o blur da LQ sem crash
-        img.classList.add('img-blur-clear');
-        img.addEventListener('transitionend', () => {
-          img.classList.remove('img-blur-low', 'img-blur-clear');
-        }, { once: true });
-      };
-
-      hdImg.src = hd;
+    // Monta a fila na ordem em que as imagens aparecem no DOM
+    container.querySelectorAll('img[data-hd]:not([data-hd-loaded])').forEach(img => {
+      if (!img.dataset.hdLoaded && !_hdQueue.find(e => e.img === img)) {
+        _hdQueue.push({ img, hd: img.dataset.hd });
+      }
     });
-  });
-}, {
-  rootMargin: '200px 0px', // começa a carregar 200px antes de entrar na viewport
-  threshold: 0
-});
+
+    if (!_hdQueueRunning) _hdProcessNext();
+  }, 5000); // 5 segundos após entrar na página
+}
 
 function buildComp(containerId, start, end) {
   const key = containerId.replace('-body','');
@@ -2047,31 +2023,26 @@ function buildComp(containerId, start, end) {
 
   for (let i = start; i <= end; i++) {
     const num = String(i).padStart(2, '0');
-    // Preview rápida (com parênteses) — carrega instantaneamente
     const antesLQ  = `1x/A(${num}).webp`;
     const depoisLQ = `1x/D(${num}).webp`;
-    // Versão HD (sem parênteses) — carregada em segundo plano via IntersectionObserver
     const antesHD  = `1x/A${num}.webp`;
     const depoisHD = `1x/D${num}.webp`;
 
     const pair = document.createElement('div');
     pair.className = 'comp-pair';
-
-    // Blur aplicado via classe CSS (não JS inline) — evita re-paint na thread principal
     pair.innerHTML = `
       <div class="comp-pair-label">Composição ${i - start + 1}</div>
       <div class="comp-pair-imgs">
         <div class="comp-img-wrap">
           <span class="comp-img-badge">Antes</span>
-          <img src="${antesLQ}" data-hd="${antesHD}" alt="Antes ${i}" loading="lazy" decoding="async" class="img-blur-low">
+          <img src="${antesLQ}" data-hd="${antesHD}" alt="Antes ${i}" loading="lazy" decoding="async">
         </div>
         <div class="comp-img-wrap">
           <span class="comp-img-badge" style="color:var(--gold-light)">Depois</span>
-          <img src="${depoisLQ}" data-hd="${depoisHD}" alt="Depois ${i}" loading="lazy" decoding="async" class="img-blur-low">
+          <img src="${depoisLQ}" data-hd="${depoisHD}" alt="Depois ${i}" loading="lazy" decoding="async">
         </div>
       </div>`;
 
-    // Clique abre modal com HD (já em cache pelo tempo que o usuário leva para clicar)
     pair.querySelectorAll('img').forEach((img, j) => {
       img.addEventListener('click', e => {
         e.stopPropagation();
@@ -2087,8 +2058,8 @@ function buildComp(containerId, start, end) {
   container.appendChild(frag);
   window._fluidProcessImgs?.();
 
-  // Registra cada par no observer — HD só carrega quando o par se aproximar da viewport
-  container.querySelectorAll('.comp-pair').forEach(pair => _hdObserver.observe(pair));
+  // Inicia o timer de 5s para upgrade sequencial das HDs
+  _hdSchedule(containerId);
 }
 
 // ---- MODAL ----
