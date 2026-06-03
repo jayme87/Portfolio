@@ -5,9 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Ibrahim · Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+<!-- Prefetch: capas dos projetos de identidade (primeiros itens visíveis ao navegar) -->
+<link rel="prefetch" href="1x/KC01.webp" as="image">
+<link rel="prefetch" href="1x/MF01.webp" as="image">
+<link rel="prefetch" href="1x/IB01.webp" as="image">
+<!-- Prefetch: primeiros comparativos (Antes e Depois 1–3) -->
+<link rel="prefetch" href="1x/Antes e Depois 1.webp" as="image">
+<link rel="prefetch" href="1x/Antes e Depois 6.webp" as="image">
+<link rel="prefetch" href="1x/Antes e Depois 11.webp" as="image">
+<!-- Prefetch: primeiros pares de retoque (A01/D01) -->
+<link rel="prefetch" href="1x/A01.webp" as="image">
+<link rel="prefetch" href="1x/D01.webp" as="image">
+<link rel="prefetch" href="1x/A06.webp" as="image">
+<link rel="prefetch" href="1x/D06.webp" as="image">
+<link rel="prefetch" href="1x/A11.webp" as="image">
+<link rel="prefetch" href="1x/D11.webp" as="image">
+<!-- dns-prefetch já existente mantido; preconnect extra para cdnjs -->
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <style>
 :root {
   --ink: #0b0b0b;
@@ -36,7 +55,8 @@ body {
   overflow-x: hidden;
 }
 
-/* CUSTOM CURSOR */
+/* CUSTOM CURSOR — desktop only */
+@media (pointer: coarse) { .cursor, .cursor-ring { display: none !important; } }
 .cursor {
   position: fixed;
   width: 8px; height: 8px;
@@ -68,18 +88,27 @@ body {
 }
 
 /* VIEWS */
-.view { 
-  display: none; 
+.view {
+  display: none;
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(0.97);
+  transform-origin: center top;
+  transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  contain: layout style;
 }
-.view.active { 
-  display: block; 
+.view.active {
+  display: block;
 }
 .view.fade-in {
   opacity: 1;
-  transform: translateY(0);
+  transform: scale(1);
+}
+/* Saída: zoom-out → view some encolhendo */
+.view.fade-out {
+  opacity: 0;
+  transform: scale(1.03);
+  pointer-events: none;
 }
 
 /* ============================================================
@@ -94,13 +123,6 @@ body {
   overflow: hidden;
 }
 #index-view.active { display: flex; }
-
-.index-noise {
-  position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity: 0.4;
-  pointer-events: none;
-}
 
 .index-lines {
   position: absolute; inset: 0;
@@ -230,6 +252,9 @@ body {
 .index-cta-about:hover { color: var(--gold); }
 .index-cta-about i { display: block; margin-top: 0.5rem; animation: bounce 2s infinite; }
 @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
 
 /* ============================================================
    SHARED HEADER
@@ -239,8 +264,8 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   padding: 1.5rem 4rem;
   background: rgba(11,11,11,0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(244,208,61,0.12);
 }
 
@@ -674,16 +699,18 @@ body {
   width: 100%;
   height: 100%;
   display: block;
-  transition: var(--transition-smooth);
-  object-fit: cover; /* preenche o container sem distorcer, centralizado */
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  object-fit: cover;
+  will-change: transform;
+  contain: strict;
 }
 .comp-img-wrap:hover img { transform: scale(1.015); }
 .comp-img-badge {
   position: absolute;
   top: 1rem; left: 1rem;
   background: rgba(11,11,11,0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   font-family: 'DM Mono', monospace;
   font-size: 0.6rem;
   letter-spacing: 0.2em;
@@ -723,7 +750,9 @@ body {
 .identity-card-img img {
   width: 100%; height: 100%;
   object-fit: cover;
-  transition: var(--transition-smooth);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 .identity-card:hover .identity-card-img img { transform: scale(1.03); }
 
@@ -809,6 +838,7 @@ body {
   overflow: hidden;
   margin-bottom: 6px;
   position: relative;
+  contain: layout;
 }
 .detail-gallery-item img {
   width: 100%;
@@ -1018,7 +1048,9 @@ body {
 .imagem-carousel-track {
   display: flex;
   height: 100%;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 .imagem-carousel-slide {
   flex: 0 0 100%;
@@ -1183,7 +1215,6 @@ body {
 <div class="cursor-ring" id="cursor-ring"></div>
 
 <div id="index-view" class="view active">
-  <div class="index-noise"></div>
   <div class="index-lines"></div>
   <div class="index-center">
     <div class="index-eyebrow">DESIGNER</div>
@@ -1206,7 +1237,7 @@ body {
 
   <div class="about-hero">
     <div class="about-hero-img">
-      <img src="1x/Perfil.webp" alt="Ibrahim">
+      <img src="1x/Perfil.webp" alt="Ibrahim" decoding="async" loading="eager">
     </div>
     <div class="about-hero-content">
       <div class="about-tag">// Designer · Editor · Criador</div>
@@ -1458,11 +1489,18 @@ const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
 let mx = 0, my = 0, rx = 0, ry = 0;
 
+let _cursorRafPending = false;
 document.addEventListener('mousemove', e => {
   mx = e.clientX; 
   my = e.clientY;
-  cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(${cursor.dataset.scale || 1})`;
-});
+  if (!_cursorRafPending) {
+    _cursorRafPending = true;
+    requestAnimationFrame(() => {
+      cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(${cursor.dataset.scale || 1})`;
+      _cursorRafPending = false;
+    });
+  }
+}, { passive: true });
 
 function animRing() {
   rx += (mx - rx) * 0.15;
@@ -1504,31 +1542,40 @@ function showView(name) {
   if (currentView === 'detalhe' && window._idCarouselRaf) {
     cancelAnimationFrame(window._idCarouselRaf);
     window._idCarouselRaf = null;
+    if (window._idCarouselResizeObs) { window._idCarouselResizeObs.disconnect(); window._idCarouselResizeObs = null; }
   }
   const oldView = views[currentView];
   const nextView = views[name];
   if (!nextView) return;
 
+  // — SAÍDA: remove fade-in, aplica fade-out (zoom-out + fade) —
   oldView.classList.remove('fade-in');
-  
+  oldView.classList.add('fade-out');
+
+  const TRANSITION_MS = 280;
+
   setTimeout(() => {
-    oldView.classList.remove('active');
-    
+    oldView.classList.remove('active', 'fade-out');
+
     if (name === 'imagens' && !window._imgBuilt) buildImagens();
     if (name === 'identidades' && !window._idBuilt) buildIdentidades();
     if (name === 'comparativo' && !window._c1Built) buildComp('comp1-body', 1, 5);
     if (name === 'comparativo2' && !window._c2Built) buildComp('comp2-body', 6, 10);
     if (name === 'comparativo3' && !window._c3Built) buildComp('comp3-body', 11, 15);
 
+    // — ENTRADA: ativa nova view já no estado inicial (scale 0.97, opacidade 0) —
     nextView.classList.add('active');
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
+    // Duplo rAF garante que o browser pintou o estado inicial antes de animar
     requestAnimationFrame(() => {
-      nextView.classList.add('fade-in');
+      requestAnimationFrame(() => {
+        nextView.classList.add('fade-in');
+      });
     });
 
     currentView = name;
-  }, 400); 
+  }, TRANSITION_MS);
 }
 
 document.querySelectorAll('[data-view]').forEach(btn => {
@@ -1573,6 +1620,7 @@ const projetosImagens = [
 function buildImagens() {
   window._imgBuilt = true;
   const grid = document.getElementById('imagens-grid');
+  const outerFrag = document.createDocumentFragment();
   projetosImagens.forEach((p, i) => {
     const card = document.createElement('div');
     card.className = 'imagem-card';
@@ -1582,11 +1630,13 @@ function buildImagens() {
 
     const track = document.createElement('div');
     track.className = 'imagem-carousel-track';
-    p.imagens.forEach(src => {
+    p.imagens.forEach((src, si) => {
       const slide = document.createElement('div');
       slide.className = 'imagem-carousel-slide';
       const img = document.createElement('img');
-      img.src = src; img.alt = p.titulo; img.loading = 'lazy';
+      img.src = src; img.alt = p.titulo;
+      img.loading = (i === 0 && si === 0) ? 'eager' : 'lazy';
+      img.decoding = 'async';
       slide.appendChild(img);
       track.appendChild(slide);
     });
@@ -1633,7 +1683,7 @@ function buildImagens() {
     dots.forEach((d, di) => d.addEventListener('click', e => { e.stopPropagation(); goTo(di); }));
 
     card.addEventListener('click', () => showView(p.target));
-    grid.appendChild(card);
+    outerFrag.appendChild(card);
 
     // Autoplay
     let autoTimer = setInterval(() => goTo(cur + 1), 2800);
@@ -1643,6 +1693,7 @@ function buildImagens() {
       autoTimer = setInterval(() => goTo(cur + 1), 2800);
     });
   });
+  grid.appendChild(outerFrag);
 }
 
 // ---- IDENTIDADES DATA ----
@@ -1702,17 +1753,19 @@ A precisão geométrica reflete a atenção aos detalhes necessária para manipu
 function buildIdentidades() {
   window._idBuilt = true;
   const grid = document.getElementById('identidades-grid');
+  const frag = document.createDocumentFragment();
   projetosIdentidades.forEach((p, i) => {
     const card = document.createElement('div');
     card.className = 'identity-card';
     card.innerHTML = `
-      <div class="identity-card-img"><img src="${p.capa}" alt="${p.titulo}" loading="lazy"></div>
+      <div class="identity-card-img"><img src="${p.capa}" alt="${p.titulo}" loading="lazy" decoding="async"></div>
       <div class="identity-card-num">0${i+1}</div>
       <div class="identity-card-title">${p.titulo}</div>
       <div class="identity-card-sub">${p.sub}</div>`;
     card.addEventListener('click', () => openDetalhe(p));
-    grid.appendChild(card);
+    frag.appendChild(card);
   });
+  grid.appendChild(frag);
 }
 
 function openDetalhe(p) {
@@ -1743,27 +1796,38 @@ function openDetalhe(p) {
   wrap.appendChild(track);
   let pos = 0;
   const speed = 0.3;
+  // Cache slideW — measure once, re-measure only on resize
+  let slideW = wrap.offsetWidth || 600;
+  let loopW = slideW * p.galeria.length;
+  const resizeObs = new ResizeObserver(() => {
+    slideW = wrap.offsetWidth || 600;
+    loopW = slideW * p.galeria.length;
+  });
+  resizeObs.observe(wrap);
   function animIdCarousel() {
     pos += speed;
-    const slideW = wrap.offsetWidth || 600;
-    const loopW = slideW * p.galeria.length;
     if (pos >= loopW) pos -= loopW;
     track.style.transform = 'translateX(-' + pos + 'px)';
     window._idCarouselRaf = requestAnimationFrame(animIdCarousel);
   }
   window._idCarouselRaf = requestAnimationFrame(animIdCarousel);
+  window._idCarouselResizeObs = resizeObs;
 
   const gallery = document.getElementById('dt-gallery');
   gallery.innerHTML = '';
+  const galFrag = document.createDocumentFragment();
   p.galeria.forEach((src, i) => {
     const item = document.createElement('div');
     item.className = 'detail-gallery-item';
     const img = document.createElement('img');
-    img.src = src; img.alt = `${p.titulo} ${i+1}`; img.loading = 'lazy';
+    img.src = src; img.alt = `${p.titulo} ${i+1}`;
+    img.loading = i < 3 ? 'eager' : 'lazy';
+    img.decoding = 'async';
     item.appendChild(img);
-    item.addEventListener('click', () => openModal(p.galeria, i));
-    gallery.appendChild(item);
+    item.addEventListener('click', () => openModal(p.galeria, i), { passive: true });
+    galFrag.appendChild(item);
   });
+  gallery.appendChild(galFrag);
 
   showView('detalhe');
 }
@@ -1774,33 +1838,37 @@ function buildComp(containerId, start, end) {
   window[`_${key}Built`] = true;
   const container = document.getElementById(containerId);
   container.innerHTML = '';
+  // Use document fragment to batch DOM insertions
+  const frag = document.createDocumentFragment();
   for (let i = start; i <= end; i++) {
     const num = String(i).padStart(2, '0');
     const antes = `1x/A${num}.webp`;
     const depois = `1x/D${num}.webp`;
     const pair = document.createElement('div');
     pair.className = 'comp-pair';
+    // First image eager, rest lazy
+    const eagerStr = i === start ? '' : ' loading="lazy"';
     pair.innerHTML = `
       <div class="comp-pair-label">Composição ${i - start + 1}</div>
       <div class="comp-pair-imgs">
         <div class="comp-img-wrap">
           <span class="comp-img-badge">Antes</span>
-          <img src="${antes}" alt="Antes ${i}" loading="lazy">
+          <img src="${antes}" alt="Antes ${i}" loading="lazy" decoding="async">
         </div>
         <div class="comp-img-wrap">
           <span class="comp-img-badge" style="color:var(--gold-light)">Depois</span>
-          <img src="${depois}" alt="Depois ${i}" loading="lazy">
+          <img src="${depois}" alt="Depois ${i}"${eagerStr} decoding="async">
         </div>
       </div>`;
-    
     pair.querySelectorAll('img').forEach((img, j) => {
       img.addEventListener('click', e => {
         e.stopPropagation();
         openModal([antes, depois], j);
-      });
+      }, { passive: true });
     });
-    container.appendChild(pair);
+    frag.appendChild(pair);
   }
+  container.appendChild(frag);
 }
 
 // ---- MODAL ----
@@ -1821,6 +1889,9 @@ function openModal(imgs, idx) {
 function updateModal() {
   modalImgEl.src = modalImgs[modalIdx];
   modalCount.textContent = `${modalIdx + 1} / ${modalImgs.length}`;
+  // Preload adjacent images
+  const preNext = new Image(); preNext.src = modalImgs[(modalIdx + 1) % modalImgs.length];
+  const prePrev = new Image(); prePrev.src = modalImgs[(modalIdx - 1 + modalImgs.length) % modalImgs.length];
 }
 
 function closeModal() {
@@ -1950,10 +2021,94 @@ modalEmail.addEventListener('click', () => {
     function generateSound(t){if(!audioCtx)return;const n=audioCtx.currentTime;if(t==="click"){const e=audioCtx.createGain();e.connect(audioCtx.destination);e.gain.value=0;const o=audioCtx.createOscillator();o.type="sine",o.connect(e),o.frequency.value=523.25,e.gain.setValueAtTime(.1,n),e.gain.exponentialRampToValueAtTime(1e-4,n+.2),o.start(n),o.stop(n+.2);}else if(t==="hover"){const e=audioCtx.createGain();e.connect(audioCtx.destination);e.gain.value=0;const o=audioCtx.createOscillator();o.type="sine",o.connect(e),o.frequency.setValueAtTime(392,n),o.frequency.exponentialRampToValueAtTime(523.25,n+.15),e.gain.setValueAtTime(.08,n),e.gain.exponentialRampToValueAtTime(1e-4,n+.25),o.start(n),o.stop(n+.25);}else if(t==="entrance"){[392,493.88,587.33,783.99].forEach((e,o)=>{const i=audioCtx.createGain();i.connect(audioCtx.destination);i.gain.value=0;const a=audioCtx.createOscillator();a.type="sine",a.connect(i);const c=n+o*.1;i.gain.setValueAtTime(.05,c),i.gain.exponentialRampToValueAtTime(1e-4,c+.3),a.frequency.value=e,a.start(c),a.stop(c+.3);});}}
     function playEntranceSound(){!entrancePlayed&&soundEnabled&&audioCtx&&audioCtx.state==="running"&&(playSound("entrance"),entrancePlayed=true);}
     document.body.addEventListener("click",()=>{if(!audioCtx)initAudio();if(audioCtx?.state==="suspended")audioCtx.resume().then(()=>{currentView==="index"&&playEntranceSound();});else if(audioCtx?.state==="running"&&currentView==="index")playEntranceSound();},{once:true});
+    let _lastHover = 0;
     document.querySelectorAll("button,a,[data-view]").forEach(el=>{
-        el.addEventListener("mouseenter",()=>playSound("hover"));
+        el.addEventListener("mouseenter",()=>{const now=Date.now();if(now-_lastHover>80){playSound("hover");_lastHover=now;}});
         el.addEventListener("click",()=>playSound("click"));
     });
+
+// ---- PRÉ-CACHE DE ASSETS EM BACKGROUND (sem bloquear renderização) ----
+(function() {
+  // Monta a lista completa de todos os assets das outras páginas
+  // Ordem de prioridade: capas e primeiros slides → galeria completa → comparativos
+  const PRIORITY_HIGH = [];
+  const PRIORITY_MED  = [];
+  const PRIORITY_LOW  = [];
+
+  // Identidades — capas (high) + galeria completa (med)
+  ['KC','MF','IB'].forEach(prefix => {
+    for (let i = 1; i <= 18; i++) {
+      const src = `1x/${prefix}${String(i).padStart(2,'0')}.webp`;
+      (i <= 3 ? PRIORITY_HIGH : PRIORITY_MED).push(src);
+    }
+  });
+
+  // Imagens (carrossel "Antes e Depois") — primeiro de cada projeto (high), resto (med)
+  for (let i = 1; i <= 15; i++) {
+    const src = `1x/Antes e Depois ${i}.webp`;
+    ([1,6,11].includes(i) ? PRIORITY_HIGH : PRIORITY_MED).push(src);
+  }
+
+  // Comparativos A/D (retoques) — primeiro par de cada (high), resto (low)
+  for (let i = 1; i <= 15; i++) {
+    const num = String(i).padStart(2,'0');
+    const a = `1x/A${num}.webp`;
+    const d = `1x/D${num}.webp`;
+    ([1,6,11].includes(i) ? PRIORITY_HIGH : PRIORITY_LOW).push(a, d);
+  }
+
+  const queue = [...PRIORITY_HIGH, ...PRIORITY_MED, ...PRIORITY_LOW];
+  const cached = new Set();
+
+  function preloadOne(src) {
+    if (cached.has(src)) return;
+    cached.add(src);
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = src;
+  }
+
+  let idx = 0;
+  // Usa requestIdleCallback quando disponível; fallback para setTimeout com baixa prioridade
+  const scheduleNext = typeof requestIdleCallback === 'function'
+    ? (fn) => requestIdleCallback(fn, { timeout: 4000 })
+    : (fn) => setTimeout(fn, 80);
+
+  function pumpQueue(deadline) {
+    // Processa o máximo possível dentro do tempo ocioso disponível
+    const timeLimit = deadline && deadline.timeRemaining ? deadline.timeRemaining() : 10;
+    const start = performance.now();
+    while (idx < queue.length && (performance.now() - start) < Math.min(timeLimit, 12)) {
+      preloadOne(queue[idx++]);
+    }
+    if (idx < queue.length) scheduleNext(pumpQueue);
+  }
+
+  // Inicia após o load completo da página para não competir com recursos críticos
+  if (document.readyState === 'complete') {
+    scheduleNext(pumpQueue);
+  } else {
+    window.addEventListener('load', () => scheduleNext(pumpQueue), { once: true, passive: true });
+  }
+
+  // Ao passar o mouse sobre um botão de navegação, pré-carrega assets daquela seção imediatamente
+  const sectionAssets = {
+    'identidades': ['1x/KC01.webp','1x/MF01.webp','1x/IB01.webp','1x/KC02.webp','1x/MF02.webp','1x/IB02.webp'],
+    'imagens':     Array.from({length:5}, (_,i) => `1x/Antes e Depois ${i+1}.webp`)
+                    .concat(Array.from({length:5}, (_,i) => `1x/Antes e Depois ${i+6}.webp`))
+                    .concat(Array.from({length:5}, (_,i) => `1x/Antes e Depois ${i+11}.webp`)),
+    'comparativo':  Array.from({length:5}, (_,i) => { const n=String(i+1).padStart(2,'0'); return [`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
+    'comparativo2': Array.from({length:5}, (_,i) => { const n=String(i+6).padStart(2,'0'); return [`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
+    'comparativo3': Array.from({length:5}, (_,i) => { const n=String(i+11).padStart(2,'0'); return [`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
+  };
+
+  document.querySelectorAll('[data-view]').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      const target = btn.getAttribute('data-view');
+      if (sectionAssets[target]) sectionAssets[target].forEach(preloadOne);
+    }, { passive: true });
+  });
+})();
 </script>
 </body>
 </html>
