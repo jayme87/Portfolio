@@ -1965,34 +1965,109 @@ function openDetalhe(p) {
 }
 
 // ---- BUILD COMPARATIVOS ----
+
+// CSS da classe de blur — injetado uma única vez, antes do primeiro buildComp
+if (!document.getElementById('_comp-blur-style')) {
+  const _bs = document.createElement('style');
+  _bs.id = '_comp-blur-style';
+  _bs.textContent = `
+    .img-blur-low {
+      filter: blur(6px);
+      transform: translateZ(0);
+      will-change: filter, transform;
+      transition: filter 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .img-blur-low.img-blur-clear {
+      filter: blur(0px);
+    }
+  `;
+  document.head.appendChild(_bs);
+}
+
+// Observer dedicado para disparar o carregamento HD apenas quando o par está próximo da viewport
+const _hdObserver = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const pair = entry.target;
+    obs.unobserve(pair);
+
+    pair.querySelectorAll('img[data-hd]').forEach(img => {
+      if (img.dataset.hdLoaded || img.dataset.hdPending) return;
+      img.dataset.hdPending = '1';
+
+      const hd = img.dataset.hd;
+      const hdImg = new Image();
+      hdImg.decoding = 'async';
+
+      hdImg.onload = () => {
+        // Ativa aceleração de hardware ANTES de trocar o src
+        img.style.transform = 'translateZ(0)';
+        img.style.willChange = 'filter, transform';
+
+        img.src = hd;
+        img.dataset.hdLoaded = '1';
+
+        // Aguarda dois frames para garantir que o browser pintou o novo src
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            img.classList.add('img-blur-clear');
+            img.addEventListener('transitionend', () => {
+              // Limpa tudo após a transição para liberar memória de GPU
+              img.classList.remove('img-blur-low', 'img-blur-clear');
+              img.style.transform   = '';
+              img.style.willChange  = '';
+              img.style.transition  = '';
+            }, { once: true });
+          });
+        });
+      };
+
+      hdImg.onerror = () => {
+        // Se HD falhar, apenas remove o blur da LQ sem crash
+        img.classList.add('img-blur-clear');
+        img.addEventListener('transitionend', () => {
+          img.classList.remove('img-blur-low', 'img-blur-clear');
+        }, { once: true });
+      };
+
+      hdImg.src = hd;
+    });
+  });
+}, {
+  rootMargin: '200px 0px', // começa a carregar 200px antes de entrar na viewport
+  threshold: 0
+});
+
 function buildComp(containerId, start, end) {
   const key = containerId.replace('-body','');
   window[`_${key}Built`] = true;
   const container = document.getElementById(containerId);
   container.innerHTML = '';
   const frag = document.createDocumentFragment();
+
   for (let i = start; i <= end; i++) {
     const num = String(i).padStart(2, '0');
     // Preview rápida (com parênteses) — carrega instantaneamente
     const antesLQ  = `1x/A(${num}).webp`;
     const depoisLQ = `1x/D(${num}).webp`;
-    // Versão HD (sem parênteses) — carregada em segundo plano
+    // Versão HD (sem parênteses) — carregada em segundo plano via IntersectionObserver
     const antesHD  = `1x/A${num}.webp`;
     const depoisHD = `1x/D${num}.webp`;
 
     const pair = document.createElement('div');
     pair.className = 'comp-pair';
-    const eagerStr = i === start ? '' : ' loading="lazy"';
+
+    // Blur aplicado via classe CSS (não JS inline) — evita re-paint na thread principal
     pair.innerHTML = `
       <div class="comp-pair-label">Composição ${i - start + 1}</div>
       <div class="comp-pair-imgs">
         <div class="comp-img-wrap">
           <span class="comp-img-badge">Antes</span>
-          <img src="${antesLQ}" data-hd="${antesHD}" alt="Antes ${i}" loading="lazy" decoding="async">
+          <img src="${antesLQ}" data-hd="${antesHD}" alt="Antes ${i}" loading="lazy" decoding="async" class="img-blur-low">
         </div>
         <div class="comp-img-wrap">
           <span class="comp-img-badge" style="color:var(--gold-light)">Depois</span>
-          <img src="${depoisLQ}" data-hd="${depoisHD}" alt="Depois ${i}"${eagerStr} decoding="async">
+          <img src="${depoisLQ}" data-hd="${depoisHD}" alt="Depois ${i}" loading="lazy" decoding="async" class="img-blur-low">
         </div>
       </div>`;
 
@@ -2000,7 +2075,6 @@ function buildComp(containerId, start, end) {
     pair.querySelectorAll('img').forEach((img, j) => {
       img.addEventListener('click', e => {
         e.stopPropagation();
-        // Usa HD se já carregou, senão usa o que tiver
         const hdA = pair.querySelectorAll('img')[0].dataset.hdLoaded ? antesHD : antesLQ;
         const hdD = pair.querySelectorAll('img')[1].dataset.hdLoaded ? depoisHD : depoisLQ;
         openModal([hdA, hdD], j);
@@ -2009,45 +2083,12 @@ function buildComp(containerId, start, end) {
 
     frag.appendChild(pair);
   }
+
   container.appendChild(frag);
   window._fluidProcessImgs?.();
 
-  // Aplica blur leve na LQ e troca LQ → HD em segundo plano removendo o blur
-  container.querySelectorAll('img[data-hd]').forEach(img => {
-    const hd = img.dataset.hd;
-
-    // Aplica blur na LQ assim que ela carregar (ou imediatamente se já carregou)
-    const applyBlur = () => {
-      img.style.filter = 'blur(6px)';
-      img.style.transition = 'filter 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
-      img.style.willChange = 'filter';
-    };
-    if (img.complete && img.naturalWidth > 0) {
-      applyBlur();
-    } else {
-      img.addEventListener('load', applyBlur, { once: true });
-    }
-
-    // Carrega HD em background e troca removendo o blur suavemente
-    const hdImg = new Image();
-    hdImg.decoding = 'async';
-    hdImg.onload = () => {
-      img.src = hd;
-      img.dataset.hdLoaded = '1';
-      // Remove blur após o browser pintar o novo src
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          img.style.filter = 'blur(0px)';
-          img.addEventListener('transitionend', () => {
-            img.style.willChange = '';
-            img.style.transition = '';
-            img.style.filter = '';
-          }, { once: true });
-        });
-      });
-    };
-    hdImg.src = hd;
-  });
+  // Registra cada par no observer — HD só carrega quando o par se aproximar da viewport
+  container.querySelectorAll('.comp-pair').forEach(pair => _hdObserver.observe(pair));
 }
 
 // ---- MODAL ----
