@@ -98,8 +98,8 @@ body {
               transform 0.36s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  /* contain: layout style — removido: causa crash no Safari iOS com position:absolute */
   visibility: hidden;
-  contain: layout style;
 }
 .view.active {
   position: relative;
@@ -1855,7 +1855,7 @@ function buildImagens() {
     });
   });
   grid.appendChild(outerFrag);
-  window._fluidProcessImgs?.();
+  if (window._fluidProcessImgs) window._fluidProcessImgs();
 }
 const projetosIdentidades = [
   {
@@ -1926,7 +1926,7 @@ function buildIdentidades() {
     frag.appendChild(card);
   });
   grid.appendChild(frag);
-  window._fluidProcessImgs?.();
+  if (window._fluidProcessImgs) window._fluidProcessImgs();
 }
 
 function openDetalhe(p) {
@@ -1989,7 +1989,7 @@ function openDetalhe(p) {
     galFrag.appendChild(item);
   });
   gallery.appendChild(galFrag);
-  window._fluidProcessImgs?.();
+  if (window._fluidProcessImgs) window._fluidProcessImgs();
 
   showView('detalhe');
 }
@@ -2086,7 +2086,7 @@ function buildComp(containerId, start, end) {
   }
 
   container.appendChild(frag);
-  window._fluidProcessImgs?.();
+  if (window._fluidProcessImgs) window._fluidProcessImgs();
 
   // Inicia o timer de 5s para upgrade sequencial das HDs
   _hdSchedule(containerId);
@@ -2162,7 +2162,8 @@ document.querySelectorAll('.cert-title[data-cert]').forEach(el => {
 });
 
 // ---- FORMULÁRIO DE CONTATO ORIGINAL ----
-document.getElementById('btn-send-form')?.addEventListener('click', () => {
+var _sendFormBtn = document.getElementById('btn-send-form');
+if (_sendFormBtn) _sendFormBtn.addEventListener('click', function() {
   const nome = document.getElementById('f-nome').value;
   const email = document.getElementById('f-email').value;
   const msg = document.getElementById('f-msg').value;
@@ -2236,7 +2237,7 @@ modalEmail.addEventListener('click', () => {
       const nome = document.getElementById('f-nome').value;
       const email = document.getElementById('f-email').value;
       const msg = document.getElementById('f-msg').value;
-      const hp = document.getElementById('hp_website')?.value;
+      const hp = document.getElementById('hp_website') ? document.getElementById('hp_website').value : '';
       if (hp && hp.length > 0) { alert('Mensagem não enviada.'); return; }
       if (!nome || !email || !msg) { alert('Preencha todos os campos.'); return; }
       const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
@@ -2258,7 +2259,7 @@ modalEmail.addEventListener('click', () => {
     function generateSound(t){if(!audioCtx)return;const n=audioCtx.currentTime;if(t==="click"){const e=audioCtx.createGain();e.connect(audioCtx.destination);e.gain.value=0;const o=audioCtx.createOscillator();o.type="sine",o.connect(e),o.frequency.value=523.25,e.gain.setValueAtTime(.1,n),e.gain.exponentialRampToValueAtTime(1e-4,n+.2),o.start(n),o.stop(n+.2);}else if(t==="hover"){const e=audioCtx.createGain();e.connect(audioCtx.destination);e.gain.value=0;const o=audioCtx.createOscillator();o.type="sine",o.connect(e),o.frequency.setValueAtTime(392,n),o.frequency.exponentialRampToValueAtTime(523.25,n+.15),e.gain.setValueAtTime(.08,n),e.gain.exponentialRampToValueAtTime(1e-4,n+.25),o.start(n),o.stop(n+.25);}else if(t==="entrance"){[392,493.88,587.33,783.99].forEach((e,o)=>{const i=audioCtx.createGain();i.connect(audioCtx.destination);i.gain.value=0;const a=audioCtx.createOscillator();a.type="sine",a.connect(i);const c=n+o*.1;i.gain.setValueAtTime(.05,c),i.gain.exponentialRampToValueAtTime(1e-4,c+.3),a.frequency.value=e,a.start(c),a.stop(c+.3);});}}
     function playEntranceSound(){!entrancePlayed&&soundEnabled&&audioCtx&&audioCtx.state==="running"&&(playSound("entrance"),entrancePlayed=true);}
     // iOS requer gesto do usuário para desbloquear AudioContext — suporta touchstart além de click
-    const _audioUnlock = () => {if(!audioCtx)initAudio();if(audioCtx?.state==="suspended")audioCtx.resume().then(()=>{currentView==="index"&&playEntranceSound();});else if(audioCtx?.state==="running"&&currentView==="index")playEntranceSound();};
+    const _audioUnlock = () => {if(!audioCtx)initAudio();if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume().then(function(){if(currentView==="index")playEntranceSound();});else if(audioCtx&&audioCtx.state==="running"&&currentView==="index")playEntranceSound();};
     document.body.addEventListener("click", _audioUnlock, {once:true});
     document.body.addEventListener("touchstart", _audioUnlock, {once:true, passive:true});
     let _lastHover = 0;
@@ -2279,21 +2280,20 @@ modalEmail.addEventListener('click', () => {
   // Só age em imagens COM loading="lazy" — nunca nas eager/críticas.
   // ------------------------------------------------------------------
   function attachSkeleton(img) {
-    // Não mexe em imagens eager ou já carregadas
     if (img.loading === 'eager' || (img.complete && img.naturalWidth > 0)) return;
-
-    const wrap = img.parentElement;
+    var wrap = img.parentElement;
     if (!wrap || wrap.classList.contains('skel')) return;
-
-    // Apenas containers com dimensões definidas (aspect-ratio ou height) ganham skel
-    const cs = getComputedStyle(wrap);
-    const hasDim = cs.aspectRatio !== 'auto' || parseInt(cs.height) > 0 || parseInt(cs.minHeight) > 0;
+    // Verifica dimensão pelo atributo/classe, não por getComputedStyle (caro no Safari)
+    var hasDim = wrap.style.height || wrap.style.minHeight ||
+                 wrap.classList.contains('comp-img-wrap') ||
+                 wrap.classList.contains('identity-card-img') ||
+                 wrap.classList.contains('imagem-card-carousel') ||
+                 wrap.classList.contains('detalhe-right-col');
     if (!hasDim) return;
-
     wrap.classList.add('skel');
-    const done = () => {
+    var done = function() {
       wrap.classList.add('skel-done');
-      setTimeout(() => wrap.classList.remove('skel', 'skel-done'), 350);
+      setTimeout(function() { wrap.classList.remove('skel', 'skel-done'); }, 350);
     };
     img.addEventListener('load',  done, { once: true });
     img.addEventListener('error', done, { once: true });
@@ -2381,7 +2381,7 @@ modalEmail.addEventListener('click', () => {
     : fn => setTimeout(fn, 100);
 
   function pump(dl) {
-    const limit = dl?.timeRemaining ? Math.min(dl.timeRemaining(), 14) : 10;
+    var limit = (dl && dl.timeRemaining) ? Math.min(dl.timeRemaining(), 14) : 10;
     const t0 = performance.now();
     while (qi < queue.length && performance.now() - t0 < limit) preload(queue[qi++]);
     if (qi < queue.length) schedule(pump);
