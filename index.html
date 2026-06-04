@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="no-js">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -86,8 +86,19 @@ body {
   }
 }
 
-/* VIEWS */
-.view {
+/* VIEWS — FALLBACK SEM JS (iOS Safari cold load)
+   Por padrão, view.active é visível sem depender de JS.
+   Quando o JS carrega, adiciona .js-ready no <html> e
+   o sistema de transição assume o controle. */
+
+/* Fallback puro CSS: view ativa aparece normalmente */
+.no-js .view { display: none; }
+.no-js .view.active { display: block; opacity: 1; visibility: visible; }
+.no-js #index-view { display: none; }
+.no-js #index-view.active { display: flex; opacity: 1; visibility: visible; }
+
+/* Sistema de transição JS — só ativo quando JS carregou */
+.js-ready .view {
   position: absolute;
   inset: 0;
   min-height: 100vh;
@@ -98,20 +109,19 @@ body {
               transform 0.36s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  /* contain: layout style — removido: causa crash no Safari iOS com position:absolute */
   visibility: hidden;
 }
-.view.active {
+.js-ready .view.active {
   position: relative;
   visibility: visible;
   pointer-events: auto;
   z-index: 1;
 }
-.view.fade-in {
+.js-ready .view.fade-in {
   opacity: 1;
   transform: translateY(0);
 }
-.view.fade-out {
+.js-ready .view.fade-out {
   opacity: 0;
   transform: translateY(-10px);
   pointer-events: none;
@@ -119,7 +129,7 @@ body {
   visibility: visible;
 }
 @media (max-width: 600px) {
-  .view {
+  .js-ready .view {
     transition: opacity 0.26s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 transform 0.26s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
@@ -134,11 +144,11 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  /* Sobrescreve .view: usa flex quando visível */
-  display: flex;
 }
-#index-view.active { display: flex; visibility: visible; }
-#index-view:not(.active):not(.fade-out) { display: none; visibility: hidden; }
+/* No-JS: index-view já aparece pelo fallback acima (.no-js .view.active) */
+/* Com JS: sobrescreve display para flex quando ativa */
+.js-ready #index-view.active { display: flex; }
+.js-ready #index-view:not(.active):not(.fade-out) { display: none; }
 
 .index-lines {
   position: absolute; inset: 0;
@@ -1631,6 +1641,9 @@ img {
 </div>
 
 <script>
+// Sinaliza que o JS carregou — ativa o sistema de transição CSS e desativa o fallback
+document.documentElement.classList.replace('no-js', 'js-ready');
+
 // ---- CURSOR ULTRA FLUIDO ----
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
