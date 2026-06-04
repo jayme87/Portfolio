@@ -4,9 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Ibrahim · Identidades Visuais</title>
+<link rel="icon" type="image/webp" href="1x/IB.webp">
+<meta property="og:title" content="Ibrahim · Identidades Visuais">
+<meta property="og:description" content="Projetos de identidade visual: Kurt's Corte, Mestre do Fliperama e marca pessoal Ibrahim.">
+<meta property="og:image" content="1x/IB.webp">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+/* ===== ESTILOS (MESMO DO ORIGINAL) ===== */
 :root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); }
@@ -55,6 +60,34 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 const projetos = [{ id: 'kurt', titulo: "Kurt's Corte", sub: 'Barbearia · Identidade Visual', capa: '1x/KC01.webp' }, { id: 'mestre', titulo: 'Mestre do Fliperama', sub: 'Oficina · Identidade Visual', capa: '1x/MF01.webp' }, { id: 'ibrahim', titulo: 'Ibrahim', sub: 'Marca Pessoal · Identidade Visual', capa: '1x/IB01.webp' }];
 const grid = document.getElementById('identidades-grid');
 projetos.forEach((p, i) => { const card = document.createElement('div'); card.className = 'identity-card'; card.innerHTML = `<div class="identity-card-img"><img src="${p.capa}" alt="${p.titulo}" loading="lazy"></div><div class="identity-card-num">0${i+1}</div><div class="identity-card-title">${p.titulo}</div><div class="identity-card-sub">${p.sub}</div>`; card.addEventListener('click', () => window.location.href = `${p.id}.html`); grid.appendChild(card); });
+// Sons
+let audioCtx = null, soundEnabled = false;
+function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundEnabled = true; }
+function playSound(type) {
+  if (!soundEnabled || !audioCtx) return;
+  const now = audioCtx.currentTime;
+  if (type === 'click') {
+    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
+    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 523.25;
+    gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+    osc.start(now); osc.stop(now + 0.2);
+  } else if (type === 'hover') {
+    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
+    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 392;
+    osc.frequency.exponentialRampToValueAtTime(523.25, now + 0.15);
+    gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+    osc.start(now); osc.stop(now + 0.25);
+  }
+}
+const unlockAudio = () => { if (!audioCtx) initAudio(); if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); };
+document.body.addEventListener('click', unlockAudio, { once: true });
+document.body.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+let lastHover = 0;
+document.querySelectorAll('button, a, .identity-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { const now = Date.now(); if (now - lastHover > 80) { playSound('hover'); lastHover = now; } });
+  el.addEventListener('click', () => playSound('click'));
+});
+// Botão flutuante
 const floatBtn = document.getElementById('floatContactBtn'), contactModalDiv = document.getElementById('contactModal'), closeModalBtn = document.getElementById('closeModalBtn'), modalWhats = document.getElementById('modalWhatsBtn'), modalEmail = document.getElementById('modalEmailBtn');
 function toggleContactModal(open) { if (open) contactModalDiv.classList.add('open'); else contactModalDiv.classList.remove('open'); }
 floatBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleContactModal(!contactModalDiv.classList.contains('open')); });

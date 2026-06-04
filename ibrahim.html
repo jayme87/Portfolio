@@ -4,9 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Ibrahim · Marca Pessoal</title>
+<link rel="icon" type="image/webp" href="1x/IB.webp">
+<meta property="og:title" content="Ibrahim · Marca Pessoal">
+<meta property="og:description" content="Identidade visual minimalista e tipográfica para o designer Ibrahim.">
+<meta property="og:image" content="1x/IB01.webp">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+/* Mesmos estilos do mestre.html (copiar integralmente) */
 :root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); }
@@ -32,7 +39,13 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 .footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--ash); }
 @media (max-width: 900px) { .detalhe-hero { grid-template-columns: 1fr; } .detalhe-left-col { padding: 3rem 2rem; } .detail-gallery { columns: 2; } }
 @media (max-width: 600px) { .detail-gallery { columns: 1; } }
-.modal { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(5,5,5,0.97); align-items: center; justify-content: center; }
+.modal { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(5,5,5,0.97); align-items: center; justify-content: center; flex-direction: column; }
+.modal-content { position: relative; display: flex; align-items: center; justify-content: center; max-width: 90vw; max-height: 90vh; }
+.modal-img { max-width: 90vw; max-height: 85vh; object-fit: contain; transition: transform 0.2s ease; cursor: zoom-in; }
+.modal-img.zoomed { transform: scale(1.5); cursor: zoom-out; }
+.modal-close-btn { position: absolute; top: 1rem; right: 2rem; background: none; border: none; color: var(--ash); font-size: 1.8rem; cursor: pointer; z-index: 2001; }
+.modal-zoom-btn { position: absolute; bottom: 1rem; right: 2rem; background: rgba(0,0,0,0.6); border: 1px solid var(--gold); color: var(--gold); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; transition: 0.2s; z-index: 2001; }
+.modal-zoom-btn:hover { background: var(--gold); color: var(--ink); }
 .float-contact-btn { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: var(--transition-smooth); z-index: 1050; border: none; cursor: pointer; }
 .float-contact-btn:hover { transform: scale(1.08); background: var(--gold-light); }
 .contact-modal { position: fixed; bottom: 5rem; right: 2rem; width: 380px; max-width: calc(100vw - 2rem); background: var(--deep); border: 1px solid rgba(244,208,61,0.3); border-radius: 12px; padding: 1.8rem; z-index: 1051; backdrop-filter: blur(20px); background: rgba(17,17,17,0.95); box-shadow: 0 20px 35px rgba(0,0,0,0.4); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; visibility: hidden; transform: translateY(15px); }
@@ -59,7 +72,7 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 </div>
 <div class="detalhe-body"><div class="detail-gallery" id="gallery"></div></div>
 <footer class="site-footer"><span class="footer-copy">© 2026 Ibrahim</span><div class="footer-gold-line"></div></footer>
-<div id="modal" class="modal"><button class="modal-close-btn" style="position:absolute; top:2rem; right:2.5rem; background:none; border:none; color:var(--ash); font-size:1.5rem;"><i class="fas fa-times"></i></button><img class="modal-img" id="modal-img" style="max-width:88vw; max-height:85vh;"></div>
+<div id="modal" class="modal"><button class="modal-close-btn" id="modal-close"><i class="fas fa-times"></i></button><div class="modal-content"><img class="modal-img" id="modal-img" src=""></div><button class="modal-zoom-btn" id="modal-zoom"><i class="fas fa-search-plus"></i></button></div>
 <button class="float-contact-btn" id="floatContactBtn"><i class="fas fa-comment-dots"></i></button>
 <div class="contact-modal" id="contactModal"><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button><h3>Contato</h3><p>Envie uma mensagem rápida</p><div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div><div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div><div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div><div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div></div>
 <script>
@@ -75,11 +88,43 @@ const gallery = document.getElementById('gallery');
 galeria.forEach((src, i) => { const item = document.createElement('div'); item.className = 'detail-gallery-item'; const img = document.createElement('img'); img.src = src; img.loading = 'lazy'; item.appendChild(img); item.addEventListener('click', () => openModal(galeria, i)); gallery.appendChild(item); });
 let modalImgs = [], modalIdx = 0;
 const modal = document.getElementById('modal'), modalImg = document.getElementById('modal-img');
-function openModal(imgs, idx) { modalImgs = imgs; modalIdx = idx; modalImg.src = modalImgs[modalIdx]; modal.style.display = 'flex'; requestAnimationFrame(() => modal.style.opacity = '1'); }
+let isZoomed = false;
+function openModal(imgs, idx) { modalImgs = imgs; modalIdx = idx; modalImg.src = modalImgs[modalIdx]; modal.style.display = 'flex'; requestAnimationFrame(() => modal.style.opacity = '1'); if(isZoomed) { modalImg.classList.remove('zoomed'); isZoomed = false; document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>'; } }
 function closeModal() { modal.style.opacity = '0'; setTimeout(() => modal.style.display = 'none', 300); }
-document.querySelector('.modal-close-btn').addEventListener('click', closeModal);
+function toggleZoom() { if(isZoomed) { modalImg.classList.remove('zoomed'); document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>'; } else { modalImg.classList.add('zoomed'); document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-minus"></i>'; } isZoomed = !isZoomed; }
+document.getElementById('modal-close').addEventListener('click', closeModal);
 modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+document.getElementById('modal-zoom').addEventListener('click', toggleZoom);
+modalImg.addEventListener('dblclick', toggleZoom);
 document.addEventListener('keydown', e => { if(modal.style.display === 'flex' && e.key === 'Escape') closeModal(); });
+// Sons
+let audioCtx = null, soundEnabled = false;
+function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundEnabled = true; }
+function playSound(type) {
+  if (!soundEnabled || !audioCtx) return;
+  const now = audioCtx.currentTime;
+  if (type === 'click') {
+    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
+    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 523.25;
+    gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+    osc.start(now); osc.stop(now + 0.2);
+  } else if (type === 'hover') {
+    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
+    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 392;
+    osc.frequency.exponentialRampToValueAtTime(523.25, now + 0.15);
+    gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+    osc.start(now); osc.stop(now + 0.25);
+  }
+}
+const unlockAudio = () => { if (!audioCtx) initAudio(); if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); };
+document.body.addEventListener('click', unlockAudio, { once: true });
+document.body.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+let lastHover = 0;
+document.querySelectorAll('button, a, .detail-gallery-item, .header-back').forEach(el => {
+  el.addEventListener('mouseenter', () => { const now = Date.now(); if (now - lastHover > 80) { playSound('hover'); lastHover = now; } });
+  el.addEventListener('click', () => playSound('click'));
+});
+// Botão flutuante
 const floatBtn = document.getElementById('floatContactBtn'), contactModalDiv = document.getElementById('contactModal'), closeModalBtn = document.getElementById('closeModalBtn'), modalWhats = document.getElementById('modalWhatsBtn'), modalEmail = document.getElementById('modalEmailBtn');
 function toggleContactModal(open) { if (open) contactModalDiv.classList.add('open'); else contactModalDiv.classList.remove('open'); }
 floatBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleContactModal(!contactModalDiv.classList.contains('open')); });

@@ -4,9 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Ibrahim · Sobre</title>
+<link rel="icon" type="image/webp" href="1x/IB.webp">
+<meta property="og:title" content="Ibrahim · Sobre">
+<meta property="og:description" content="Conheça a trajetória de Ibrahim, designer especializado em identidades visuais e edição.">
+<meta property="og:image" content="1x/IB.webp">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+/* ===== ESTILOS COMPLETOS (mesmo do original) ===== */
 :root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -78,18 +85,9 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 @media (max-width: 600px) { .about-contact-btns { flex-direction: column; } }
 img.img-fade { opacity: 0; transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 img.img-fade.img-show { opacity: 1; }
-.float-contact-btn {
-  position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--gold); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: var(--transition-smooth); z-index: 1050; border: none; cursor: pointer;
-}
+.float-contact-btn { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: var(--transition-smooth); z-index: 1050; border: none; cursor: pointer; }
 .float-contact-btn:hover { transform: scale(1.08); background: var(--gold-light); }
-.contact-modal {
-  position: fixed; bottom: 5rem; right: 2rem; width: 380px; max-width: calc(100vw - 2rem);
-  background: var(--deep); border: 1px solid rgba(244,208,61,0.3); border-radius: 12px; padding: 1.8rem;
-  z-index: 1051; backdrop-filter: blur(20px); background: rgba(17,17,17,0.95); box-shadow: 0 20px 35px rgba(0,0,0,0.4);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; visibility: hidden; transform: translateY(15px);
-}
+.contact-modal { position: fixed; bottom: 5rem; right: 2rem; width: 380px; max-width: calc(100vw - 2rem); background: var(--deep); border: 1px solid rgba(244,208,61,0.3); border-radius: 12px; padding: 1.8rem; z-index: 1051; backdrop-filter: blur(20px); background: rgba(17,17,17,0.95); box-shadow: 0 20px 35px rgba(0,0,0,0.4); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; visibility: hidden; transform: translateY(15px); }
 .contact-modal.open { opacity: 1; visibility: visible; transform: translateY(0); }
 .contact-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 0.25rem; color: var(--gold); }
 .contact-modal p { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--ash); margin-bottom: 1.5rem; letter-spacing: 0.1em; }
@@ -120,6 +118,44 @@ img.img-fade.img-show { opacity: 1; }
 <button class="float-contact-btn" id="floatContactBtn"><i class="fas fa-comment-dots"></i></button>
 <div class="contact-modal" id="contactModal"><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button><h3>Contato</h3><p>Envie uma mensagem rápida</p><div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div><div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div><div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div><div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div></div>
 <script>
+// Sons originais
+let audioCtx = null, soundEnabled = false, entrancePlayed = false;
+function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundEnabled = true; }
+function playSound(type) {
+  if (!soundEnabled) return;
+  if (!audioCtx) return;
+  const now = audioCtx.currentTime;
+  if (type === 'click') {
+    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
+    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 523.25;
+    gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+    osc.start(now); osc.stop(now + 0.2);
+  } else if (type === 'hover') {
+    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
+    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 392;
+    osc.frequency.exponentialRampToValueAtTime(523.25, now + 0.15);
+    gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+    osc.start(now); osc.stop(now + 0.25);
+  } else if (type === 'entrance') {
+    [392, 493.88, 587.33, 783.99].forEach((freq, idx) => {
+      const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
+      const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain);
+      const t = now + idx * 0.1;
+      gain.gain.setValueAtTime(0.05, t); gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
+      osc.frequency.value = freq; osc.start(t); osc.stop(t + 0.3);
+    });
+  }
+}
+function playEntranceSound() { if (!entrancePlayed && soundEnabled && audioCtx && audioCtx.state === 'running') { playSound('entrance'); entrancePlayed = true; } }
+const unlockAudio = () => { if (!audioCtx) initAudio(); if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().then(() => { if (window.location.pathname.endsWith('apresentacao.html')) playEntranceSound(); }); else if (audioCtx && audioCtx.state === 'running' && window.location.pathname.endsWith('apresentacao.html')) playEntranceSound(); };
+document.body.addEventListener('click', unlockAudio, { once: true });
+document.body.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+let lastHover = 0;
+document.querySelectorAll('button, a, .cert-title, .header-back, .service-tag, .btn-outline, .btn-send').forEach(el => {
+  el.addEventListener('mouseenter', () => { const now = Date.now(); if (now - lastHover > 80) { playSound('hover'); lastHover = now; } });
+  el.addEventListener('click', () => playSound('click'));
+});
+// Modal certificados
 const modalCert = document.getElementById('modal'), modalImg = document.getElementById('modal-img');
 function openModal(src) { modalImg.src = src; modalCert.style.display = 'flex'; requestAnimationFrame(() => modalCert.style.opacity = '1'); }
 function closeModal() { modalCert.style.opacity = '0'; setTimeout(() => modalCert.style.display = 'none', 300); }
@@ -129,6 +165,7 @@ document.querySelectorAll('.cert-title[data-cert]').forEach(btn => btn.addEventL
 document.getElementById('btn-send-form').addEventListener('click', () => { const nome = document.getElementById('f-nome').value, email = document.getElementById('f-email').value, msg = document.getElementById('f-msg').value; if (!nome || !email || !msg) { alert('Preencha todos os campos.'); return; } window.open(`mailto:jaymeibrahim@gmail.com?subject=Contato via portfólio&body=Nome: ${encodeURIComponent(nome)}%0AEmail: ${encodeURIComponent(email)}%0A%0A${encodeURIComponent(msg)}`); });
 const fadeObserver = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) { const img = entry.target; fadeObserver.unobserve(img); img.classList.add('img-show'); } }); }, { rootMargin: '60px' });
 document.querySelectorAll('img[loading="lazy"]').forEach(img => { img.classList.add('img-fade'); fadeObserver.observe(img); });
+// Botão flutuante
 const floatBtn = document.getElementById('floatContactBtn'), contactModalDiv = document.getElementById('contactModal'), closeModalBtn = document.getElementById('closeModalBtn'), modalWhats = document.getElementById('modalWhatsBtn'), modalEmail = document.getElementById('modalEmailBtn');
 function toggleContactModal(open) { if (open) contactModalDiv.classList.add('open'); else contactModalDiv.classList.remove('open'); }
 floatBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleContactModal(!contactModalDiv.classList.contains('open')); });

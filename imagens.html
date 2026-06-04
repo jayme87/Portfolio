@@ -4,9 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Ibrahim · Edição de Imagens</title>
+<link rel="icon" type="image/webp" href="1x/IB.webp">
+<meta property="og:title" content="Ibrahim · Edição de Imagens">
+<meta property="og:description" content="Antes e depois de edições profissionais de imagem.">
+<meta property="og:image" content="1x/IB.webp">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+/* Mesmos estilos do identidades.html, mas com grid de imagens (já fornecido anteriormente) */
 :root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); }
@@ -90,6 +95,34 @@ projetosImagens.forEach((p, i) => {
   card.addEventListener('mouseenter', () => clearInterval(auto));
   card.addEventListener('mouseleave', () => { clearInterval(auto); auto = setInterval(() => goTo(cur+1), 2800); });
 });
+// Sons
+let audioCtx = null, soundEnabled = false;
+function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundEnabled = true; }
+function playSound(type) {
+  if (!soundEnabled || !audioCtx) return;
+  const now = audioCtx.currentTime;
+  if (type === 'click') {
+    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
+    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 523.25;
+    gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+    osc.start(now); osc.stop(now + 0.2);
+  } else if (type === 'hover') {
+    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
+    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 392;
+    osc.frequency.exponentialRampToValueAtTime(523.25, now + 0.15);
+    gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+    osc.start(now); osc.stop(now + 0.25);
+  }
+}
+const unlockAudio = () => { if (!audioCtx) initAudio(); if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); };
+document.body.addEventListener('click', unlockAudio, { once: true });
+document.body.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+let lastHover = 0;
+document.querySelectorAll('button, a, .imagem-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { const now = Date.now(); if (now - lastHover > 80) { playSound('hover'); lastHover = now; } });
+  el.addEventListener('click', () => playSound('click'));
+});
+// Botão flutuante
 const floatBtn = document.getElementById('floatContactBtn'), contactModalDiv = document.getElementById('contactModal'), closeModalBtn = document.getElementById('closeModalBtn'), modalWhats = document.getElementById('modalWhatsBtn'), modalEmail = document.getElementById('modalEmailBtn');
 function toggleContactModal(open) { if (open) contactModalDiv.classList.add('open'); else contactModalDiv.classList.remove('open'); }
 floatBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleContactModal(!contactModalDiv.classList.contains('open')); });
