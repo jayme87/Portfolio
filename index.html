@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="no-js">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="format-detection" content="telephone=no">
 <title>Ibrahim · Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
@@ -13,19 +10,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<!-- Prefetch: capas dos projetos de identidade (primeiros itens visíveis ao navegar) -->
 <link rel="prefetch" href="1x/KC01.webp" as="image">
 <link rel="prefetch" href="1x/MF01.webp" as="image">
 <link rel="prefetch" href="1x/IB01.webp" as="image">
+<!-- Prefetch: primeiros comparativos (Antes e Depois 1–3) -->
 <link rel="prefetch" href="1x/Antes e Depois 1.webp" as="image">
 <link rel="prefetch" href="1x/Antes e Depois 6.webp" as="image">
 <link rel="prefetch" href="1x/Antes e Depois 11.webp" as="image">
+<!-- Prefetch: primeiros pares de retoque (A01/D01) -->
 <link rel="prefetch" href="1x/A01.webp" as="image">
 <link rel="prefetch" href="1x/D01.webp" as="image">
 <link rel="prefetch" href="1x/A06.webp" as="image">
 <link rel="prefetch" href="1x/D06.webp" as="image">
 <link rel="prefetch" href="1x/A11.webp" as="image">
 <link rel="prefetch" href="1x/D11.webp" as="image">
+<!-- dns-prefetch já existente mantido; preconnect extra para cdnjs -->
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <style>
 :root {
   --ink: #0b0b0b;
@@ -86,53 +87,20 @@ body {
   }
 }
 
-/* VIEWS — FALLBACK SEM JS (iOS Safari cold load)
-   Por padrão, view.active é visível sem depender de JS.
-   Quando o JS carrega, adiciona .js-ready no <html> e
-   o sistema de transição assume o controle. */
-
-/* Fallback puro CSS: view ativa aparece normalmente */
-.no-js .view { display: none; }
-.no-js .view.active { display: block; opacity: 1; visibility: visible; }
-.no-js #index-view { display: none; }
-.no-js #index-view.active { display: flex; opacity: 1; visibility: visible; }
-
-/* Sistema de transição JS — só ativo quando JS carregou */
-.js-ready .view {
-  position: absolute;
-  inset: 0;
-  min-height: 100vh;
+/* VIEWS */
+.view { 
+  display: none; 
   opacity: 0;
-  transform: translateY(14px);
-  pointer-events: none;
-  transition: opacity 0.36s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              transform 0.36s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  contain: layout style;
 }
-.js-ready .view.active {
-  position: relative;
-  visibility: visible;
-  pointer-events: auto;
-  z-index: 1;
+.view.active { 
+  display: block; 
 }
-.js-ready .view.fade-in {
+.view.fade-in {
   opacity: 1;
   transform: translateY(0);
-}
-.js-ready .view.fade-out {
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-  position: absolute;
-  visibility: visible;
-}
-@media (max-width: 600px) {
-  .js-ready .view {
-    transition: opacity 0.26s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 0.26s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
 }
 
 /* ============================================================
@@ -141,14 +109,12 @@ body {
 #index-view {
   position: fixed; inset: 0;
   background: var(--ink);
+  display: none;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
-/* No-JS: index-view já aparece pelo fallback acima (.no-js .view.active) */
-/* Com JS: sobrescreve display para flex quando ativa */
-.js-ready #index-view.active { display: flex; }
-.js-ready #index-view:not(.active):not(.fade-out) { display: none; }
+#index-view.active { display: flex; }
 
 .index-lines {
   position: absolute; inset: 0;
@@ -1233,137 +1199,6 @@ body {
   display: block;
   max-height: 500px;
 }
-
-/* ---- SKELETON SHIMMER ---- */
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position:  200% center; }
-}
-/* Aplicado dinamicamente via JS apenas em containers sem img carregada */
-.skel {
-  position: relative;
-}
-.skel::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(255,255,255,0.03) 25%,
-    rgba(255,255,255,0.07) 50%,
-    rgba(255,255,255,0.03) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.6s ease-in-out infinite;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 2;
-}
-.skel.skel-done::after {
-  opacity: 0;
-  animation: none;
-}
-
-/* ---- FADE-IN DE IMAGEM (apenas imagens lazy — não eager) ---- */
-img.img-fade {
-  opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-img.img-fade.img-show {
-  opacity: 1;
-}
-
-/* ============================================================
-   iOS / SAFARI — OTIMIZAÇÕES ESPECÍFICAS
-   ============================================================ */
-
-/* 1. Força camada GPU nas views para evitar blur/rerender no iOS */
-.view {
-  -webkit-transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-/* 2. Scroll nativo fluido no iOS em todos containers scrolláveis */
-.view,
-.comp-body,
-.about-body,
-.portfolio-body,
-.detalhe-body,
-.identidades-grid,
-.imagens-grid,
-.detail-gallery {
-  -webkit-overflow-scrolling: touch;
-}
-
-/* 3. Safe area — notch / Dynamic Island / home indicator */
-.site-header {
-  padding-top: max(1.5rem, env(safe-area-inset-top));
-  padding-left: max(4rem, env(safe-area-inset-left));
-  padding-right: max(4rem, env(safe-area-inset-right));
-}
-.float-contact-btn {
-  bottom: max(1.5rem, calc(env(safe-area-inset-bottom) + 1rem));
-  right: max(1.5rem, env(safe-area-inset-right));
-}
-.site-footer {
-  padding-bottom: max(1rem, env(safe-area-inset-bottom));
-}
-#index-view .index-cta-about {
-  bottom: max(2.5rem, calc(env(safe-area-inset-bottom) + 1.5rem));
-}
-
-/* 4. Touch-action nos carrosséis: swipe horizontal sem conflitar com scroll */
-.imagem-card-carousel,
-.id-carousel-track,
-.id-carousel-slide {
-  touch-action: pan-y pinch-zoom;
-}
-
-/* 5. Remove delay de 300ms no tap + previne highlight azul */
-button, a, [data-view], input, textarea,
-.project-card, .identity-card, .imagem-card {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-
-/* 6. Previne seleção de texto acidental no touch em elementos decorativos */
-.index-nav-btn, .header-back, .header-section-name,
-.service-tag, .comp-pair-label, .comp-img-badge,
-.imagem-card-cta, [data-view] {
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-/* 7. Altura dinâmica correta no iOS (a barra de endereço retrai/expande) */
-#index-view {
-  height: 100dvh;
-}
-@supports not (height: 100dvh) {
-  #index-view { height: -webkit-fill-available; }
-}
-
-/* 8. Backdrop-filter com prefixo webkit onde ainda é necessário */
-.modal, .contact-modal {
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-}
-
-/* 9. Rendering suave de imagens no Safari */
-img {
-  -webkit-transform: translateZ(0);
-}
-
-/* 10. Transições mais leves em mobile para preservar bateria e fluidez */
-@media (max-width: 600px) {
-  .view {
-    transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .skel::after {
-    animation-duration: 2s;
-  }
-}
 </style>
 </head>
 <body>
@@ -1376,7 +1211,7 @@ img {
   <div class="index-center">
     <div class="index-eyebrow">DESIGNER</div>
     <button class="index-logo-wrap" id="btn-logo-about" data-view="apresentacao" style="background:transparent;border:none;">
-      <img src="1x/IBRAHIM.webp" alt="Ibrahim" id="index-logo-img" fetchpriority="high">
+      <img src="1x/IBRAHIM.webp" alt="Ibrahim" id="index-logo-img">
       <div class="logo-hint">Ver perfil</div>
     </button>
     <nav class="index-nav">
@@ -1394,7 +1229,7 @@ img {
 
   <div class="about-hero">
     <div class="about-hero-img">
-      <img src="1x/Perfil.webp" alt="Ibrahim" decoding="async" loading="eager" fetchpriority="high">
+      <img src="1x/Perfil.webp" alt="Ibrahim" decoding="async" loading="eager">
     </div>
     <div class="about-hero-content">
       <div class="about-tag">// Designer · Editor · Criador</div>
@@ -1641,129 +1476,61 @@ img {
 </div>
 
 <script>
-// Sinaliza que o JS carregou — ativa o sistema de transição CSS e desativa o fallback
-document.documentElement.classList.replace('no-js', 'js-ready');
-
 // ---- CURSOR ULTRA FLUIDO ----
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
 let mx = 0, my = 0, rx = 0, ry = 0;
 
-// iOS/touch: não inicializa loops de RAF do cursor — economiza bateria e evita conflito
-const _isTouch = navigator.maxTouchPoints > 0 && !window.matchMedia('(pointer: fine)').matches;
-
-if (!_isTouch) {
-  let _cursorRafPending = false;
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; 
-    my = e.clientY;
-    if (!_cursorRafPending) {
-      _cursorRafPending = true;
-      requestAnimationFrame(() => {
-        cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(${cursor.dataset.scale || 1})`;
-        _cursorRafPending = false;
-      });
-    }
-  }, { passive: true });
-
-  function animRing() {
-    rx += (mx - rx) * 0.15;
-    ry += (my - ry) * 0.15;
-    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-    requestAnimationFrame(animRing);
+let _cursorRafPending = false;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; 
+  my = e.clientY;
+  if (!_cursorRafPending) {
+    _cursorRafPending = true;
+    requestAnimationFrame(() => {
+      cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(${cursor.dataset.scale || 1})`;
+      _cursorRafPending = false;
+    });
   }
+}, { passive: true });
+
+function animRing() {
+  rx += (mx - rx) * 0.15;
+  ry += (my - ry) * 0.15;
+  ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
   requestAnimationFrame(animRing);
-
-  document.body.addEventListener('mouseenter', e => {
-    if (e.target.matches && e.target.matches('button, a, [data-view], .project-card, .identity-card, .imagem-card, input, textarea')) {
-      cursor.dataset.scale = '2.5';
-      cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(2.5)`;
-      ring.style.width = '48px'; 
-      ring.style.height = '48px';
-      ring.style.opacity = '0.3';
-    }
-  }, true);
-
-  document.body.addEventListener('mouseleave', e => {
-    if (e.target.matches && e.target.matches('button, a, [data-view], .project-card, .identity-card, .imagem-card, input, textarea')) {
-      cursor.dataset.scale = '1';
-      cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(1)`;
-      ring.style.width = '36px'; 
-      ring.style.height = '36px';
-      ring.style.opacity = '0.6';
-    }
-  }, true);
 }
+requestAnimationFrame(animRing);
+
+document.body.addEventListener('mouseenter', e => {
+  if (e.target.matches && e.target.matches('button, a, [data-view], .project-card, .identity-card, .imagem-card, input, textarea')) {
+    cursor.dataset.scale = '2.5';
+    cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(2.5)`;
+    ring.style.width = '48px'; 
+    ring.style.height = '48px';
+    ring.style.opacity = '0.3';
+  }
+}, true);
+
+document.body.addEventListener('mouseleave', e => {
+  if (e.target.matches && e.target.matches('button, a, [data-view], .project-card, .identity-card, .imagem-card, input, textarea')) {
+    cursor.dataset.scale = '1';
+    cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(1)`;
+    ring.style.width = '36px'; 
+    ring.style.height = '36px';
+    ring.style.opacity = '0.6';
+  }
+}, true);
 
 // ---- GERENCIADOR DE TELAS ----
 let currentView = 'index';
 const views = {};
 document.querySelectorAll('.view').forEach(v => views[v.id.replace('-view','')] = v);
 
-// Inicializa a view de entrada sem transição (já está no estado final)
-requestAnimationFrame(() => {
-  if (views[currentView]) views[currentView].classList.add('fade-in');
-});
-
-let _transitioning = false;
-let _viewTransitionTimer = null;
-
-function resetToIndexView() {
-  const indexView = views.index;
-  if (!indexView) return;
-
-  if (window._idCarouselRaf) {
-    cancelAnimationFrame(window._idCarouselRaf);
-    window._idCarouselRaf = null;
-  }
-  if (window._idCarouselResizeObs) {
-    window._idCarouselResizeObs.disconnect();
-    window._idCarouselResizeObs = null;
-  }
-  if (_viewTransitionTimer) {
-    clearTimeout(_viewTransitionTimer);
-    _viewTransitionTimer = null;
-  }
-
-  const oldView = views[currentView];
-  const shouldAnimateOut = oldView && oldView !== indexView && oldView.classList.contains('active');
-  _transitioning = true;
-
-  Object.values(views).forEach(view => {
-    if (view !== oldView) {
-      view.classList.remove('active', 'fade-in', 'fade-out');
-    }
-  });
-
-  if (shouldAnimateOut) {
-    oldView.classList.remove('fade-in');
-    oldView.classList.add('fade-out');
-  }
-
-  const DURATION = shouldAnimateOut
-    ? (window.matchMedia('(max-width:600px)').matches ? 260 : 360)
-    : 0;
-
-  _viewTransitionTimer = setTimeout(() => {
-    _viewTransitionTimer = null;
-
-    Object.values(views).forEach(view => {
-      view.classList.remove('active', 'fade-in', 'fade-out');
-    });
-
-    currentView = 'index';
-    indexView.classList.add('active');
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-
-    requestAnimationFrame(() => {
-      indexView.classList.add('fade-in');
-      _transitioning = false;
-    });
-  }, DURATION);
-}
+setTimeout(() => { if(views[currentView]) views[currentView].classList.add('fade-in'); }, 50);
 
 function showView(name) {
-  if (currentView === name || _transitioning) return;
+  if (currentView === name) return;
   if (currentView === 'detalhe' && window._idCarouselRaf) {
     cancelAnimationFrame(window._idCarouselRaf);
     window._idCarouselRaf = null;
@@ -1773,48 +1540,33 @@ function showView(name) {
   const nextView = views[name];
   if (!nextView) return;
 
-  _transitioning = true;
-
-  // Lazy build da próxima view antes de qualquer animação
-  if (name === 'imagens'      && !window._imgBuilt)  buildImagens();
-  if (name === 'identidades'  && !window._idBuilt)   buildIdentidades();
-  if (name === 'comparativo'  && !window._c1Built)   buildComp('comp1-body', 1, 5);
-  if (name === 'comparativo2' && !window._c2Built)   buildComp('comp2-body', 6, 10);
-  if (name === 'comparativo3' && !window._c3Built)   buildComp('comp3-body', 11, 15);
-
-  // FASE 1 — Saída da view atual
   oldView.classList.remove('fade-in');
-  oldView.classList.add('fade-out');
+  
+  setTimeout(() => {
+    oldView.classList.remove('active');
+    
+    if (name === 'imagens' && !window._imgBuilt) buildImagens();
+    if (name === 'identidades' && !window._idBuilt) buildIdentidades();
+    if (name === 'comparativo' && !window._c1Built) buildComp('comp1-body', 1, 5);
+    if (name === 'comparativo2' && !window._c2Built) buildComp('comp2-body', 6, 10);
+    if (name === 'comparativo3' && !window._c3Built) buildComp('comp3-body', 11, 15);
 
-  // FASE 2 — Após a saída, ativa e entra na nova view
-  const DURATION = window.matchMedia('(max-width:600px)').matches ? 260 : 360;
-
-  _viewTransitionTimer = setTimeout(() => {
-    _viewTransitionTimer = null;
-
-    // Remove a view antiga do fluxo
-    oldView.classList.remove('active', 'fade-out');
-
-    // Prepara a próxima: visível mas ainda transparente/deslocada
     nextView.classList.add('active');
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
-    // Um único rAF é suficiente para o browser registrar o estado inicial
-    // antes de aplicar a classe que dispara a transição
     requestAnimationFrame(() => {
       nextView.classList.add('fade-in');
-      currentView = name;
-      _transitioning = false;
     });
-  }, DURATION);
+
+    currentView = name;
+  }, 200); 
 }
 
 document.querySelectorAll('[data-view]').forEach(btn => {
   btn.addEventListener('click', e => {
     e.preventDefault();
     const v = btn.getAttribute('data-view');
-    if (v === 'index') resetToIndexView();
-    else if (v) showView(v);
+    if (v) showView(v);
   });
 });
 
@@ -1926,8 +1678,9 @@ function buildImagens() {
     });
   });
   grid.appendChild(outerFrag);
-  if (window._fluidProcessImgs) window._fluidProcessImgs();
 }
+
+// ---- IDENTIDADES DATA ----
 const projetosIdentidades = [
   {
     id: 'id1', titulo: "Kurt's Corte", sub: 'Barbearia · Identidade Visual',
@@ -1997,7 +1750,6 @@ function buildIdentidades() {
     frag.appendChild(card);
   });
   grid.appendChild(frag);
-  if (window._fluidProcessImgs) window._fluidProcessImgs();
 }
 
 function openDetalhe(p) {
@@ -2060,107 +1812,47 @@ function openDetalhe(p) {
     galFrag.appendChild(item);
   });
   gallery.appendChild(galFrag);
-  if (window._fluidProcessImgs) window._fluidProcessImgs();
 
   showView('detalhe');
 }
 
 // ---- BUILD COMPARATIVOS ----
-
-// Fila global de upgrade LQ → HD: processa uma imagem de cada vez, sequencialmente,
-// iniciada após 5 segundos de permanência na página de comparativo.
-// Garante que nunca haja múltiplos downloads pesados simultâneos em nenhuma plataforma.
-const _hdQueue = [];
-let _hdQueueRunning = false;
-let _hdTimerId = null;
-
-function _hdProcessNext() {
-  if (!_hdQueue.length) { _hdQueueRunning = false; return; }
-  _hdQueueRunning = true;
-  const { img, hd } = _hdQueue.shift();
-
-  // Ignora se a imagem já foi substituída ou saiu do DOM
-  if (img.dataset.hdLoaded || !img.isConnected) { _hdProcessNext(); return; }
-
-  const hdImg = new Image();
-  hdImg.decoding = 'async';
-  hdImg.onload = () => {
-    if (!img.isConnected) { _hdProcessNext(); return; }
-    img.src = hd;
-    img.dataset.hdLoaded = '1';
-    // Aguarda o browser pintar o novo frame antes de passar para a próxima
-    requestAnimationFrame(() => _hdProcessNext());
-  };
-  hdImg.onerror = () => _hdProcessNext(); // falha silenciosa — LQ permanece
-  hdImg.src = hd;
-}
-
-function _hdSchedule(containerId) {
-  // Cancela timer anterior se a função for chamada novamente (ex: reentrada)
-  if (_hdTimerId) { clearTimeout(_hdTimerId); _hdTimerId = null; }
-
-  _hdTimerId = setTimeout(() => {
-    _hdTimerId = null;
-    const container = document.getElementById(containerId);
-    if (!container) return;
-
-    // Monta a fila na ordem em que as imagens aparecem no DOM
-    container.querySelectorAll('img[data-hd]:not([data-hd-loaded])').forEach(img => {
-      if (!img.dataset.hdLoaded && !_hdQueue.find(e => e.img === img)) {
-        _hdQueue.push({ img, hd: img.dataset.hd });
-      }
-    });
-
-    if (!_hdQueueRunning) _hdProcessNext();
-  }, 5000); // 5 segundos após entrar na página
-}
-
 function buildComp(containerId, start, end) {
   const key = containerId.replace('-body','');
   window[`_${key}Built`] = true;
   const container = document.getElementById(containerId);
   container.innerHTML = '';
+  // Use document fragment to batch DOM insertions
   const frag = document.createDocumentFragment();
-
   for (let i = start; i <= end; i++) {
     const num = String(i).padStart(2, '0');
-    const antesLQ  = `1x/A(${num}).webp`;
-    const depoisLQ = `1x/D(${num}).webp`;
-    const antesHD  = `1x/A${num}.webp`;
-    const depoisHD = `1x/D${num}.webp`;
-
+    const antes = `1x/A${num}.webp`;
+    const depois = `1x/D${num}.webp`;
     const pair = document.createElement('div');
     pair.className = 'comp-pair';
+    // First image eager, rest lazy
+    const eagerStr = i === start ? '' : ' loading="lazy"';
     pair.innerHTML = `
       <div class="comp-pair-label">Composição ${i - start + 1}</div>
       <div class="comp-pair-imgs">
         <div class="comp-img-wrap">
           <span class="comp-img-badge">Antes</span>
-          <img src="${antesLQ}" data-hd="${antesHD}" alt="Antes ${i}" loading="lazy" decoding="async">
+          <img src="${antes}" alt="Antes ${i}" loading="lazy" decoding="async">
         </div>
         <div class="comp-img-wrap">
           <span class="comp-img-badge" style="color:var(--gold-light)">Depois</span>
-          <img src="${depoisLQ}" data-hd="${depoisHD}" alt="Depois ${i}" loading="lazy" decoding="async">
+          <img src="${depois}" alt="Depois ${i}"${eagerStr} decoding="async">
         </div>
       </div>`;
-
     pair.querySelectorAll('img').forEach((img, j) => {
       img.addEventListener('click', e => {
         e.stopPropagation();
-        const hdA = pair.querySelectorAll('img')[0].dataset.hdLoaded ? antesHD : antesLQ;
-        const hdD = pair.querySelectorAll('img')[1].dataset.hdLoaded ? depoisHD : depoisLQ;
-        openModal([hdA, hdD], j);
+        openModal([antes, depois], j);
       }, { passive: true });
     });
-
     frag.appendChild(pair);
   }
-
   container.appendChild(frag);
-  if (window._fluidProcessImgs) window._fluidProcessImgs();
-
-  // Inicia o timer de 5s para upgrade sequencial das HDs
-  _hdSchedule(containerId);
 }
 
 // ---- MODAL ----
@@ -2211,30 +1903,13 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
 });
 
-// Swipe no modal para iOS (e Android)
-(function() {
-  let _tX = 0, _tY = 0;
-  modalEl.addEventListener('touchstart', e => {
-    _tX = e.changedTouches[0].screenX;
-    _tY = e.changedTouches[0].screenY;
-  }, { passive: true });
-  modalEl.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].screenX - _tX;
-    const dy = e.changedTouches[0].screenY - _tY;
-    if (Math.abs(dx) < 40 || Math.abs(dy) > Math.abs(dx)) return; // swipe muito curto ou vertical
-    if (dx < 0) { modalIdx = (modalIdx + 1) % modalImgs.length; updateModal(); }
-    else         { modalIdx = (modalIdx - 1 + modalImgs.length) % modalImgs.length; updateModal(); }
-  }, { passive: true });
-})();
-
 // ---- CERTIFICADOS ----
 document.querySelectorAll('.cert-title[data-cert]').forEach(el => {
   el.addEventListener('click', () => openModal([el.getAttribute('data-cert')], 0));
 });
 
 // ---- FORMULÁRIO DE CONTATO ORIGINAL ----
-var _sendFormBtn = document.getElementById('btn-send-form');
-if (_sendFormBtn) _sendFormBtn.addEventListener('click', function() {
+document.getElementById('btn-send-form')?.addEventListener('click', () => {
   const nome = document.getElementById('f-nome').value;
   const email = document.getElementById('f-email').value;
   const msg = document.getElementById('f-msg').value;
@@ -2308,7 +1983,7 @@ modalEmail.addEventListener('click', () => {
       const nome = document.getElementById('f-nome').value;
       const email = document.getElementById('f-email').value;
       const msg = document.getElementById('f-msg').value;
-      const hp = document.getElementById('hp_website') ? document.getElementById('hp_website').value : '';
+      const hp = document.getElementById('hp_website')?.value;
       if (hp && hp.length > 0) { alert('Mensagem não enviada.'); return; }
       if (!nome || !email || !msg) { alert('Preencha todos os campos.'); return; }
       const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
@@ -2329,157 +2004,94 @@ modalEmail.addEventListener('click', () => {
     function playSound(t){soundEnabled?generateSound(t):(initAudio(),audioCtx.state==="suspended"&&audioCtx.resume().then(()=>generateSound(t)));}
     function generateSound(t){if(!audioCtx)return;const n=audioCtx.currentTime;if(t==="click"){const e=audioCtx.createGain();e.connect(audioCtx.destination);e.gain.value=0;const o=audioCtx.createOscillator();o.type="sine",o.connect(e),o.frequency.value=523.25,e.gain.setValueAtTime(.1,n),e.gain.exponentialRampToValueAtTime(1e-4,n+.2),o.start(n),o.stop(n+.2);}else if(t==="hover"){const e=audioCtx.createGain();e.connect(audioCtx.destination);e.gain.value=0;const o=audioCtx.createOscillator();o.type="sine",o.connect(e),o.frequency.setValueAtTime(392,n),o.frequency.exponentialRampToValueAtTime(523.25,n+.15),e.gain.setValueAtTime(.08,n),e.gain.exponentialRampToValueAtTime(1e-4,n+.25),o.start(n),o.stop(n+.25);}else if(t==="entrance"){[392,493.88,587.33,783.99].forEach((e,o)=>{const i=audioCtx.createGain();i.connect(audioCtx.destination);i.gain.value=0;const a=audioCtx.createOscillator();a.type="sine",a.connect(i);const c=n+o*.1;i.gain.setValueAtTime(.05,c),i.gain.exponentialRampToValueAtTime(1e-4,c+.3),a.frequency.value=e,a.start(c),a.stop(c+.3);});}}
     function playEntranceSound(){!entrancePlayed&&soundEnabled&&audioCtx&&audioCtx.state==="running"&&(playSound("entrance"),entrancePlayed=true);}
-    // iOS requer gesto do usuário para desbloquear AudioContext — suporta touchstart além de click
-    const _audioUnlock = () => {if(!audioCtx)initAudio();if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume().then(function(){if(currentView==="index")playEntranceSound();});else if(audioCtx&&audioCtx.state==="running"&&currentView==="index")playEntranceSound();};
-    document.body.addEventListener("click", _audioUnlock, {once:true});
-    document.body.addEventListener("touchstart", _audioUnlock, {once:true, passive:true});
+    document.body.addEventListener("click",()=>{if(!audioCtx)initAudio();if(audioCtx?.state==="suspended")audioCtx.resume().then(()=>{currentView==="index"&&playEntranceSound();});else if(audioCtx?.state==="running"&&currentView==="index")playEntranceSound();},{once:true});
     let _lastHover = 0;
     document.querySelectorAll("button,a,[data-view]").forEach(el=>{
         el.addEventListener("mouseenter",()=>{const now=Date.now();if(now-_lastHover>80){playSound("hover");_lastHover=now;}});
         el.addEventListener("click",()=>playSound("click"));
     });
 
-// ================================================================
-// SISTEMA DE FLUIDEZ: skeleton + fade-in de imagens + cache idle
-// ================================================================
+// ---- PRÉ-CACHE DE ASSETS EM BACKGROUND (sem bloquear renderização) ----
 (function() {
+  // Monta a lista completa de todos os assets das outras páginas
+  // Ordem de prioridade: capas e primeiros slides → galeria completa → comparativos
+  const PRIORITY_HIGH = [];
+  const PRIORITY_MED  = [];
+  const PRIORITY_LOW  = [];
 
-  // ------------------------------------------------------------------
-  // A) SKELETON em containers de imagem lazy
-  // Adiciona .skel nos wrappers enquanto a imagem não carregou.
-  // Remove .skel (via .skel-done) assim que a imagem terminar.
-  // Só age em imagens COM loading="lazy" — nunca nas eager/críticas.
-  // ------------------------------------------------------------------
-  function attachSkeleton(img) {
-    if (img.loading === 'eager' || (img.complete && img.naturalWidth > 0)) return;
-    var wrap = img.parentElement;
-    if (!wrap || wrap.classList.contains('skel')) return;
-    // Verifica dimensão pelo atributo/classe, não por getComputedStyle (caro no Safari)
-    var hasDim = wrap.style.height || wrap.style.minHeight ||
-                 wrap.classList.contains('comp-img-wrap') ||
-                 wrap.classList.contains('identity-card-img') ||
-                 wrap.classList.contains('imagem-card-carousel') ||
-                 wrap.classList.contains('detalhe-right-col');
-    if (!hasDim) return;
-    wrap.classList.add('skel');
-    var done = function() {
-      wrap.classList.add('skel-done');
-      setTimeout(function() { wrap.classList.remove('skel', 'skel-done'); }, 350);
-    };
-    img.addEventListener('load',  done, { once: true });
-    img.addEventListener('error', done, { once: true });
-  }
-
-  // ------------------------------------------------------------------
-  // B) FADE-IN suave para imagens lazy (só lazy, nunca eager/logo)
-  // Usa IntersectionObserver para ativar apenas quando visível.
-  // ------------------------------------------------------------------
-  const fadeObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const img = entry.target;
-      fadeObserver.unobserve(img);
-      const show = () => img.classList.add('img-show');
-      if (img.complete && img.naturalWidth > 0) {
-        show();
-      } else {
-        img.addEventListener('load',  show, { once: true });
-        img.addEventListener('error', show, { once: true });
-      }
-    });
-  }, { rootMargin: '60px 0px', threshold: 0 });
-
-  function attachFade(img) {
-    // NUNCA aplica em imagens críticas (eager, logo, perfil)
-    if (img.loading === 'eager') return;
-    if (img.id === 'index-logo-img') return;
-    if (img.complete && img.naturalWidth > 0) return; // já em cache, não precisa
-    img.classList.add('img-fade');
-    fadeObserver.observe(img);
-  }
-
-  // ------------------------------------------------------------------
-  // C) Processa todas as imagens lazy do DOM atual + futuras (builds)
-  // ------------------------------------------------------------------
-  function processImgs(root) {
-    (root || document).querySelectorAll('img[loading="lazy"]').forEach(img => {
-      if (img.dataset.fluid) return; // já processado
-      img.dataset.fluid = '1';
-      attachSkeleton(img);
-      attachFade(img);
-    });
-  }
-  processImgs();
-
-  // Expõe para ser chamado após buildImagens / buildIdentidades / buildComp / openDetalhe
-  window._fluidProcessImgs = processImgs;
-
-  // ------------------------------------------------------------------
-  // D) PRÉ-CACHE IDLE — baixa tudo em background sem bloquear nada
-  // ------------------------------------------------------------------
-  const HIGH = [], MED = [], LOW = [];
-
-  ['KC','MF','IB'].forEach(p => {
+  // Identidades — capas (high) + galeria completa (med)
+  ['KC','MF','IB'].forEach(prefix => {
     for (let i = 1; i <= 18; i++) {
-      (i <= 3 ? HIGH : MED).push(`1x/${p}${String(i).padStart(2,'0')}.webp`);
+      const src = `1x/${prefix}${String(i).padStart(2,'0')}.webp`;
+      (i <= 3 ? PRIORITY_HIGH : PRIORITY_MED).push(src);
     }
   });
-  for (let i = 1; i <= 15; i++) {
-    ([1,6,11].includes(i) ? HIGH : MED).push(`1x/Antes e Depois ${i}.webp`);
-  }
-  // Comparativos: LQ (parênteses) como HIGH, HD como LOW
-  for (let i = 1; i <= 15; i++) {
-    const n = String(i).padStart(2,'0');
-    HIGH.push(`1x/A(${n}).webp`, `1x/D(${n}).webp`); // preview leve — carrega primeiro
-    LOW.push(`1x/A${n}.webp`,   `1x/D${n}.webp`);    // HD — segundo plano
-  }
-  HIGH.push('1x/CERT1.webp', '1x/CERT2.webp', '1x/Perfil.webp');
 
-  const queue = [...HIGH, ...MED, ...LOW];
-  const done  = new Set();
+  // Imagens (carrossel "Antes e Depois") — primeiro de cada projeto (high), resto (med)
+  for (let i = 1; i <= 15; i++) {
+    const src = `1x/Antes e Depois ${i}.webp`;
+    ([1,6,11].includes(i) ? PRIORITY_HIGH : PRIORITY_MED).push(src);
+  }
 
-  function preload(src) {
-    if (done.has(src)) return;
-    done.add(src);
+  // Comparativos A/D (retoques) — primeiro par de cada (high), resto (low)
+  for (let i = 1; i <= 15; i++) {
+    const num = String(i).padStart(2,'0');
+    const a = `1x/A${num}.webp`;
+    const d = `1x/D${num}.webp`;
+    ([1,6,11].includes(i) ? PRIORITY_HIGH : PRIORITY_LOW).push(a, d);
+  }
+
+  const queue = [...PRIORITY_HIGH, ...PRIORITY_MED, ...PRIORITY_LOW];
+  const cached = new Set();
+
+  function preloadOne(src) {
+    if (cached.has(src)) return;
+    cached.add(src);
     const img = new Image();
     img.decoding = 'async';
     img.src = src;
   }
 
-  let qi = 0;
-  const schedule = typeof requestIdleCallback === 'function'
-    ? fn => requestIdleCallback(fn, { timeout: 5000 })
-    : fn => setTimeout(fn, 100);
+  let idx = 0;
+  // Usa requestIdleCallback quando disponível; fallback para setTimeout com baixa prioridade
+  const scheduleNext = typeof requestIdleCallback === 'function'
+    ? (fn) => requestIdleCallback(fn, { timeout: 4000 })
+    : (fn) => setTimeout(fn, 80);
 
-  function pump(dl) {
-    var limit = (dl && dl.timeRemaining) ? Math.min(dl.timeRemaining(), 14) : 10;
-    const t0 = performance.now();
-    while (qi < queue.length && performance.now() - t0 < limit) preload(queue[qi++]);
-    if (qi < queue.length) schedule(pump);
+  function pumpQueue(deadline) {
+    // Processa o máximo possível dentro do tempo ocioso disponível
+    const timeLimit = deadline && deadline.timeRemaining ? deadline.timeRemaining() : 10;
+    const start = performance.now();
+    while (idx < queue.length && (performance.now() - start) < Math.min(timeLimit, 12)) {
+      preloadOne(queue[idx++]);
+    }
+    if (idx < queue.length) scheduleNext(pumpQueue);
   }
 
-  if (document.readyState === 'complete') schedule(pump);
-  else window.addEventListener('load', () => schedule(pump), { once: true, passive: true });
+  // Inicia após o load completo da página para não competir com recursos críticos
+  if (document.readyState === 'complete') {
+    scheduleNext(pumpQueue);
+  } else {
+    window.addEventListener('load', () => scheduleNext(pumpQueue), { once: true, passive: true });
+  }
 
-  // ------------------------------------------------------------------
-  // E) PREFETCH ON HOVER — acelera seção que o usuário vai abrir
-  // ------------------------------------------------------------------
-  const bySection = {
-    apresentacao: ['1x/Perfil.webp','1x/CERT1.webp','1x/CERT2.webp'],
-    identidades:  ['KC','MF','IB'].flatMap(p => [1,2,3].map(i => `1x/${p}${String(i).padStart(2,'0')}.webp`)),
-    imagens:      Array.from({length:15}, (_,i) => `1x/Antes e Depois ${i+1}.webp`),
-    // LQ (parênteses) primeiro, depois HD
-    comparativo:  Array.from({length:5}, (_,i) => { const n=String(i+1).padStart(2,'0'); return [`1x/A(${n}).webp`,`1x/D(${n}).webp`,`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
-    comparativo2: Array.from({length:5}, (_,i) => { const n=String(i+6).padStart(2,'0'); return [`1x/A(${n}).webp`,`1x/D(${n}).webp`,`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
-    comparativo3: Array.from({length:5}, (_,i) => { const n=String(i+11).padStart(2,'0'); return [`1x/A(${n}).webp`,`1x/D(${n}).webp`,`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
+  // Ao passar o mouse sobre um botão de navegação, pré-carrega assets daquela seção imediatamente
+  const sectionAssets = {
+    'identidades': ['1x/KC01.webp','1x/MF01.webp','1x/IB01.webp','1x/KC02.webp','1x/MF02.webp','1x/IB02.webp'],
+    'imagens':     Array.from({length:5}, (_,i) => `1x/Antes e Depois ${i+1}.webp`)
+                    .concat(Array.from({length:5}, (_,i) => `1x/Antes e Depois ${i+6}.webp`))
+                    .concat(Array.from({length:5}, (_,i) => `1x/Antes e Depois ${i+11}.webp`)),
+    'comparativo':  Array.from({length:5}, (_,i) => { const n=String(i+1).padStart(2,'0'); return [`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
+    'comparativo2': Array.from({length:5}, (_,i) => { const n=String(i+6).padStart(2,'0'); return [`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
+    'comparativo3': Array.from({length:5}, (_,i) => { const n=String(i+11).padStart(2,'0'); return [`1x/A${n}.webp`,`1x/D${n}.webp`]; }).flat(),
   };
+
   document.querySelectorAll('[data-view]').forEach(btn => {
     btn.addEventListener('mouseenter', () => {
-      const assets = bySection[btn.getAttribute('data-view')];
-      if (assets) assets.forEach(preload);
+      const target = btn.getAttribute('data-view');
+      if (sectionAssets[target]) sectionAssets[target].forEach(preloadOne);
     }, { passive: true });
   });
-
 })();
 </script>
 </body>
