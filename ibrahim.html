@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ibrahim · Marca Pessoal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); }
+.site-header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 4rem; background: rgba(11,11,11,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(244,208,61,0.12); }
+.header-back { display: flex; align-items: center; gap: 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ash); text-decoration: none; }
+.header-back:hover { color: var(--gold); }
+.header-section-name { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.8; }
+.detalhe-hero { padding: 0 !important; display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch; overflow: hidden; }
+.detalhe-left-col { display: flex; flex-direction: column; background: #0b0b0b; padding: 4rem; justify-content: center; border-right: 1px solid rgba(255,255,255,0.07); }
+.detalhe-title-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+.detalhe-title-text { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 900; line-height: 0.95; color: var(--ivory); }
+.detalhe-desc-text { font-size: 1.05rem; line-height: 1.8; color: var(--mist); font-weight: 300; white-space: pre-wrap; margin-top: 2rem; }
+.detalhe-right-col { position: relative; overflow: hidden; min-height: 500px; background: #0b0b0b; }
+.id-carousel-track { display: flex; height: 100%; will-change: transform; }
+.id-carousel-slide { flex: 0 0 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.id-carousel-slide img { width: 100%; height: 100%; object-fit: contain; max-height: 500px; }
+.detalhe-body { max-width: 1300px; margin: 0 auto; padding: 5rem 4rem; }
+.detail-gallery { columns: 3; column-gap: 6px; }
+.detail-gallery-item { break-inside: avoid; overflow: hidden; margin-bottom: 6px; cursor: pointer; }
+.detail-gallery-item img { width: 100%; display: block; transition: transform 0.3s; }
+.detail-gallery-item:hover img { transform: scale(1.02); }
+.site-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
+.footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--ash); }
+@media (max-width: 900px) { .detalhe-hero { grid-template-columns: 1fr; } .detalhe-left-col { padding: 3rem 2rem; } .detail-gallery { columns: 2; } }
+@media (max-width: 600px) { .detail-gallery { columns: 1; } }
+.modal { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(5,5,5,0.97); align-items: center; justify-content: center; }
+.float-contact-btn { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: var(--transition-smooth); z-index: 1050; border: none; cursor: pointer; }
+.float-contact-btn:hover { transform: scale(1.08); background: var(--gold-light); }
+.contact-modal { position: fixed; bottom: 5rem; right: 2rem; width: 380px; max-width: calc(100vw - 2rem); background: var(--deep); border: 1px solid rgba(244,208,61,0.3); border-radius: 12px; padding: 1.8rem; z-index: 1051; backdrop-filter: blur(20px); background: rgba(17,17,17,0.95); box-shadow: 0 20px 35px rgba(0,0,0,0.4); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; visibility: hidden; transform: translateY(15px); }
+.contact-modal.open { opacity: 1; visibility: visible; transform: translateY(0); }
+.contact-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 0.25rem; color: var(--gold); }
+.contact-modal p { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--ash); margin-bottom: 1.5rem; letter-spacing: 0.1em; }
+.contact-modal .form-field { margin-bottom: 1rem; }
+.contact-modal input, .contact-modal textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: var(--ivory); padding: 0.7rem 1rem; font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; }
+.modal-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
+.modal-buttons button { flex: 1; background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.8rem; transition: var(--transition-smooth); cursor: pointer; }
+.modal-buttons button:hover { background: var(--gold); color: var(--ink); }
+.close-modal { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--ash); font-size: 1rem; cursor: pointer; }
+</style>
+</head>
+<body>
+<header class="site-header"><a href="identidades.html" class="header-back"><i class="fas fa-arrow-left"></i> Voltar</a><span class="header-section-name">Marca Pessoal · Identidade Visual</span></header>
+<div class="detalhe-hero">
+  <div class="detalhe-left-col">
+    <div class="detalhe-title-label">// Identidade Visual</div>
+    <div class="detalhe-title-text">Ibrahim</div>
+    <p class="detalhe-desc-text">A identidade visual da marca Ibrahim é um exemplo de design tipográfico puro, minimalista e focado na presença de marca. Ela se concentra exclusivamente no nome do profissional, utilizando tipografia forte e paleta monocromática para transmitir sofisticação, confiança e solidez.<br><br>Tipografia e Peso<br>A fonte sans-serif extra-bold e geométrica transmite solidez e confiança. O peso extremo das letras comunica a estabilidade de um profissional com experiência de mercado.<br><br>Paleta e Profundidade<br>A paleta quase monocromática, composta por variações de cinza, preto e amarelo, sugere um profissional que trabalha com precisão e sutileza. A sombra projetada confere tridimensionalidade, evocando a materialidade de um produto final bem executado.<br><br>Conexão com os Serviços<br>A precisão geométrica reflete a atenção aos detalhes necessária para manipulação de imagens de alta qualidade. A profundidade e o peso das letras dão sensação cinematográfica.</p>
+  </div>
+  <div class="detalhe-right-col" id="carouselWrap"></div>
+</div>
+<div class="detalhe-body"><div class="detail-gallery" id="gallery"></div></div>
+<footer class="site-footer"><span class="footer-copy">© 2026 Ibrahim</span><div class="footer-gold-line"></div></footer>
+<div id="modal" class="modal"><button class="modal-close-btn" style="position:absolute; top:2rem; right:2.5rem; background:none; border:none; color:var(--ash); font-size:1.5rem;"><i class="fas fa-times"></i></button><img class="modal-img" id="modal-img" style="max-width:88vw; max-height:85vh;"></div>
+<button class="float-contact-btn" id="floatContactBtn"><i class="fas fa-comment-dots"></i></button>
+<div class="contact-modal" id="contactModal"><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button><h3>Contato</h3><p>Envie uma mensagem rápida</p><div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div><div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div><div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div><div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div></div>
+<script>
+const galeria = Array.from({length:18}, (_,i) => `1x/IB${String(i+1).padStart(2,'0')}.webp`);
+const wrap = document.getElementById('carouselWrap');
+const track = document.createElement('div'); track.className = 'id-carousel-track';
+[...galeria, ...galeria].forEach(src => { const slide = document.createElement('div'); slide.className = 'id-carousel-slide'; const img = document.createElement('img'); img.src = src; img.alt = 'Ibrahim'; slide.appendChild(img); track.appendChild(slide); });
+wrap.appendChild(track);
+let pos = 0, speed = 0.3, slideW = wrap.offsetWidth, loopW = slideW * galeria.length;
+function anim() { pos += speed; if(pos >= loopW) pos -= loopW; track.style.transform = `translateX(-${pos}px)`; requestAnimationFrame(anim); }
+anim();
+const gallery = document.getElementById('gallery');
+galeria.forEach((src, i) => { const item = document.createElement('div'); item.className = 'detail-gallery-item'; const img = document.createElement('img'); img.src = src; img.loading = 'lazy'; item.appendChild(img); item.addEventListener('click', () => openModal(galeria, i)); gallery.appendChild(item); });
+let modalImgs = [], modalIdx = 0;
+const modal = document.getElementById('modal'), modalImg = document.getElementById('modal-img');
+function openModal(imgs, idx) { modalImgs = imgs; modalIdx = idx; modalImg.src = modalImgs[modalIdx]; modal.style.display = 'flex'; requestAnimationFrame(() => modal.style.opacity = '1'); }
+function closeModal() { modal.style.opacity = '0'; setTimeout(() => modal.style.display = 'none', 300); }
+document.querySelector('.modal-close-btn').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => { if(modal.style.display === 'flex' && e.key === 'Escape') closeModal(); });
+const floatBtn = document.getElementById('floatContactBtn'), contactModalDiv = document.getElementById('contactModal'), closeModalBtn = document.getElementById('closeModalBtn'), modalWhats = document.getElementById('modalWhatsBtn'), modalEmail = document.getElementById('modalEmailBtn');
+function toggleContactModal(open) { if (open) contactModalDiv.classList.add('open'); else contactModalDiv.classList.remove('open'); }
+floatBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleContactModal(!contactModalDiv.classList.contains('open')); });
+closeModalBtn.addEventListener('click', () => toggleContactModal(false));
+document.addEventListener('click', (e) => { if (contactModalDiv.classList.contains('open') && !contactModalDiv.contains(e.target) && e.target !== floatBtn && !floatBtn.contains(e.target)) toggleContactModal(false); });
+modalWhats.addEventListener('click', () => { const nome = document.getElementById('modal-nome').value.trim(), email = document.getElementById('modal-email').value.trim(), msg = document.getElementById('modal-msg').value.trim(); if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; } window.open(`https://wa.me/5511947846658?text=*Nome:* ${encodeURIComponent(nome)}%0a*E-mail:* ${encodeURIComponent(email)}%0a*Mensagem:* ${encodeURIComponent(msg)}`, '_blank'); toggleContactModal(false); });
+modalEmail.addEventListener('click', () => { const nome = document.getElementById('modal-nome').value.trim(), email = document.getElementById('modal-email').value.trim(), msg = document.getElementById('modal-msg').value.trim(); if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; } window.open(`mailto:jaymeibrahim@gmail.com?subject=Contato via portfólio&body=Nome: ${encodeURIComponent(nome)}%0AEmail: ${encodeURIComponent(email)}%0A%0A${encodeURIComponent(msg)}`, '_blank'); toggleContactModal(false); });
+</script>
+</body>
+</html>

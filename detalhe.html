@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Detalhe · Ibrahim</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ===== ESTILOS DO DETALHE (igual ao original, só a parte do detalhe) ===== */
+:root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); }
+.site-header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 4rem; background: rgba(11,11,11,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(244,208,61,0.12); }
+.header-back { display: flex; align-items: center; gap: 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ash); text-decoration: none; }
+.header-back:hover { color: var(--gold); }
+.header-section-name { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.8; }
+.detalhe-hero { padding: 0 !important; display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch; overflow: hidden; }
+.detalhe-left-col { display: flex; flex-direction: column; background: #0b0b0b; padding: 4rem; justify-content: center; border-right: 1px solid rgba(255,255,255,0.07); }
+.detalhe-title-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+.detalhe-title-text { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 900; line-height: 0.95; color: var(--ivory); }
+.detalhe-desc-text { font-size: 1.05rem; line-height: 1.8; color: var(--mist); font-weight: 300; white-space: pre-wrap; margin-top: 2rem; }
+.detalhe-right-col { position: relative; overflow: hidden; min-height: 500px; background: #0b0b0b; }
+.id-carousel-track { display: flex; height: 100%; will-change: transform; }
+.id-carousel-slide { flex: 0 0 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.id-carousel-slide img { width: 100%; height: 100%; object-fit: contain; max-height: 500px; }
+.detalhe-body { max-width: 1300px; margin: 0 auto; padding: 5rem 4rem; }
+.detail-gallery { columns: 3; column-gap: 6px; }
+.detail-gallery-item { break-inside: avoid; overflow: hidden; margin-bottom: 6px; cursor: pointer; }
+.detail-gallery-item img { width: 100%; display: block; transition: transform 0.3s; }
+.detail-gallery-item:hover img { transform: scale(1.02); }
+.site-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
+@media (max-width: 900px) { .detalhe-hero { grid-template-columns: 1fr; } .detalhe-left-col { padding: 3rem 2rem; } .detail-gallery { columns: 2; } }
+@media (max-width: 600px) { .detail-gallery { columns: 1; } }
+.modal { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(5,5,5,0.97); align-items: center; justify-content: center; }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="identidades.html" class="header-back"><i class="fas fa-arrow-left"></i> Voltar</a>
+  <span class="header-section-name" id="detalhe-section-label"></span>
+</header>
+<div class="detalhe-hero">
+  <div class="detalhe-left-col">
+    <div class="detalhe-title-label" id="dt-label"></div>
+    <div id="dt-title" class="detalhe-title-text"></div>
+    <p class="detalhe-desc-text" id="dt-desc"></p>
+  </div>
+  <div class="detalhe-right-col" id="dt-carousel-wrap"></div>
+</div>
+<div class="detalhe-body"><div class="detail-gallery" id="dt-gallery"></div></div>
+<footer class="site-footer"><span class="footer-copy">© 2026 Ibrahim</span><div class="footer-gold-line"></div></footer>
+
+<div id="modal" class="modal"><button class="modal-close-btn" style="position:absolute; top:2rem; right:2.5rem; background:none; border:none; color:var(--ash); font-size:1.5rem;"><i class="fas fa-times"></i></button><img class="modal-img" id="modal-img" style="max-width:88vw; max-height:85vh;"></div>
+
+<script>
+const projetosIdentidades = {
+  id1: { titulo: "Kurt's Corte", sub: 'Barbearia · Identidade Visual', galeria: Array.from({length:18}, (_,i) => `1x/KC${String(i+1).padStart(2,'0')}.webp`), texto: `Essa é uma marca que equilibra muito bem o nostálgico com o dinâmico...` },
+  id2: { titulo: 'Mestre do Fliperama', sub: 'Oficina · Identidade Visual', galeria: Array.from({length:18}, (_,i) => `1x/MF${String(i+1).padStart(2,'0')}.webp`), texto: `Esta é uma identidade visual que utiliza o arquétipo do Mago...` },
+  id3: { titulo: 'Ibrahim', sub: 'Marca Pessoal · Identidade Visual', galeria: Array.from({length:18}, (_,i) => `1x/IB${String(i+1).padStart(2,'0')}.webp`), texto: `A identidade visual da marca Ibrahim é um exemplo de design tipográfico puro...` }
+};
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+const p = projetosIdentidades[id];
+if(p) {
+  document.getElementById('detalhe-section-label').innerText = p.sub;
+  document.getElementById('dt-label').innerText = '// Identidade Visual';
+  document.getElementById('dt-title').innerText = p.titulo;
+  document.getElementById('dt-desc').innerHTML = p.texto.replace(/\n/g, '<br>');
+  
+  // Carrossel infinito
+  const wrap = document.getElementById('dt-carousel-wrap');
+  const track = document.createElement('div'); track.className = 'id-carousel-track';
+  [...p.galeria, ...p.galeria].forEach(src => {
+    const slide = document.createElement('div'); slide.className = 'id-carousel-slide';
+    const img = document.createElement('img'); img.src = src; img.alt = p.titulo;
+    slide.appendChild(img); track.appendChild(slide);
+  });
+  wrap.appendChild(track);
+  let pos = 0, speed = 0.3, slideW = wrap.offsetWidth, loopW = slideW * p.galeria.length;
+  function anim() { pos += speed; if(pos >= loopW) pos -= loopW; track.style.transform = `translateX(-${pos}px)`; requestAnimationFrame(anim); }
+  anim();
+  
+  // Galeria modal
+  const gallery = document.getElementById('dt-gallery');
+  p.galeria.forEach((src, i) => {
+    const item = document.createElement('div'); item.className = 'detail-gallery-item';
+    const img = document.createElement('img'); img.src = src; img.loading = 'lazy';
+    item.appendChild(img);
+    item.addEventListener('click', () => openModal(p.galeria, i));
+    gallery.appendChild(item);
+  });
+}
+// Modal
+let modalImgs = [], modalIdx = 0;
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modal-img');
+function openModal(imgs, idx) { modalImgs = imgs; modalIdx = idx; modalImg.src = modalImgs[modalIdx]; modal.style.display = 'flex'; requestAnimationFrame(() => modal.style.opacity = '1'); }
+function closeModal() { modal.style.opacity = '0'; setTimeout(() => modal.style.display = 'none', 300); }
+document.querySelector('.modal-close-btn').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => { if(modal.style.display === 'flex' && e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
