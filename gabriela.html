@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>TITULO</title>
+<title>Gabriela Lima · Antes e Depois</title>
 <link rel="icon" type="image/webp" href="1x/IB.webp">
-<meta property="og:title" content="TITULO_OG">
-<meta property="og:description" content="DESCRICAO_OG">
-<meta property="og:image" content="1x/IMAGEM_OG.webp">
+<meta property="og:title" content="Gabriela Lima · Editorial">
+<meta property="og:description" content="Antes e depois da edição de imagens do editorial Gabriela Lima.">
+<meta property="og:image" content="1x/Antes e Depois 1.webp">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ESTILOS COMPLETOS (MESMO DO GABRIELA ANTERIOR, COM ZOOM) */
 :root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); }
@@ -62,9 +61,9 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 <body>
 <header class="site-header"><a href="imagens.html" class="header-back"><i class="fas fa-arrow-left"></i> Voltar</a><span class="header-section-name">Antes &amp; Depois</span></header>
 <div class="comp-hero">
-  <h2 class="comp-title">TITULO_HERO</h2>
-  <p style="color:var(--mist); max-width:700px; margin-top:1rem;">DESCRICAO_HERO</p>
-  <div class="comp-meta">METAS</div>
+  <h2 class="comp-title">Projeto: <span>Gabriela Lima</span></h2>
+  <p style="color:var(--mist); max-width:700px; margin-top:1rem;">O editorial explora o minimalismo dramático, utilizando uma iluminação circular para esculpir a silhueta e destacar o equilíbrio entre o clássico e o contemporâneo.<br><br>Estética: Jogo de luz e sombra que confere mistério e autoridade à modelo.<br>Styling: Contraste entre um vestido preto sólido e uma malha brilhante, unindo o luxo da alta moda à expressão urbana das tatuagens à mostra.<br>Beauty: Conceito "menos é mais", com coque e tons terrosos para manter o foco na harmonia visual.<br>Essência: Uma celebração da moda sofisticada e audaciosa, que comunica luxo e presença através da simplicidade, sem necessidade de excessos.</p>
+  <div class="comp-meta"><div><div class="comp-meta-label">Fotografia</div><div class="comp-meta-val">Abner Ribeiro</div></div><div><div class="comp-meta-label">Moda e Maquiagem</div><div class="comp-meta-val">Gabriela Lima</div></div><div><div class="comp-meta-label">Modelo</div><div class="comp-meta-val">Gabriela Lima</div></div><div><div class="comp-meta-label">Edição</div><div class="comp-meta-val">Ibrahim</div></div></div>
 </div>
 <div class="comp-body" id="comp-body"></div>
 <footer class="site-footer"><span class="footer-copy">© 2026 Ibrahim</span><div class="footer-gold-line"></div></footer>
@@ -73,14 +72,14 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 <div class="contact-modal" id="contactModal"><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button><h3>Contato</h3><p>Envie uma mensagem rápida</p><div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div><div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div><div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div><div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div></div>
 <script>
 const container = document.getElementById('comp-body');
-for(let i=INICIO; i<=FIM; i++) {
+for(let i=1; i<=5; i++) {
   const num = String(i).padStart(2,'0');
   const antesLQ = `1x/A(${num}).webp`;
   const depoisLQ = `1x/D(${num}).webp`;
   const antesHD = `1x/A${num}.webp`;
   const depoisHD = `1x/D${num}.webp`;
   const pair = document.createElement('div'); pair.className = 'comp-pair';
-  pair.innerHTML = `<div class="comp-pair-label">Composição ${i-OFFSET}</div><div class="comp-pair-imgs"><div class="comp-img-wrap" data-hd="${antesHD}"><span class="comp-img-badge">Antes</span><img src="${antesLQ}" loading="lazy"></div><div class="comp-img-wrap" data-hd="${depoisHD}"><span class="comp-img-badge" style="color:var(--gold-light)">Depois</span><img src="${depoisLQ}" loading="lazy"></div></div>`;
+  pair.innerHTML = `<div class="comp-pair-label">Composição ${i}</div><div class="comp-pair-imgs"><div class="comp-img-wrap" data-hd="${antesHD}"><span class="comp-img-badge">Antes</span><img src="${antesLQ}" loading="lazy"></div><div class="comp-img-wrap" data-hd="${depoisHD}"><span class="comp-img-badge" style="color:var(--gold-light)">Depois</span><img src="${depoisLQ}" loading="lazy"></div></div>`;
   container.appendChild(pair);
 }
 setTimeout(() => { document.querySelectorAll('.comp-img-wrap').forEach(wrap => { const hd = wrap.getAttribute('data-hd'); if(hd) { const img = wrap.querySelector('img'); if(img) img.src = hd; } }); }, 5000);

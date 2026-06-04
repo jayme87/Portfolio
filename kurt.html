@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>TITULO</title>
+<title>Kurt's Corte · Ibrahim</title>
 <link rel="icon" type="image/webp" href="1x/IB.webp">
-<meta property="og:title" content="TITULO_OG">
-<meta property="og:description" content="DESCRICAO_OG">
-<meta property="og:image" content="1x/CAPA_OG.webp">
+<meta property="og:title" content="Kurt's Corte · Identidade Visual">
+<meta property="og:description" content="Identidade visual para barbearia com conceito nostálgico e tradicional.">
+<meta property="og:image" content="1x/KC01.webp">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ===== ESTILOS COMPLETOS (MESMO DO KURT ANTERIOR, COM ZOOM E SONS) ===== */
 :root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); }
@@ -61,12 +60,12 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 </style>
 </head>
 <body>
-<header class="site-header"><a href="identidades.html" class="header-back"><i class="fas fa-arrow-left"></i> Voltar</a><span class="header-section-name">NOME_SECAO</span></header>
+<header class="site-header"><a href="identidades.html" class="header-back"><i class="fas fa-arrow-left"></i> Voltar</a><span class="header-section-name">Barbearia · Identidade Visual</span></header>
 <div class="detalhe-hero">
   <div class="detalhe-left-col">
     <div class="detalhe-title-label">// Identidade Visual</div>
-    <div class="detalhe-title-text">TITULO_PROJETO</div>
-    <p class="detalhe-desc-text">DESCRICAO_COMPLETA</p>
+    <div class="detalhe-title-text">Kurt's Corte</div>
+    <p class="detalhe-desc-text">Essa é uma marca que equilibra muito bem o nostálgico com o dinâmico, fugindo do clichê das barbearias ultra-minimalistas modernas para abraçar uma estética tradicional com um toque brasileiro.<br><br>Conceito Visual: Kurt's Corte<br><br>A identidade visual de Kurt's Corte foi desenvolvida para evocar a tradição das barbearias clássicas, estabelecendo uma conexão imediata de confiança e maestria técnica.<br><br>Elementos Simbólicos<br>O Pole de Barbeiro posicionado em destaque é o símbolo máximo da barbearia. A navalha na base do logotipo reforça a ideia de precisão e o barbear tradicional. A moldura circular cria unidade visual coesa.<br><br>Tipografia e Dinamismo<br>A fonte cursiva robusta e fluida confere aspecto artesanal e personalizado — como se fosse uma assinatura de qualidade do próprio proprietário.<br><br>Paleta de Cores<br>Azul Real transmite profissionalismo e serenidade. Vermelho Vibrante adiciona energia e garante alto contraste. Off-White confere aspecto premium.</p>
   </div>
   <div class="detalhe-right-col" id="carouselWrap"></div>
 </div>
@@ -76,10 +75,10 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 <button class="float-contact-btn" id="floatContactBtn"><i class="fas fa-comment-dots"></i></button>
 <div class="contact-modal" id="contactModal"><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button><h3>Contato</h3><p>Envie uma mensagem rápida</p><div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div><div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div><div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div><div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div></div>
 <script>
-const galeria = Array.from({length:18}, (_,i) => `1x/PREFIXO${String(i+1).padStart(2,'0')}.webp`);
+const galeria = Array.from({length:18}, (_,i) => `1x/KC${String(i+1).padStart(2,'0')}.webp`);
 const wrap = document.getElementById('carouselWrap');
 const track = document.createElement('div'); track.className = 'id-carousel-track';
-[...galeria, ...galeria].forEach(src => { const slide = document.createElement('div'); slide.className = 'id-carousel-slide'; const img = document.createElement('img'); img.src = src; img.alt = 'ALT'; slide.appendChild(img); track.appendChild(slide); });
+[...galeria, ...galeria].forEach(src => { const slide = document.createElement('div'); slide.className = 'id-carousel-slide'; const img = document.createElement('img'); img.src = src; img.alt = 'Kurt\'s Corte'; slide.appendChild(img); track.appendChild(slide); });
 wrap.appendChild(track);
 let pos = 0, speed = 0.3, slideW = wrap.offsetWidth, loopW = slideW * galeria.length;
 function anim() { pos += speed; if(pos >= loopW) pos -= loopW; track.style.transform = `translateX(-${pos}px)`; requestAnimationFrame(anim); }
