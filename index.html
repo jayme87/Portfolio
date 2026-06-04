@@ -88,25 +88,41 @@ body {
 
 /* VIEWS */
 .view {
-  display: none;
+  position: absolute;
+  inset: 0;
+  min-height: 100vh;
   opacity: 0;
-  transform: scale(0.97);
-  transform-origin: center top;
-  transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 0.36s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.36s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  visibility: hidden;
   contain: layout style;
 }
 .view.active {
-  display: block;
+  position: relative;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
 }
 .view.fade-in {
   opacity: 1;
-  transform: scale(1);
+  transform: translateY(0);
 }
 .view.fade-out {
   opacity: 0;
-  transform: scale(1.03);
+  transform: translateY(-10px);
   pointer-events: none;
+  position: absolute;
+  visibility: visible;
+}
+@media (max-width: 600px) {
+  .view {
+    transition: opacity 0.26s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.26s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
 }
 
 /* ============================================================
@@ -115,12 +131,14 @@ body {
 #index-view {
   position: fixed; inset: 0;
   background: var(--ink);
-  display: none;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  /* Sobrescreve .view: usa flex quando visível */
+  display: flex;
 }
-#index-view.active { display: flex; }
+#index-view.active { display: flex; visibility: visible; }
+#index-view:not(.active):not(.fade-out) { display: none; visibility: hidden; }
 
 .index-lines {
   position: absolute; inset: 0;
@@ -1669,10 +1687,15 @@ let currentView = 'index';
 const views = {};
 document.querySelectorAll('.view').forEach(v => views[v.id.replace('-view','')] = v);
 
-setTimeout(() => { if(views[currentView]) views[currentView].classList.add('fade-in'); }, 50);
+// Inicializa a view de entrada sem transição (já está no estado final)
+requestAnimationFrame(() => {
+  if (views[currentView]) views[currentView].classList.add('fade-in');
+});
+
+let _transitioning = false;
 
 function showView(name) {
-  if (currentView === name) return;
+  if (currentView === name || _transitioning) return;
   if (currentView === 'detalhe' && window._idCarouselRaf) {
     cancelAnimationFrame(window._idCarouselRaf);
     window._idCarouselRaf = null;
@@ -1682,31 +1705,38 @@ function showView(name) {
   const nextView = views[name];
   if (!nextView) return;
 
-  // Saída: fade-out com leve zoom-out
+  _transitioning = true;
+
+  // Lazy build da próxima view antes de qualquer animação
+  if (name === 'imagens'      && !window._imgBuilt)  buildImagens();
+  if (name === 'identidades'  && !window._idBuilt)   buildIdentidades();
+  if (name === 'comparativo'  && !window._c1Built)   buildComp('comp1-body', 1, 5);
+  if (name === 'comparativo2' && !window._c2Built)   buildComp('comp2-body', 6, 10);
+  if (name === 'comparativo3' && !window._c3Built)   buildComp('comp3-body', 11, 15);
+
+  // FASE 1 — Saída da view atual
   oldView.classList.remove('fade-in');
   oldView.classList.add('fade-out');
 
+  // FASE 2 — Após a saída, ativa e entra na nova view
+  const DURATION = window.matchMedia('(max-width:600px)').matches ? 260 : 360;
+
   setTimeout(() => {
+    // Remove a view antiga do fluxo
     oldView.classList.remove('active', 'fade-out');
 
-    if (name === 'imagens' && !window._imgBuilt) buildImagens();
-    if (name === 'identidades' && !window._idBuilt) buildIdentidades();
-    if (name === 'comparativo' && !window._c1Built) buildComp('comp1-body', 1, 5);
-    if (name === 'comparativo2' && !window._c2Built) buildComp('comp2-body', 6, 10);
-    if (name === 'comparativo3' && !window._c3Built) buildComp('comp3-body', 11, 15);
-
-    // Entrada: começa em scale(0.97) opacity 0 → anima para scale(1) opacity 1
+    // Prepara a próxima: visível mas ainda transparente/deslocada
     nextView.classList.add('active');
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
+    // Um único rAF é suficiente para o browser registrar o estado inicial
+    // antes de aplicar a classe que dispara a transição
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        nextView.classList.add('fade-in');
-      });
+      nextView.classList.add('fade-in');
+      currentView = name;
+      _transitioning = false;
     });
-
-    currentView = name;
-  }, 280);
+  }, DURATION);
 }
 
 document.querySelectorAll('[data-view]').forEach(btn => {
