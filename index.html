@@ -1706,6 +1706,61 @@ requestAnimationFrame(() => {
 });
 
 let _transitioning = false;
+let _viewTransitionTimer = null;
+
+function resetToIndexView() {
+  const indexView = views.index;
+  if (!indexView) return;
+
+  if (window._idCarouselRaf) {
+    cancelAnimationFrame(window._idCarouselRaf);
+    window._idCarouselRaf = null;
+  }
+  if (window._idCarouselResizeObs) {
+    window._idCarouselResizeObs.disconnect();
+    window._idCarouselResizeObs = null;
+  }
+  if (_viewTransitionTimer) {
+    clearTimeout(_viewTransitionTimer);
+    _viewTransitionTimer = null;
+  }
+
+  const oldView = views[currentView];
+  const shouldAnimateOut = oldView && oldView !== indexView && oldView.classList.contains('active');
+  _transitioning = true;
+
+  Object.values(views).forEach(view => {
+    if (view !== oldView) {
+      view.classList.remove('active', 'fade-in', 'fade-out');
+    }
+  });
+
+  if (shouldAnimateOut) {
+    oldView.classList.remove('fade-in');
+    oldView.classList.add('fade-out');
+  }
+
+  const DURATION = shouldAnimateOut
+    ? (window.matchMedia('(max-width:600px)').matches ? 260 : 360)
+    : 0;
+
+  _viewTransitionTimer = setTimeout(() => {
+    _viewTransitionTimer = null;
+
+    Object.values(views).forEach(view => {
+      view.classList.remove('active', 'fade-in', 'fade-out');
+    });
+
+    currentView = 'index';
+    indexView.classList.add('active');
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+    requestAnimationFrame(() => {
+      indexView.classList.add('fade-in');
+      _transitioning = false;
+    });
+  }, DURATION);
+}
 
 function showView(name) {
   if (currentView === name || _transitioning) return;
@@ -1734,7 +1789,9 @@ function showView(name) {
   // FASE 2 — Após a saída, ativa e entra na nova view
   const DURATION = window.matchMedia('(max-width:600px)').matches ? 260 : 360;
 
-  setTimeout(() => {
+  _viewTransitionTimer = setTimeout(() => {
+    _viewTransitionTimer = null;
+
     // Remove a view antiga do fluxo
     oldView.classList.remove('active', 'fade-out');
 
@@ -1756,7 +1813,8 @@ document.querySelectorAll('[data-view]').forEach(btn => {
   btn.addEventListener('click', e => {
     e.preventDefault();
     const v = btn.getAttribute('data-view');
-    if (v) showView(v);
+    if (v === 'index') resetToIndexView();
+    else if (v) showView(v);
   });
 });
 
