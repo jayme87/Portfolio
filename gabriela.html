@@ -60,7 +60,7 @@ body {
   transform: translate3d(-50%, -50%, 0);
   transition: width 0.2s, height 0.2s, opacity 0.2s;
 }
-/* HEADER - sem subtítulo de "caso de estudo" */
+/* HEADER */
 .site-header {
   position: sticky;
   top: 0;
@@ -94,7 +94,7 @@ body {
   color: var(--gold);
   opacity: 0.8;
 }
-/* HERO COM CARROSSEL (resultados finais) */
+/* HERO COM CARROSSEL */
 .case-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -132,10 +132,36 @@ body {
   border-left: 2px solid var(--gold);
   padding-left: 1.2rem;
 }
+/* FICHA TÉCNICA (COMP META) */
+.case-meta {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.meta-item {
+  flex: 1;
+  min-width: 120px;
+}
+.meta-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.meta-val {
+  font-size: 0.95rem;
+  color: var(--mist);
+  line-height: 1.4;
+}
 .case-stats {
   display: flex;
   gap: 2rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 .stat {
   text-align: left;
@@ -173,12 +199,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 .carousel-slide img {
   width: 100%;
-  height: auto;
-  max-height: 550px;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;   /* imagens mais juntas, sem bordas brancas */
+  max-height: 560px;
+  display: block;
 }
 /* SEÇÕES DO CASE */
 .section-container {
@@ -226,7 +254,7 @@ body {
   color: var(--mist);
   font-weight: 300;
 }
-/* GALERIA DE COMPARATIVOS */
+/* COMPARATIVOS */
 .comp-pair {
   margin-bottom: 4rem;
 }
@@ -505,11 +533,13 @@ body {
   .process-grid { grid-template-columns: 1fr; gap: 2rem; }
   .comp-pair-imgs { grid-template-columns: 1fr; }
   .site-header { padding: 1rem 2rem; }
-  .case-hero-media { min-height: 300px; }
+  .case-hero-media { min-height: 350px; }
+  .case-meta { gap: 1rem; }
 }
 @media (max-width: 600px) {
   .case-stats { flex-direction: column; gap: 1rem; }
   .next-project-inner { padding: 2rem 1rem; }
+  .case-meta { flex-direction: column; gap: 1rem; }
 }
 </style>
 </head>
@@ -523,12 +553,31 @@ body {
   <span class="header-section-name">Edição de Imagem</span>
 </header>
 
-<!-- HERO com carrossel das imagens D(01) a D(05) (baixa qualidade) -->
+<!-- HERO com carrossel e ficha técnica -->
 <div class="case-hero">
   <div class="case-hero-content">
     <div class="case-tag">// Edição de Imagem · 2025</div>
     <h1 class="case-title">Gabriela Lima</h1>
     <div class="case-subhead">Editorial de moda · Minimalismo dramático</div>
+    <!-- FICHA TÉCNICA -->
+    <div class="case-meta">
+      <div class="meta-item">
+        <div class="meta-label">Fotografia</div>
+        <div class="meta-val">Abner Ribeiro</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Moda e Maquiagem</div>
+        <div class="meta-val">Gabriela Lima</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Modelo</div>
+        <div class="meta-val">Gabriela Lima</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Edição</div>
+        <div class="meta-val">Ibrahim</div>
+      </div>
+    </div>
     <p style="font-size:1rem; line-height:1.7; color:var(--mist); margin-bottom:2rem;">O editorial explora o minimalismo dramático, utilizando uma iluminação circular para esculpir a silhueta e destacar o equilíbrio entre o clássico e o contemporâneo.</p>
     <div class="case-stats">
       <div class="stat"><div class="stat-number">5</div><div class="stat-label">composições</div></div>
@@ -587,7 +636,7 @@ body {
   </div>
 </div>
 
-<!-- RESULTADO: COMPARATIVOS ANTES E DEPOIS (imagens baixa qualidade, modal abre alta qualidade) -->
+<!-- RESULTADO: COMPARATIVOS ANTES E DEPOIS -->
 <div class="section-container">
   <div class="section-label">03 · Resultado</div>
   <div class="section-title">Antes e depois da edição</div>
@@ -674,7 +723,6 @@ window.addEventListener('resize', () => {
 // Clique nas imagens do carrossel: abre modal com a versão de alta qualidade
 const heroSlides = document.querySelectorAll('#heroCarouselWrap .carousel-slide');
 heroSlides.forEach((slide, idx) => {
-  // identifica qual imagem original (considerando a duplicação)
   slide.addEventListener('click', (e) => {
     e.stopPropagation();
     const originalIndex = idx % imagensHero.length;
@@ -714,7 +762,7 @@ pares.forEach((par, idx) => {
 });
 
 // ============================================================
-// 3. MODAL (abre com imagem de alta qualidade)
+// 3. MODAL
 // ============================================================
 const modal = document.getElementById('modal');
 const modalImg = document.getElementById('modal-img');
@@ -751,7 +799,6 @@ document.getElementById('modal-close').addEventListener('click', closeModal);
 modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 document.getElementById('modal-zoom').addEventListener('click', toggleZoom);
 modalImg.addEventListener('dblclick', toggleZoom);
-
 document.addEventListener('keydown', (e) => {
   if (modal.style.display === 'flex') {
     if (e.key === 'Escape') closeModal();
