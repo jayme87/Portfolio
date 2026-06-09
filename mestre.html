@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+/* Mesmos estilos do kurt.html (com grid na galeria) */
 :root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); }
@@ -30,21 +31,26 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 .id-carousel-slide { flex: 0 0 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .id-carousel-slide img { width: 100%; height: 100%; object-fit: contain; max-height: 500px; }
 .detalhe-body { max-width: 1300px; margin: 0 auto; padding: 5rem 4rem; }
-.detail-gallery { columns: 3; column-gap: 6px; }
-.detail-gallery-item { break-inside: avoid; overflow: hidden; margin-bottom: 6px; cursor: pointer; }
+.detail-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.detail-gallery-item { overflow: hidden; margin-bottom: 0; cursor: pointer; }
 .detail-gallery-item img { width: 100%; display: block; transition: transform 0.3s; }
 .detail-gallery-item:hover img { transform: scale(1.02); }
 .site-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
 .footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--ash); }
-@media (max-width: 900px) { .detalhe-hero { grid-template-columns: 1fr; } .detalhe-left-col { padding: 3rem 2rem; } .detail-gallery { columns: 2; } }
-@media (max-width: 600px) { .detail-gallery { columns: 1; } }
+@media (max-width: 900px) { .detalhe-hero { grid-template-columns: 1fr; } .detalhe-left-col { padding: 3rem 2rem; } .detail-gallery { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .detail-gallery { grid-template-columns: 1fr; } }
 .modal { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(5,5,5,0.97); align-items: center; justify-content: center; flex-direction: column; }
 .modal-content { position: relative; display: flex; align-items: center; justify-content: center; max-width: 90vw; max-height: 90vh; }
 .modal-img { max-width: 90vw; max-height: 85vh; object-fit: contain; transition: transform 0.2s ease; cursor: zoom-in; }
 .modal-img.zoomed { transform: scale(1.5); cursor: zoom-out; }
 .modal-close-btn { position: absolute; top: 1rem; right: 2rem; background: none; border: none; color: var(--ash); font-size: 1.8rem; cursor: pointer; z-index: 2001; }
+.modal-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); border: 1px solid var(--gold); color: var(--gold); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; transition: 0.2s; z-index: 2001; }
+.modal-nav-btn:hover { background: var(--gold); color: var(--ink); }
+.modal-prev { left: 1rem; }
+.modal-next { right: 1rem; }
 .modal-zoom-btn { position: absolute; bottom: 1rem; right: 2rem; background: rgba(0,0,0,0.6); border: 1px solid var(--gold); color: var(--gold); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; transition: 0.2s; z-index: 2001; }
 .modal-zoom-btn:hover { background: var(--gold); color: var(--ink); }
+.modal-count { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--ash); background: rgba(0,0,0,0.5); padding: 0.3rem 0.8rem; border-radius: 20px; z-index: 2001; }
 .float-contact-btn { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: var(--transition-smooth); z-index: 1050; border: none; cursor: pointer; }
 .float-contact-btn:hover { transform: scale(1.08); background: var(--gold-light); }
 .contact-modal { position: fixed; bottom: 5rem; right: 2rem; width: 380px; max-width: calc(100vw - 2rem); background: var(--deep); border: 1px solid rgba(244,208,61,0.3); border-radius: 12px; padding: 1.8rem; z-index: 1051; backdrop-filter: blur(20px); background: rgba(17,17,17,0.95); box-shadow: 0 20px 35px rgba(0,0,0,0.4); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; visibility: hidden; transform: translateY(15px); }
@@ -71,7 +77,7 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 </div>
 <div class="detalhe-body"><div class="detail-gallery" id="gallery"></div></div>
 <footer class="site-footer"><span class="footer-copy">© 2026 Ibrahim</span><div class="footer-gold-line"></div></footer>
-<div id="modal" class="modal"><button class="modal-close-btn" id="modal-close"><i class="fas fa-times"></i></button><div class="modal-content"><img class="modal-img" id="modal-img" src=""></div><button class="modal-zoom-btn" id="modal-zoom"><i class="fas fa-search-plus"></i></button></div>
+<div id="modal" class="modal"><button class="modal-close-btn" id="modal-close"><i class="fas fa-times"></i></button><button class="modal-nav-btn modal-prev" id="modal-prev"><i class="fas fa-chevron-left"></i></button><button class="modal-nav-btn modal-next" id="modal-next"><i class="fas fa-chevron-right"></i></button><div class="modal-content"><img class="modal-img" id="modal-img" src=""></div><button class="modal-zoom-btn" id="modal-zoom"><i class="fas fa-search-plus"></i></button><div class="modal-count" id="modal-count"></div></div>
 <button class="float-contact-btn" id="floatContactBtn"><i class="fas fa-comment-dots"></i></button>
 <div class="contact-modal" id="contactModal"><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button><h3>Contato</h3><p>Envie uma mensagem rápida</p><div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div><div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div><div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div><div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div></div>
 <script>
@@ -86,16 +92,24 @@ anim();
 const gallery = document.getElementById('gallery');
 galeria.forEach((src, i) => { const item = document.createElement('div'); item.className = 'detail-gallery-item'; const img = document.createElement('img'); img.src = src; img.loading = 'lazy'; item.appendChild(img); item.addEventListener('click', () => openModal(galeria, i)); gallery.appendChild(item); });
 let modalImgs = [], modalIdx = 0;
-const modal = document.getElementById('modal'), modalImg = document.getElementById('modal-img');
+const modal = document.getElementById('modal'), modalImg = document.getElementById('modal-img'), modalCount = document.getElementById('modal-count');
 let isZoomed = false;
-function openModal(imgs, idx) { modalImgs = imgs; modalIdx = idx; modalImg.src = modalImgs[modalIdx]; modal.style.display = 'flex'; requestAnimationFrame(() => modal.style.opacity = '1'); if(isZoomed) { modalImg.classList.remove('zoomed'); isZoomed = false; document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>'; } }
+function openModal(imgs, idx) { modalImgs = imgs; modalIdx = idx; updateModal(); modal.style.display = 'flex'; requestAnimationFrame(() => modal.style.opacity = '1'); if(isZoomed) { modalImg.classList.remove('zoomed'); isZoomed = false; document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>'; } }
+function updateModal() { modalImg.src = modalImgs[modalIdx]; modalCount.textContent = `${modalIdx+1} / ${modalImgs.length}`; }
 function closeModal() { modal.style.opacity = '0'; setTimeout(() => modal.style.display = 'none', 300); }
+function prevImage() { modalIdx = (modalIdx - 1 + modalImgs.length) % modalImgs.length; updateModal(); }
+function nextImage() { modalIdx = (modalIdx + 1) % modalImgs.length; updateModal(); }
 function toggleZoom() { if(isZoomed) { modalImg.classList.remove('zoomed'); document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>'; } else { modalImg.classList.add('zoomed'); document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-minus"></i>'; } isZoomed = !isZoomed; }
 document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-prev').addEventListener('click', prevImage);
+document.getElementById('modal-next').addEventListener('click', nextImage);
 modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
 document.getElementById('modal-zoom').addEventListener('click', toggleZoom);
 modalImg.addEventListener('dblclick', toggleZoom);
-document.addEventListener('keydown', e => { if(modal.style.display === 'flex' && e.key === 'Escape') closeModal(); });
+document.addEventListener('keydown', e => { if(modal.style.display === 'flex') { if(e.key === 'ArrowLeft') prevImage(); else if(e.key === 'ArrowRight') nextImage(); else if(e.key === 'Escape') closeModal(); } });
+// Swipe
+let touchStartX = 0; modal.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+modal.addEventListener('touchend', e => { const dx = e.changedTouches[0].screenX - touchStartX; if(Math.abs(dx) > 50) { if(dx > 0) prevImage(); else nextImage(); } }, { passive: true });
 // Sons
 let audioCtx = null, soundEnabled = false;
 function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundEnabled = true; }
