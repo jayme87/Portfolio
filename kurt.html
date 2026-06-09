@@ -3,142 +3,815 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Kurt's Corte · Ibrahim</title>
+<title>Kurt's Corte · Case de Identidade Visual | Ibrahim</title>
 <link rel="icon" type="image/webp" href="1x/IB.webp">
 <meta property="og:title" content="Kurt's Corte · Identidade Visual">
-<meta property="og:description" content="Identidade visual para barbearia com conceito nostálgico e tradicional.">
+<meta property="og:description" content="Identidade visual para barbearia com conceito nostálgico e tradicional. Case completo: desafio, processo e aplicações.">
 <meta property="og:image" content="1x/KC01.webp">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-:root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); }
-.site-header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 4rem; background: rgba(11,11,11,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(244,208,61,0.12); }
-.header-back { display: flex; align-items: center; gap: 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ash); text-decoration: none; }
+:root {
+  --ink: #0b0b0b;
+  --ivory: #e9e9ea;
+  --gold: #f4d03d;
+  --gold-light: #f7dc6f;
+  --ash: #8a8480;
+  --mist: #d4cfc6;
+  --deep: #111111;
+  --cream: #ebe5d8;
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: var(--ink);
+  color: var(--ivory);
+  overflow-x: hidden;
+}
+/* CUSTOM CURSOR (opcional, mantém identidade) */
+.cursor {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transform: translate3d(-50%, -50%, 0);
+  transition: transform 0.05s;
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.5;
+  transform: translate3d(-50%, -50%, 0);
+  transition: width 0.2s, height 0.2s, opacity 0.2s;
+}
+/* HEADER */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 4rem;
+  background: rgba(11,11,11,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(244,208,61,0.12);
+}
+.header-back {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ash);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
 .header-back:hover { color: var(--gold); }
-.header-section-name { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.8; }
-.detalhe-hero { padding: 0 !important; display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch; overflow: hidden; }
-.detalhe-left-col { display: flex; flex-direction: column; background: #0b0b0b; padding: 4rem; justify-content: center; border-right: 1px solid rgba(255,255,255,0.07); }
-.detalhe-title-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
-.detalhe-title-text { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 900; line-height: 0.95; color: var(--ivory); }
-.detalhe-desc-text { font-size: 1.05rem; line-height: 1.8; color: var(--mist); font-weight: 300; white-space: pre-wrap; margin-top: 2rem; }
-.detalhe-right-col { position: relative; overflow: hidden; min-height: 500px; background: #0b0b0b; }
-.id-carousel-track { display: flex; height: 100%; will-change: transform; }
-.id-carousel-slide { flex: 0 0 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.id-carousel-slide img { width: 100%; height: 100%; object-fit: contain; max-height: 500px; }
-.detalhe-body { max-width: 1300px; margin: 0 auto; padding: 5rem 4rem; }
-.detail-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.detail-gallery-item { overflow: hidden; margin-bottom: 0; cursor: pointer; }
-.detail-gallery-item img { width: 100%; display: block; transition: transform 0.3s; }
-.detail-gallery-item:hover img { transform: scale(1.02); }
-.site-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
-.footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--ash); }
-@media (max-width: 900px) { .detalhe-hero { grid-template-columns: 1fr; } .detalhe-left-col { padding: 3rem 2rem; } .detail-gallery { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .detail-gallery { grid-template-columns: 1fr; } }
-.modal { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(5,5,5,0.97); align-items: center; justify-content: center; flex-direction: column; }
-.modal-content { position: relative; display: flex; align-items: center; justify-content: center; max-width: 90vw; max-height: 90vh; }
-.modal-img { max-width: 90vw; max-height: 85vh; object-fit: contain; transition: transform 0.2s ease; cursor: zoom-in; }
-.modal-img.zoomed { transform: scale(1.5); cursor: zoom-out; }
-.modal-close-btn { position: absolute; top: 1rem; right: 2rem; background: none; border: none; color: var(--ash); font-size: 1.8rem; cursor: pointer; z-index: 2001; }
-.modal-zoom-btn { position: absolute; bottom: 1rem; right: 2rem; background: rgba(0,0,0,0.6); border: 1px solid var(--gold); color: var(--gold); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; transition: 0.2s; z-index: 2001; }
-.modal-zoom-btn:hover { background: var(--gold); color: var(--ink); }
-.float-contact-btn { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: var(--transition-smooth); z-index: 1050; border: none; cursor: pointer; }
-.float-contact-btn:hover { transform: scale(1.08); background: var(--gold-light); }
-.contact-modal { position: fixed; bottom: 5rem; right: 2rem; width: 380px; max-width: calc(100vw - 2rem); background: var(--deep); border: 1px solid rgba(244,208,61,0.3); border-radius: 12px; padding: 1.8rem; z-index: 1051; backdrop-filter: blur(20px); background: rgba(17,17,17,0.95); box-shadow: 0 20px 35px rgba(0,0,0,0.4); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; visibility: hidden; transform: translateY(15px); }
-.contact-modal.open { opacity: 1; visibility: visible; transform: translateY(0); }
-.contact-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 0.25rem; color: var(--gold); }
-.contact-modal p { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--ash); margin-bottom: 1.5rem; letter-spacing: 0.1em; }
-.contact-modal .form-field { margin-bottom: 1rem; }
-.contact-modal input, .contact-modal textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: var(--ivory); padding: 0.7rem 1rem; font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; }
-.modal-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
-.modal-buttons button { flex: 1; background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.8rem; transition: var(--transition-smooth); cursor: pointer; }
-.modal-buttons button:hover { background: var(--gold); color: var(--ink); }
-.close-modal { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--ash); font-size: 1rem; cursor: pointer; }
+.header-section-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+}
+/* HERO – agora com estrutura clara */
+.case-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: stretch;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.case-hero-content {
+  padding: 4rem;
+  background: var(--ink);
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.case-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.case-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: var(--ivory);
+  margin-bottom: 1.5rem;
+}
+.case-subhead {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--ash);
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  border-left: 2px solid var(--gold);
+  padding-left: 1.2rem;
+}
+.case-stats {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.stat {
+  text-align: left;
+}
+.stat-number {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+.case-hero-media {
+  position: relative;
+  overflow: hidden;
+  background: #0b0b0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel-track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+}
+.carousel-slide {
+  flex: 0 0 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel-slide img {
+  width: 100%;
+  height: auto;
+  max-height: 550px;
+  object-fit: contain;
+}
+/* SEÇÕES DO CASE */
+.section-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 5rem 4rem;
+}
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--ivory);
+  margin-bottom: 2rem;
+  line-height: 1.2;
+}
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
+  margin-top: 2rem;
+}
+.process-card {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 2rem;
+}
+.process-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.process-card p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--mist);
+  font-weight: 300;
+}
+/* GALERIA DE APLICAÇÕES */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 2rem;
+}
+.gallery-item {
+  overflow: hidden;
+  cursor: pointer;
+}
+.gallery-item img {
+  width: 100%;
+  display: block;
+  transition: transform 0.3s ease;
+}
+.gallery-item:hover img { transform: scale(1.02); }
+/* PRÓXIMO PROJETO + CTA */
+.next-project {
+  background: linear-gradient(135deg, var(--deep) 0%, var(--ink) 100%);
+  border-top: 1px solid rgba(244,208,61,0.2);
+  margin-top: 2rem;
+  text-align: center;
+}
+.next-project-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+.next-project-inner h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.next-project-inner p {
+  font-size: 1rem;
+  color: var(--ash);
+  margin-bottom: 2rem;
+}
+.next-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  transition: var(--transition-smooth);
+  text-decoration: none;
+}
+.next-btn:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+/* FOOTER */
+.site-footer {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 2rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--ash);
+}
+/* MODAL (zoom, navegação) */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(5,5,5,0.97);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.modal-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+.modal-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+  cursor: zoom-in;
+}
+.modal-img.zoomed {
+  transform: scale(1.5);
+  cursor: zoom-out;
+}
+.modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  background: none;
+  border: none;
+  color: var(--ash);
+  font-size: 1.8rem;
+  cursor: pointer;
+  z-index: 2001;
+}
+.modal-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(244,208,61,0.3);
+  color: var(--ivory);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  z-index: 2001;
+}
+.modal-nav-btn:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+.modal-prev { left: 2rem; }
+.modal-next { right: 2rem; }
+.modal-zoom-btn {
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: 0.2s;
+  z-index: 2001;
+}
+.modal-zoom-btn:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+.modal-count {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--ash);
+  background: rgba(0,0,0,0.5);
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+}
+/* BOTÃO FLUTUANTE E MODAL DE CONTATO */
+.float-contact-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  font-size: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transition: var(--transition-smooth);
+  z-index: 1050;
+  border: none;
+  cursor: pointer;
+}
+.float-contact-btn:hover {
+  transform: scale(1.08);
+  background: var(--gold-light);
+}
+.contact-modal {
+  position: fixed;
+  bottom: 5rem;
+  right: 2rem;
+  width: 380px;
+  max-width: calc(100vw - 2rem);
+  background: var(--deep);
+  border: 1px solid rgba(244,208,61,0.3);
+  border-radius: 12px;
+  padding: 1.8rem;
+  z-index: 1051;
+  backdrop-filter: blur(20px);
+  background: rgba(17,17,17,0.95);
+  box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
+}
+.contact-modal.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.contact-modal h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  margin-bottom: 0.25rem;
+  color: var(--gold);
+}
+.contact-modal p {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ash);
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.1em;
+}
+.contact-modal .form-field {
+  margin-bottom: 1rem;
+}
+.contact-modal input, .contact-modal textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--ivory);
+  padding: 0.7rem 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+}
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.modal-buttons button {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.8rem;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+.modal-buttons button:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--ash);
+  font-size: 1rem;
+  cursor: pointer;
+}
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .case-hero { grid-template-columns: 1fr; }
+  .case-hero-content { padding: 3rem 2rem; border-right: none; }
+  .section-container { padding: 3rem 2rem; }
+  .process-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .site-header { padding: 1rem 2rem; }
+}
+@media (max-width: 600px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+  .case-stats { flex-direction: column; gap: 1rem; }
+  .next-project-inner { padding: 2rem 1rem; }
+  .modal-nav-btn { width: 36px; height: 36px; }
+}
 </style>
 </head>
 <body>
-<header class="site-header"><a href="identidades.html" class="header-back"><i class="fas fa-arrow-left"></i> Voltar</a><span class="header-section-name">Barbearia · Identidade Visual</span></header>
-<div class="detalhe-hero">
-  <div class="detalhe-left-col">
-    <div class="detalhe-title-label">// Identidade Visual</div>
-    <div class="detalhe-title-text">Kurt's Corte</div>
-    <p class="detalhe-desc-text">Essa é uma marca que equilibra muito bem o nostálgico com o dinâmico, fugindo do clichê das barbearias ultra-minimalistas modernas para abraçar uma estética tradicional com um toque brasileiro.<br><br>Conceito Visual: Kurt's Corte<br><br>A identidade visual de Kurt's Corte foi desenvolvida para evocar a tradição das barbearias clássicas, estabelecendo uma conexão imediata de confiança e maestria técnica.<br><br>Elementos Simbólicos<br>O Pole de Barbeiro posicionado em destaque é o símbolo máximo da barbearia. A navalha na base do logotipo reforça a ideia de precisão e o barbear tradicional. A moldura circular cria unidade visual coesa.<br><br>Tipografia e Dinamismo<br>A fonte cursiva robusta e fluida confere aspecto artesanal e personalizado — como se fosse uma assinatura de qualidade do próprio proprietário.<br><br>Paleta de Cores<br>Azul Real transmite profissionalismo e serenidade. Vermelho Vibrante adiciona energia e garante alto contraste. Off-White confere aspecto premium.</p>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<header class="site-header">
+  <a href="identidades.html" class="header-back"><i class="fas fa-arrow-left"></i> Voltar para identidades</a>
+  <span class="header-section-name">Caso de estudo · Barbearia</span>
+</header>
+
+<!-- HERO com estrutura de case -->
+<div class="case-hero">
+  <div class="case-hero-content">
+    <div class="case-tag">// Identidade Visual · 2025</div>
+    <h1 class="case-title">Kurt's Corte</h1>
+    <div class="case-subhead">Barbearia · Nostálgico + Contemporâneo</div>
+    <p style="font-size:1rem; line-height:1.7; color:var(--mist); margin-bottom:2rem;">Uma marca que equilibra tradição e brasilidade, rompendo com o minimalismo genérico para entregar uma identidade de confiança, precisão e personalidade.</p>
+    <div class="case-stats">
+      <div class="stat"><div class="stat-number">3</div><div class="stat-label">cores estratégicas</div></div>
+      <div class="stat"><div class="stat-number">18</div><div class="stat-label">aplicações finais</div></div>
+      <div class="stat"><div class="stat-number">4</div><div class="stat-label">semanas de processo</div></div>
+    </div>
   </div>
-  <div class="detalhe-right-col" id="carouselWrap"></div>
+  <div class="case-hero-media" id="heroCarouselWrap"></div>
 </div>
-<div class="detalhe-body"><div class="detail-gallery" id="gallery"></div></div>
-<footer class="site-footer"><span class="footer-copy">© 2026 Ibrahim</span><div class="footer-gold-line"></div></footer>
-<div id="modal" class="modal"><button class="modal-close-btn" id="modal-close"><i class="fas fa-times"></i></button><button class="modal-nav-btn modal-prev" id="modal-prev"><i class="fas fa-chevron-left"></i></button><button class="modal-nav-btn modal-next" id="modal-next"><i class="fas fa-chevron-right"></i></button><div class="modal-content"><img class="modal-img" id="modal-img" src=""></div><button class="modal-zoom-btn" id="modal-zoom"><i class="fas fa-search-plus"></i></button><div class="modal-count" id="modal-count"></div></div>
+
+<!-- DESAFIO & CONTEXTO -->
+<div class="section-container">
+  <div class="section-label">01 · Contexto e desafio</div>
+  <div class="section-title">O problema por trás da marca</div>
+  <div class="process-grid">
+    <div class="process-card">
+      <h3>Cliente</h3>
+      <p>Kurt's Corte, uma barbearia local que buscava se diferenciar em um mercado saturado de identidades ultra-minimalistas e sem personalidade.</p>
+    </div>
+    <div class="process-card">
+      <h3>Desafio</h3>
+      <p>Criar uma identidade visual que evocasse a tradição das barbearias clássicas, mas com um toque contemporâneo brasileiro, transmitindo confiança, precisão e aconchego.</p>
+    </div>
+    <div class="process-card">
+      <h3>Objetivo de negócio</h3>
+      <p>Aumentar o reconhecimento local, atrair um público que valoriza o serviço artesanal e construir uma base visual para comunicação em fachada, redes sociais e materiais internos.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESSO CRIATIVO (ESBOÇOS, GRIDS, PALETA) -->
+<div class="section-container" style="background: var(--deep);">
+  <div class="section-label">02 · Processo criativo</div>
+  <div class="section-title">Do sketch à paleta final</div>
+  <div class="process-grid">
+    <div class="process-card">
+      <h3>Pesquisa e referências</h3>
+      <p>Análise de barbearias tradicionais, cartazes de barbeiros antigos e elementos da cultura de bairro. Identificação do "pole de barbeiro" como símbolo máximo de confiança.</p>
+    </div>
+    <div class="process-card">
+      <h3>Esboços e grid</h3>
+      <p>Construção tipográfica manual, exploração de curvas que remetem à navalha e testes de proporção em grid modular. A assinatura cursiva foi desenhada para parecer autoral.</p>
+    </div>
+    <div class="process-card">
+      <h3>Paleta de cores</h3>
+      <p>Azul Real (profissionalismo), Vermelho Vibrante (energia, contraste) e Off‑White (premium). Combinação que foge do preto/branco genérico e dialoga com a tradição.</p>
+    </div>
+    <div class="process-card">
+      <h3>Tipografia e dinamismo</h3>
+      <p>Fonte cursiva robusta + sem‑serifas geométricas para informações complementares. Equilíbrio entre o artesanal e a legibilidade contemporânea.</p>
+    </div>
+  </div>
+</div>
+
+<!-- GALERIA DE APLICAÇÕES FINAIS -->
+<div class="section-container">
+  <div class="section-label">03 · Solução aplicada</div>
+  <div class="section-title">A identidade em ação</div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</div>
+
+<!-- PRÓXIMO PROJETO + CTA DE CONVERSÃO -->
+<div class="next-project">
+  <div class="next-project-inner">
+    <h3>Próximo projeto</h3>
+    <p>Confira a identidade visual de <strong>Mestre do Fliperama</strong>, uma oficina de hardware com conceito de “mago artesão”.</p>
+    <a href="mestre-do-fliperama.html" class="next-btn">Ver estudo completo <i class="fas fa-arrow-right"></i></a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <span class="footer-copy">© 2026 Ibrahim · Todos os direitos reservados</span>
+  <div class="footer-gold-line"></div>
+</footer>
+
+<!-- MODAL (zoom + navegação) -->
+<div id="modal" class="modal">
+  <button class="modal-close-btn" id="modal-close"><i class="fas fa-times"></i></button>
+  <button class="modal-nav-btn modal-prev" id="modal-prev"><i class="fas fa-chevron-left"></i></button>
+  <button class="modal-nav-btn modal-next" id="modal-next"><i class="fas fa-chevron-right"></i></button>
+  <div class="modal-content">
+    <img class="modal-img" id="modal-img" src="">
+  </div>
+  <button class="modal-zoom-btn" id="modal-zoom"><i class="fas fa-search-plus"></i></button>
+  <div class="modal-count" id="modal-count"></div>
+</div>
+
+<!-- BOTÃO FLUTUANTE + MODAL DE CONTATO -->
 <button class="float-contact-btn" id="floatContactBtn"><i class="fas fa-comment-dots"></i></button>
-<div class="contact-modal" id="contactModal"><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button><h3>Contato</h3><p>Envie uma mensagem rápida</p><div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div><div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div><div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div><div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div></div>
+<div class="contact-modal" id="contactModal">
+  <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+  <h3>Contato</h3>
+  <p>Envie uma mensagem rápida</p>
+  <div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div>
+  <div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div>
+  <div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div>
+  <div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div>
+</div>
+
 <script>
-const galeria = Array.from({length:18}, (_,i) => `1x/KC${String(i+1).padStart(2,'0')}.webp`);
-const wrap = document.getElementById('carouselWrap');
-const track = document.createElement('div'); track.className = 'id-carousel-track';
-[...galeria, ...galeria].forEach(src => { const slide = document.createElement('div'); slide.className = 'id-carousel-slide'; const img = document.createElement('img'); img.src = src; img.alt = 'Kurt\'s Corte'; slide.appendChild(img); track.appendChild(slide); });
-wrap.appendChild(track);
-let pos = 0, speed = 0.3, slideW = wrap.offsetWidth, loopW = slideW * galeria.length;
-function anim() { pos += speed; if(pos >= loopW) pos -= loopW; track.style.transform = `translateX(-${pos}px)`; requestAnimationFrame(anim); }
-anim();
-const gallery = document.getElementById('gallery');
-galeria.forEach((src, i) => { const item = document.createElement('div'); item.className = 'detail-gallery-item'; const img = document.createElement('img'); img.src = src; img.loading = 'lazy'; item.appendChild(img); item.addEventListener('click', () => openModal(galeria, i)); gallery.appendChild(item); });
-let modalImgs = [], modalIdx = 0;
-const modal = document.getElementById('modal'), modalImg = document.getElementById('modal-img'), modalCount = document.getElementById('modal-count');
+// Lista de imagens (mesmas do original)
+const imagens = Array.from({length:18}, (_,i) => `1x/KC${String(i+1).padStart(2,'0')}.webp`);
+
+// Carrossel infinito no hero (apenas as 5 primeiras como amostra, mas usamos todas)
+const heroWrap = document.getElementById('heroCarouselWrap');
+const heroTrack = document.createElement('div');
+heroTrack.className = 'carousel-track';
+// Duplica para efeito infinito suave
+[...imagens, ...imagens].forEach(src => {
+  const slide = document.createElement('div');
+  slide.className = 'carousel-slide';
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = 'Kurt\'s Corte';
+  slide.appendChild(img);
+  heroTrack.appendChild(slide);
+});
+heroWrap.appendChild(heroTrack);
+let pos = 0, speed = 0.28;
+let slideW = heroWrap.offsetWidth;
+let loopW = slideW * imagens.length;
+function animateHero() {
+  pos += speed;
+  if (pos >= loopW) pos -= loopW;
+  heroTrack.style.transform = `translateX(-${pos}px)`;
+  requestAnimationFrame(animateHero);
+}
+animateHero();
+window.addEventListener('resize', () => {
+  slideW = heroWrap.offsetWidth;
+  loopW = slideW * imagens.length;
+});
+
+// Preenche a galeria de aplicações
+const galleryGrid = document.getElementById('galleryGrid');
+imagens.forEach((src, idx) => {
+  const item = document.createElement('div');
+  item.className = 'gallery-item';
+  const img = document.createElement('img');
+  img.src = src;
+  img.loading = 'lazy';
+  item.appendChild(img);
+  item.addEventListener('click', () => openModal(imagens, idx));
+  galleryGrid.appendChild(item);
+});
+
+// === MODAL (zoom, navegação, toque) ===
+let modalImages = [], currentIndex = 0;
+const modalEl = document.getElementById('modal');
+const modalImg = document.getElementById('modal-img');
+const modalCount = document.getElementById('modal-count');
 let isZoomed = false;
-function openModal(imgs, idx) { modalImgs = imgs; modalIdx = idx; updateModal(); modal.style.display = 'flex'; requestAnimationFrame(() => modal.style.opacity = '1'); if(isZoomed) { modalImg.classList.remove('zoomed'); isZoomed = false; document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>'; } }
-function updateModal() { modalImg.src = modalImgs[modalIdx]; modalCount.textContent = `${modalIdx+1} / ${modalImgs.length}`; }
-function closeModal() { modal.style.opacity = '0'; setTimeout(() => modal.style.display = 'none', 300); }
-function prevImage() { modalIdx = (modalIdx - 1 + modalImgs.length) % modalImgs.length; updateModal(); }
-function nextImage() { modalIdx = (modalIdx + 1) % modalImgs.length; updateModal(); }
-function toggleZoom() { if(isZoomed) { modalImg.classList.remove('zoomed'); document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>'; } else { modalImg.classList.add('zoomed'); document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-minus"></i>'; } isZoomed = !isZoomed; }
+
+function openModal(imgs, idx) {
+  modalImages = imgs;
+  currentIndex = idx;
+  updateModalImage();
+  modalEl.style.display = 'flex';
+  requestAnimationFrame(() => modalEl.style.opacity = '1');
+  if (isZoomed) {
+    modalImg.classList.remove('zoomed');
+    isZoomed = false;
+    document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>';
+  }
+}
+function updateModalImage() {
+  modalImg.src = modalImages[currentIndex];
+  modalCount.textContent = `${currentIndex+1} / ${modalImages.length}`;
+}
+function closeModal() {
+  modalEl.style.opacity = '0';
+  setTimeout(() => modalEl.style.display = 'none', 300);
+}
+function prevImage() {
+  currentIndex = (currentIndex - 1 + modalImages.length) % modalImages.length;
+  updateModalImage();
+}
+function nextImage() {
+  currentIndex = (currentIndex + 1) % modalImages.length;
+  updateModalImage();
+}
+function toggleZoom() {
+  if (isZoomed) {
+    modalImg.classList.remove('zoomed');
+    document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>';
+  } else {
+    modalImg.classList.add('zoomed');
+    document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-minus"></i>';
+  }
+  isZoomed = !isZoomed;
+}
 document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('modal-prev').addEventListener('click', prevImage);
 document.getElementById('modal-next').addEventListener('click', nextImage);
-modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+modalEl.addEventListener('click', (e) => { if (e.target === modalEl) closeModal(); });
 document.getElementById('modal-zoom').addEventListener('click', toggleZoom);
 modalImg.addEventListener('dblclick', toggleZoom);
-document.addEventListener('keydown', e => { if(modal.style.display === 'flex') { if(e.key === 'ArrowLeft') prevImage(); else if(e.key === 'ArrowRight') nextImage(); else if(e.key === 'Escape') closeModal(); } });
-// Swipe
-let touchStartX = 0; modal.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-modal.addEventListener('touchend', e => { const dx = e.changedTouches[0].screenX - touchStartX; if(Math.abs(dx) > 50) { if(dx > 0) prevImage(); else nextImage(); } }, { passive: true });
-// Sons
-let audioCtx = null, soundEnabled = false;
-function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundEnabled = true; }
-function playSound(type) {
-  if (!soundEnabled || !audioCtx) return;
-  const now = audioCtx.currentTime;
-  if (type === 'click') {
-    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
-    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 523.25;
-    gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
-    osc.start(now); osc.stop(now + 0.2);
-  } else if (type === 'hover') {
-    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
-    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 392;
-    osc.frequency.exponentialRampToValueAtTime(523.25, now + 0.15);
-    gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
-    osc.start(now); osc.stop(now + 0.25);
+document.addEventListener('keydown', (e) => {
+  if (modalEl.style.display === 'flex') {
+    if (e.key === 'ArrowLeft') prevImage();
+    else if (e.key === 'ArrowRight') nextImage();
+    else if (e.key === 'Escape') closeModal();
   }
-}
-const unlockAudio = () => { if (!audioCtx) initAudio(); if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); };
-document.body.addEventListener('click', unlockAudio, { once: true });
-document.body.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
-let lastHover = 0;
-document.querySelectorAll('button, a, .detail-gallery-item, .header-back').forEach(el => {
-  el.addEventListener('mouseenter', () => { const now = Date.now(); if (now - lastHover > 80) { playSound('hover'); lastHover = now; } });
-  el.addEventListener('click', () => playSound('click'));
 });
-// Botão flutuante
-const floatBtn = document.getElementById('floatContactBtn'), contactModalDiv = document.getElementById('contactModal'), closeModalBtn = document.getElementById('closeModalBtn'), modalWhats = document.getElementById('modalWhatsBtn'), modalEmail = document.getElementById('modalEmailBtn');
-function toggleContactModal(open) { if (open) contactModalDiv.classList.add('open'); else contactModalDiv.classList.remove('open'); }
-floatBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleContactModal(!contactModalDiv.classList.contains('open')); });
-closeModalBtn.addEventListener('click', () => toggleContactModal(false));
-document.addEventListener('click', (e) => { if (contactModalDiv.classList.contains('open') && !contactModalDiv.contains(e.target) && e.target !== floatBtn && !floatBtn.contains(e.target)) toggleContactModal(false); });
-modalWhats.addEventListener('click', () => { const nome = document.getElementById('modal-nome').value.trim(), email = document.getElementById('modal-email').value.trim(), msg = document.getElementById('modal-msg').value.trim(); if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; } window.open(`https://wa.me/5511947846658?text=*Nome:* ${encodeURIComponent(nome)}%0a*E-mail:* ${encodeURIComponent(email)}%0a*Mensagem:* ${encodeURIComponent(msg)}`, '_blank'); toggleContactModal(false); });
-modalEmail.addEventListener('click', () => { const nome = document.getElementById('modal-nome').value.trim(), email = document.getElementById('modal-email').value.trim(), msg = document.getElementById('modal-msg').value.trim(); if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; } window.open(`mailto:jaymeibrahim@gmail.com?subject=Contato via portfólio&body=Nome: ${encodeURIComponent(nome)}%0AEmail: ${encodeURIComponent(email)}%0A%0A${encodeURIComponent(msg)}`, '_blank'); toggleContactModal(false); });
+// Swipe touch
+let touchStart = 0;
+modalEl.addEventListener('touchstart', (e) => { touchStart = e.changedTouches[0].screenX; }, { passive: true });
+modalEl.addEventListener('touchend', (e) => {
+  const delta = e.changedTouches[0].screenX - touchStart;
+  if (Math.abs(delta) > 50) delta > 0 ? prevImage() : nextImage();
+}, { passive: true });
+
+// === CURSOR PERSONALIZADO ===
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', (e) => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(${cursor.dataset.scale || 1})`;
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.body.addEventListener('mouseenter', (e) => {
+  if (e.target.matches && (e.target.matches('button, a, .gallery-item, .header-back, .next-btn, .float-contact-btn'))) {
+    cursor.dataset.scale = '2.5';
+    ring.style.width = '48px';
+    ring.style.height = '48px';
+    ring.style.opacity = '0.3';
+  }
+}, true);
+document.body.addEventListener('mouseleave', (e) => {
+  if (e.target.matches && (e.target.matches('button, a, .gallery-item, .header-back, .next-btn, .float-contact-btn'))) {
+    cursor.dataset.scale = '1';
+    ring.style.width = '36px';
+    ring.style.height = '36px';
+    ring.style.opacity = '0.5';
+  }
+}, true);
+
+// === BOTÃO FLUTUANTE E MODAL DE CONTATO ===
+const floatBtn = document.getElementById('floatContactBtn');
+const contactModal = document.getElementById('contactModal');
+const closeContact = document.getElementById('closeModalBtn');
+const modalWhats = document.getElementById('modalWhatsBtn');
+const modalEmail = document.getElementById('modalEmailBtn');
+
+function toggleContact(open) {
+  if (open) contactModal.classList.add('open');
+  else contactModal.classList.remove('open');
+}
+floatBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleContact(!contactModal.classList.contains('open')); });
+closeContact.addEventListener('click', () => toggleContact(false));
+document.addEventListener('click', (e) => {
+  if (contactModal.classList.contains('open') && !contactModal.contains(e.target) && e.target !== floatBtn && !floatBtn.contains(e.target))
+    toggleContact(false);
+});
+modalWhats.addEventListener('click', () => {
+  const nome = document.getElementById('modal-nome').value.trim();
+  const email = document.getElementById('modal-email').value.trim();
+  const msg = document.getElementById('modal-msg').value.trim();
+  if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; }
+  window.open(`https://wa.me/5511947846658?text=*Nome:* ${encodeURIComponent(nome)}%0a*E-mail:* ${encodeURIComponent(email)}%0a*Mensagem:* ${encodeURIComponent(msg)}`, '_blank');
+  toggleContact(false);
+});
+modalEmail.addEventListener('click', () => {
+  const nome = document.getElementById('modal-nome').value.trim();
+  const email = document.getElementById('modal-email').value.trim();
+  const msg = document.getElementById('modal-msg').value.trim();
+  if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; }
+  window.open(`mailto:jaymeibrahim@gmail.com?subject=Contato via portfólio - Kurt's Corte&body=Nome: ${encodeURIComponent(nome)}%0AEmail: ${encodeURIComponent(email)}%0A%0A${encodeURIComponent(msg)}`, '_blank');
+  toggleContact(false);
+});
 </script>
 </body>
 </html>
