@@ -30,14 +30,14 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 .id-carousel-slide { flex: 0 0 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .id-carousel-slide img { width: 100%; height: 100%; object-fit: contain; max-height: 500px; }
 .detalhe-body { max-width: 1300px; margin: 0 auto; padding: 5rem 4rem; }
-.detail-gallery { columns: 3; column-gap: 6px; }
-.detail-gallery-item { break-inside: avoid; overflow: hidden; margin-bottom: 6px; cursor: pointer; }
+.detail-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.detail-gallery-item { overflow: hidden; margin-bottom: 0; cursor: pointer; }
 .detail-gallery-item img { width: 100%; display: block; transition: transform 0.3s; }
 .detail-gallery-item:hover img { transform: scale(1.02); }
 .site-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
 .footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--ash); }
-@media (max-width: 900px) { .detalhe-hero { grid-template-columns: 1fr; } .detalhe-left-col { padding: 3rem 2rem; } .detail-gallery { columns: 2; } }
-@media (max-width: 600px) { .detail-gallery { columns: 1; } }
+@media (max-width: 900px) { .detalhe-hero { grid-template-columns: 1fr; } .detalhe-left-col { padding: 3rem 2rem; } .detail-gallery { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .detail-gallery { grid-template-columns: 1fr; } }
 .modal { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(5,5,5,0.97); align-items: center; justify-content: center; flex-direction: column; }
 .modal-content { position: relative; display: flex; align-items: center; justify-content: center; max-width: 90vw; max-height: 90vh; }
 .modal-img { max-width: 90vw; max-height: 85vh; object-fit: contain; transition: transform 0.2s ease; cursor: zoom-in; }
@@ -71,7 +71,7 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 </div>
 <div class="detalhe-body"><div class="detail-gallery" id="gallery"></div></div>
 <footer class="site-footer"><span class="footer-copy">© 2026 Ibrahim</span><div class="footer-gold-line"></div></footer>
-<div id="modal" class="modal"><button class="modal-close-btn" id="modal-close"><i class="fas fa-times"></i></button><div class="modal-content"><img class="modal-img" id="modal-img" src=""></div><button class="modal-zoom-btn" id="modal-zoom"><i class="fas fa-search-plus"></i></button></div>
+<div id="modal" class="modal"><button class="modal-close-btn" id="modal-close"><i class="fas fa-times"></i></button><button class="modal-nav-btn modal-prev" id="modal-prev"><i class="fas fa-chevron-left"></i></button><button class="modal-nav-btn modal-next" id="modal-next"><i class="fas fa-chevron-right"></i></button><div class="modal-content"><img class="modal-img" id="modal-img" src=""></div><button class="modal-zoom-btn" id="modal-zoom"><i class="fas fa-search-plus"></i></button><div class="modal-count" id="modal-count"></div></div>
 <button class="float-contact-btn" id="floatContactBtn"><i class="fas fa-comment-dots"></i></button>
 <div class="contact-modal" id="contactModal"><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button><h3>Contato</h3><p>Envie uma mensagem rápida</p><div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div><div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div><div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div><div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div></div>
 <script>
@@ -86,16 +86,24 @@ anim();
 const gallery = document.getElementById('gallery');
 galeria.forEach((src, i) => { const item = document.createElement('div'); item.className = 'detail-gallery-item'; const img = document.createElement('img'); img.src = src; img.loading = 'lazy'; item.appendChild(img); item.addEventListener('click', () => openModal(galeria, i)); gallery.appendChild(item); });
 let modalImgs = [], modalIdx = 0;
-const modal = document.getElementById('modal'), modalImg = document.getElementById('modal-img');
+const modal = document.getElementById('modal'), modalImg = document.getElementById('modal-img'), modalCount = document.getElementById('modal-count');
 let isZoomed = false;
-function openModal(imgs, idx) { modalImgs = imgs; modalIdx = idx; modalImg.src = modalImgs[modalIdx]; modal.style.display = 'flex'; requestAnimationFrame(() => modal.style.opacity = '1'); if(isZoomed) { modalImg.classList.remove('zoomed'); isZoomed = false; document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>'; } }
+function openModal(imgs, idx) { modalImgs = imgs; modalIdx = idx; updateModal(); modal.style.display = 'flex'; requestAnimationFrame(() => modal.style.opacity = '1'); if(isZoomed) { modalImg.classList.remove('zoomed'); isZoomed = false; document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>'; } }
+function updateModal() { modalImg.src = modalImgs[modalIdx]; modalCount.textContent = `${modalIdx+1} / ${modalImgs.length}`; }
 function closeModal() { modal.style.opacity = '0'; setTimeout(() => modal.style.display = 'none', 300); }
+function prevImage() { modalIdx = (modalIdx - 1 + modalImgs.length) % modalImgs.length; updateModal(); }
+function nextImage() { modalIdx = (modalIdx + 1) % modalImgs.length; updateModal(); }
 function toggleZoom() { if(isZoomed) { modalImg.classList.remove('zoomed'); document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>'; } else { modalImg.classList.add('zoomed'); document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-minus"></i>'; } isZoomed = !isZoomed; }
 document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-prev').addEventListener('click', prevImage);
+document.getElementById('modal-next').addEventListener('click', nextImage);
 modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
 document.getElementById('modal-zoom').addEventListener('click', toggleZoom);
 modalImg.addEventListener('dblclick', toggleZoom);
-document.addEventListener('keydown', e => { if(modal.style.display === 'flex' && e.key === 'Escape') closeModal(); });
+document.addEventListener('keydown', e => { if(modal.style.display === 'flex') { if(e.key === 'ArrowLeft') prevImage(); else if(e.key === 'ArrowRight') nextImage(); else if(e.key === 'Escape') closeModal(); } });
+// Swipe
+let touchStartX = 0; modal.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+modal.addEventListener('touchend', e => { const dx = e.changedTouches[0].screenX - touchStartX; if(Math.abs(dx) > 50) { if(dx > 0) prevImage(); else nextImage(); } }, { passive: true });
 // Sons
 let audioCtx = null, soundEnabled = false;
 function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundEnabled = true; }
