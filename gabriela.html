@@ -7,7 +7,7 @@
 <link rel="icon" type="image/webp" href="1x/IB.webp">
 <meta property="og:title" content="Gabriela Lima · Editorial de Moda">
 <meta property="og:description" content="Antes e depois da edição de imagens do editorial Gabriela Lima. Case completo: desafio, processo técnico e resultado.">
-<meta property="og:image" content="1x/Antes%20e%20Depois%201.webp">
+<meta property="og:image" content="1x/D01.webp">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
@@ -60,7 +60,7 @@ body {
   transform: translate3d(-50%, -50%, 0);
   transition: width 0.2s, height 0.2s, opacity 0.2s;
 }
-/* HEADER */
+/* HEADER - sem subtítulo de "caso de estudo" */
 .site-header {
   position: sticky;
   top: 0;
@@ -94,7 +94,7 @@ body {
   color: var(--gold);
   opacity: 0.8;
 }
-/* HERO DO CASE */
+/* HERO COM CARROSSEL (resultados finais) */
 .case-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -163,11 +163,22 @@ body {
   justify-content: center;
   min-height: 500px;
 }
-.hero-preview-img {
-  width: 100%;
+.carousel-track {
+  display: flex;
   height: 100%;
-  object-fit: cover;
+  will-change: transform;
+}
+.carousel-slide {
+  flex: 0 0 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel-slide img {
+  width: 100%;
+  height: auto;
   max-height: 550px;
+  object-fit: contain;
 }
 /* SEÇÕES DO CASE */
 .section-container {
@@ -509,10 +520,10 @@ body {
 
 <header class="site-header">
   <a href="imagens.html" class="header-back"><i class="fas fa-arrow-left"></i> Voltar para imagens</a>
-  <span class="header-section-name"> Edição Editorial</span>
+  <span class="header-section-name">Edição de Imagem</span>
 </header>
 
-<!-- HERO -->
+<!-- HERO com carrossel das imagens D(01) a D(05) (baixa qualidade) -->
 <div class="case-hero">
   <div class="case-hero-content">
     <div class="case-tag">// Edição de Imagem · 2025</div>
@@ -525,9 +536,7 @@ body {
       <div class="stat"><div class="stat-number">2</div><div class="stat-label">semanas de pós-produção</div></div>
     </div>
   </div>
-  <div class="case-hero-media">
-    <img class="hero-preview-img" src="1x/D05.webp" alt="Gabriela Lima - resultado final da edição" loading="eager">
-  </div>
+  <div class="case-hero-media" id="heroCarouselWrap"></div>
 </div>
 
 <!-- DESAFIO & CONTEXTO -->
@@ -578,7 +587,7 @@ body {
   </div>
 </div>
 
-<!-- RESULTADO: COMPARATIVOS ANTES E DEPOIS -->
+<!-- RESULTADO: COMPARATIVOS ANTES E DEPOIS (imagens baixa qualidade, modal abre alta qualidade) -->
 <div class="section-container">
   <div class="section-label">03 · Resultado</div>
   <div class="section-title">Antes e depois da edição</div>
@@ -621,16 +630,69 @@ body {
 </div>
 
 <script>
-// Lista de imagens (mesmas do original)
-const pares = [
-  { antes: "1x/A01.webp", depois: "1x/D01.webp" },
-  { antes: "1x/A02.webp", depois: "1x/D02.webp" },
-  { antes: "1x/A03.webp", depois: "1x/D03.webp" },
-  { antes: "1x/A04.webp", depois: "1x/D04.webp" },
-  { antes: "1x/A05.webp", depois: "1x/D05.webp" }
+// ============================================================
+// 1. CARROSSEL DO HERO (imagens D(01) a D(05) - baixa qualidade)
+// ============================================================
+const imagensHero = [
+  "1x/D(01).webp", "1x/D(02).webp", "1x/D(03).webp", "1x/D(04).webp", "1x/D(05).webp"
+];
+const imagensHeroAlta = [
+  "1x/D01.webp", "1x/D02.webp", "1x/D03.webp", "1x/D04.webp", "1x/D05.webp"
 ];
 
-// Preenche os comparativos
+const heroWrap = document.getElementById('heroCarouselWrap');
+const heroTrack = document.createElement('div');
+heroTrack.className = 'carousel-track';
+// Duplica para efeito infinito suave
+[...imagensHero, ...imagensHero].forEach(src => {
+  const slide = document.createElement('div');
+  slide.className = 'carousel-slide';
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = 'Gabriela Lima - resultado final';
+  slide.appendChild(img);
+  heroTrack.appendChild(slide);
+});
+heroWrap.appendChild(heroTrack);
+
+let heroPos = 0, heroSpeed = 0.28;
+let heroSlideW = heroWrap.offsetWidth;
+let heroLoopW = heroSlideW * imagensHero.length;
+
+function animateHero() {
+  heroPos += heroSpeed;
+  if (heroPos >= heroLoopW) heroPos -= heroLoopW;
+  heroTrack.style.transform = `translateX(-${heroPos}px)`;
+  requestAnimationFrame(animateHero);
+}
+animateHero();
+window.addEventListener('resize', () => {
+  heroSlideW = heroWrap.offsetWidth;
+  heroLoopW = heroSlideW * imagensHero.length;
+});
+
+// Clique nas imagens do carrossel: abre modal com a versão de alta qualidade
+const heroSlides = document.querySelectorAll('#heroCarouselWrap .carousel-slide');
+heroSlides.forEach((slide, idx) => {
+  // identifica qual imagem original (considerando a duplicação)
+  slide.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const originalIndex = idx % imagensHero.length;
+    openModal(imagensHeroAlta[originalIndex]);
+  });
+});
+
+// ============================================================
+// 2. COMPARATIVOS (baixa qualidade com parênteses)
+// ============================================================
+const pares = [
+  { antesLow: "1x/A(01).webp", depoisLow: "1x/D(01).webp", antesHigh: "1x/A01.webp", depoisHigh: "1x/D01.webp" },
+  { antesLow: "1x/A(02).webp", depoisLow: "1x/D(02).webp", antesHigh: "1x/A02.webp", depoisHigh: "1x/D02.webp" },
+  { antesLow: "1x/A(03).webp", depoisLow: "1x/D(03).webp", antesHigh: "1x/A03.webp", depoisHigh: "1x/D03.webp" },
+  { antesLow: "1x/A(04).webp", depoisLow: "1x/D(04).webp", antesHigh: "1x/A04.webp", depoisHigh: "1x/D04.webp" },
+  { antesLow: "1x/A(05).webp", depoisLow: "1x/D(05).webp", antesHigh: "1x/A05.webp", depoisHigh: "1x/D05.webp" }
+];
+
 const container = document.getElementById('comparativos-container');
 pares.forEach((par, idx) => {
   const pairDiv = document.createElement('div');
@@ -638,20 +700,22 @@ pares.forEach((par, idx) => {
   pairDiv.innerHTML = `
     <div class="comp-pair-label">Composição ${idx + 1}</div>
     <div class="comp-pair-imgs">
-      <div class="comp-img-wrap" data-src="${par.antes}">
+      <div class="comp-img-wrap" data-high="${par.antesHigh}">
         <span class="comp-img-badge">Antes</span>
-        <img src="${par.antes}" alt="Antes da edição" loading="lazy">
+        <img src="${par.antesLow}" alt="Antes da edição" loading="lazy">
       </div>
-      <div class="comp-img-wrap" data-src="${par.depois}">
+      <div class="comp-img-wrap" data-high="${par.depoisHigh}">
         <span class="comp-img-badge" style="color:var(--gold-light)">Depois</span>
-        <img src="${par.depois}" alt="Depois da edição" loading="lazy">
+        <img src="${par.depoisLow}" alt="Depois da edição" loading="lazy">
       </div>
     </div>
   `;
   container.appendChild(pairDiv);
 });
 
-// === MODAL ===
+// ============================================================
+// 3. MODAL (abre com imagem de alta qualidade)
+// ============================================================
 const modal = document.getElementById('modal');
 const modalImg = document.getElementById('modal-img');
 let isZoomed = false;
@@ -688,23 +752,26 @@ modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); }
 document.getElementById('modal-zoom').addEventListener('click', toggleZoom);
 modalImg.addEventListener('dblclick', toggleZoom);
 
-document.querySelectorAll('.comp-img-wrap').forEach(wrap => {
-  const src = wrap.getAttribute('data-src');
-  if (src) {
-    wrap.addEventListener('click', (e) => {
-      e.stopPropagation();
-      openModal(src);
-    });
-  }
-});
-
 document.addEventListener('keydown', (e) => {
   if (modal.style.display === 'flex') {
     if (e.key === 'Escape') closeModal();
   }
 });
 
-// === CURSOR PERSONALIZADO ===
+// Adiciona evento de clique nos comparativos
+document.querySelectorAll('.comp-img-wrap').forEach(wrap => {
+  const highSrc = wrap.getAttribute('data-high');
+  if (highSrc) {
+    wrap.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openModal(highSrc);
+    });
+  }
+});
+
+// ============================================================
+// 4. CURSOR PERSONALIZADO
+// ============================================================
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
 let mx = 0, my = 0, rx = 0, ry = 0;
@@ -720,7 +787,7 @@ function animateRing() {
 }
 animateRing();
 document.body.addEventListener('mouseenter', (e) => {
-  if (e.target.matches && (e.target.matches('button, a, .comp-img-wrap, .header-back, .next-btn, .float-contact-btn'))) {
+  if (e.target.matches && (e.target.matches('button, a, .comp-img-wrap, .carousel-slide, .header-back, .next-btn, .float-contact-btn'))) {
     cursor.dataset.scale = '2.5';
     ring.style.width = '48px';
     ring.style.height = '48px';
@@ -728,7 +795,7 @@ document.body.addEventListener('mouseenter', (e) => {
   }
 }, true);
 document.body.addEventListener('mouseleave', (e) => {
-  if (e.target.matches && (e.target.matches('button, a, .comp-img-wrap, .header-back, .next-btn, .float-contact-btn'))) {
+  if (e.target.matches && (e.target.matches('button, a, .comp-img-wrap, .carousel-slide, .header-back, .next-btn, .float-contact-btn'))) {
     cursor.dataset.scale = '1';
     ring.style.width = '36px';
     ring.style.height = '36px';
@@ -736,7 +803,9 @@ document.body.addEventListener('mouseleave', (e) => {
   }
 }, true);
 
-// === SOM DE INTERAÇÃO ===
+// ============================================================
+// 5. SONS DE INTERAÇÃO
+// ============================================================
 let audioCtx = null, soundEnabled = false;
 function initAudio() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -779,7 +848,7 @@ const unlockAudio = () => {
 document.body.addEventListener('click', unlockAudio, { once: true });
 document.body.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
 let lastHover = 0;
-document.querySelectorAll('button, a, .comp-img-wrap, .header-back, .next-btn, .float-contact-btn').forEach(el => {
+document.querySelectorAll('button, a, .comp-img-wrap, .carousel-slide, .header-back, .next-btn, .float-contact-btn').forEach(el => {
   el.addEventListener('mouseenter', () => {
     const now = Date.now();
     if (now - lastHover > 80) { playSound('hover'); lastHover = now; }
@@ -787,7 +856,9 @@ document.querySelectorAll('button, a, .comp-img-wrap, .header-back, .next-btn, .
   el.addEventListener('click', () => playSound('click'));
 });
 
-// === BOTÃO FLUTUANTE ===
+// ============================================================
+// 6. BOTÃO FLUTUANTE E MODAL DE CONTATO
+// ============================================================
 const floatBtn = document.getElementById('floatContactBtn');
 const contactModalDiv = document.getElementById('contactModal');
 const closeContact = document.getElementById('closeModalBtn');
