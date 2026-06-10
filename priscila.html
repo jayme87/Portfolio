@@ -3,132 +3,945 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Priscila Fantin · Antes e Depois</title>
+<title>Priscila Fantin · Edição Editorial | Ibrahim</title>
 <link rel="icon" type="image/webp" href="1x/IB.webp">
 <meta property="og:title" content="Priscila Fantin · Adams Magazine">
-<meta property="og:description" content="Antes e depois da edição de imagens do editorial Priscila Fantin.">
-<meta property="og:image" content="1x/Antes e Depois 11.webp">
+<meta property="og:description" content="Antes e depois da edição de imagens do editorial Priscila Fantin. Case completo: conceito, processo técnico e resultado.">
+<meta property="og:image" content="1x/D11.webp">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* Mesmos estilos do camila.html (copiar integralmente) */
-:root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); }
-.site-header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 4rem; background: rgba(11,11,11,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(244,208,61,0.12); }
-.header-back { display: flex; align-items: center; gap: 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ash); text-decoration: none; }
+:root {
+  --ink: #0b0b0b;
+  --ivory: #e9e9ea;
+  --gold: #f4d03d;
+  --gold-light: #f7dc6f;
+  --ash: #8a8480;
+  --mist: #d4cfc6;
+  --deep: #111111;
+  --cream: #ebe5d8;
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: var(--ink);
+  color: var(--ivory);
+  overflow-x: hidden;
+}
+/* CUSTOM CURSOR */
+.cursor {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transform: translate3d(-50%, -50%, 0);
+  transition: transform 0.05s;
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.5;
+  transform: translate3d(-50%, -50%, 0);
+  transition: width 0.2s, height 0.2s, opacity 0.2s;
+}
+/* HEADER */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 4rem;
+  background: rgba(11,11,11,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(244,208,61,0.12);
+}
+.header-back {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ash);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
 .header-back:hover { color: var(--gold); }
-.header-section-name { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.8; }
-.comp-hero { padding: 5rem 4rem 3rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.comp-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 4.5rem); font-weight: 900; font-style: italic; color: var(--ivory); }
-.comp-title span { color: var(--gold); }
-.comp-meta { display: flex; gap: 3rem; margin-top: 2rem; flex-wrap: wrap; }
-.comp-meta-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; }
-.comp-meta-val { font-size: 0.95rem; color: var(--mist); }
-.comp-body { max-width: 1300px; margin: 0 auto; padding: 5rem 4rem; }
-.comp-pair { margin-bottom: 5rem; }
-.comp-pair-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.3em; color: var(--ash); text-transform: uppercase; margin-bottom: 1.5rem; }
-.comp-pair-imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.comp-img-wrap { position: relative; overflow: hidden; aspect-ratio: 2/3; background: #1a1a1a; cursor: pointer; }
-.comp-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+.header-section-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+}
+/* HERO COM CARROSSEL 850x1100 */
+.case-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: stretch;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.case-hero-content {
+  padding: 4rem;
+  background: var(--ink);
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.case-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.case-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: var(--ivory);
+  margin-bottom: 1.5rem;
+}
+.case-subhead {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--ash);
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  border-left: 2px solid var(--gold);
+  padding-left: 1.2rem;
+}
+.case-meta {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.meta-item {
+  flex: 1;
+  min-width: 100px;
+}
+.meta-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.meta-val {
+  font-size: 0.95rem;
+  color: var(--mist);
+  line-height: 1.4;
+}
+.case-stats {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+.stat {
+  text-align: left;
+}
+.stat-number {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+.case-hero-media {
+  position: relative;
+  overflow: hidden;
+  background: #0b0b0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 850px;
+  height: 1100px;
+  max-width: 100%;
+  max-height: 80vh;
+}
+.carousel-track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+}
+.carousel-slide {
+  flex: 0 0 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media (max-width: 1000px) {
+  .case-hero-media {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 850 / 1100;
+  }
+}
+/* SEÇÕES DO CASE */
+.section-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 5rem 4rem;
+}
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--ivory);
+  margin-bottom: 2rem;
+  line-height: 1.2;
+}
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
+  margin-top: 2rem;
+}
+.process-card {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 2rem;
+}
+.process-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.process-card p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--mist);
+  font-weight: 300;
+}
+/* COMPARATIVOS */
+.comp-pair {
+  margin-bottom: 4rem;
+}
+.comp-pair-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+.comp-pair-imgs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.comp-img-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 2/3;
+  background: #1a1a1a;
+  cursor: pointer;
+}
+.comp-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
 .comp-img-wrap:hover img { transform: scale(1.015); }
-.comp-img-badge { position: absolute; top: 1rem; left: 1rem; background: rgba(11,11,11,0.8); backdrop-filter: blur(6px); font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); padding: 0.4rem 0.8rem; border: 1px solid rgba(244,208,61,0.3); z-index: 2; }
-.site-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
-.footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--ash); }
-@media (max-width: 900px) { .comp-pair-imgs { grid-template-columns: 1fr; } .site-header, .comp-hero, .comp-body { padding: 3rem 2rem; } }
-.modal { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(5,5,5,0.97); align-items: center; justify-content: center; flex-direction: column; }
-.modal-content { position: relative; display: flex; align-items: center; justify-content: center; max-width: 90vw; max-height: 90vh; }
-.modal-img { max-width: 90vw; max-height: 85vh; object-fit: contain; transition: transform 0.2s ease; cursor: zoom-in; }
-.modal-img.zoomed { transform: scale(1.5); cursor: zoom-out; }
-.modal-close-btn { position: absolute; top: 1rem; right: 2rem; background: none; border: none; color: var(--ash); font-size: 1.8rem; cursor: pointer; z-index: 2001; }
-.modal-zoom-btn { position: absolute; bottom: 1rem; right: 2rem; background: rgba(0,0,0,0.6); border: 1px solid var(--gold); color: var(--gold); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; transition: 0.2s; z-index: 2001; }
-.modal-zoom-btn:hover { background: var(--gold); color: var(--ink); }
-.float-contact-btn { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: var(--transition-smooth); z-index: 1050; border: none; cursor: pointer; }
-.float-contact-btn:hover { transform: scale(1.08); background: var(--gold-light); }
-.contact-modal { position: fixed; bottom: 5rem; right: 2rem; width: 380px; max-width: calc(100vw - 2rem); background: var(--deep); border: 1px solid rgba(244,208,61,0.3); border-radius: 12px; padding: 1.8rem; z-index: 1051; backdrop-filter: blur(20px); background: rgba(17,17,17,0.95); box-shadow: 0 20px 35px rgba(0,0,0,0.4); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; visibility: hidden; transform: translateY(15px); }
-.contact-modal.open { opacity: 1; visibility: visible; transform: translateY(0); }
-.contact-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 0.25rem; color: var(--gold); }
-.contact-modal p { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--ash); margin-bottom: 1.5rem; letter-spacing: 0.1em; }
-.contact-modal .form-field { margin-bottom: 1rem; }
-.contact-modal input, .contact-modal textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: var(--ivory); padding: 0.7rem 1rem; font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; }
-.modal-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
-.modal-buttons button { flex: 1; background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.8rem; transition: var(--transition-smooth); cursor: pointer; }
-.modal-buttons button:hover { background: var(--gold); color: var(--ink); }
-.close-modal { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--ash); font-size: 1rem; cursor: pointer; }
+.comp-img-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(11,11,11,0.8);
+  backdrop-filter: blur(6px);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 0.4rem 0.8rem;
+  border: 1px solid rgba(244,208,61,0.3);
+  z-index: 2;
+}
+/* PRÓXIMO PROJETO - link para Gabriela */
+.next-project {
+  background: linear-gradient(135deg, var(--deep) 0%, var(--ink) 100%);
+  border-top: 1px solid rgba(244,208,61,0.2);
+  margin-top: 2rem;
+  text-align: center;
+}
+.next-project-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+.next-project-inner h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.next-project-inner p {
+  font-size: 1rem;
+  color: var(--ash);
+  margin-bottom: 2rem;
+}
+.next-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  transition: var(--transition-smooth);
+  text-decoration: none;
+}
+.next-btn:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+/* FOOTER */
+.site-footer {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 2rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--ash);
+}
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(5,5,5,0.97);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.modal-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+.modal-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+  cursor: zoom-in;
+}
+.modal-img.zoomed {
+  transform: scale(1.5);
+  cursor: zoom-out;
+}
+.modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  background: none;
+  border: none;
+  color: var(--ash);
+  font-size: 1.8rem;
+  cursor: pointer;
+  z-index: 2001;
+}
+.modal-zoom-btn {
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: 0.2s;
+  z-index: 2001;
+}
+.modal-zoom-btn:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+/* BOTÃO FLUTUANTE E MODAL DE CONTATO */
+.float-contact-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  font-size: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transition: var(--transition-smooth);
+  z-index: 1050;
+  border: none;
+  cursor: pointer;
+}
+.float-contact-btn:hover {
+  transform: scale(1.08);
+  background: var(--gold-light);
+}
+.contact-modal {
+  position: fixed;
+  bottom: 5rem;
+  right: 2rem;
+  width: 380px;
+  max-width: calc(100vw - 2rem);
+  background: var(--deep);
+  border: 1px solid rgba(244,208,61,0.3);
+  border-radius: 12px;
+  padding: 1.8rem;
+  z-index: 1051;
+  backdrop-filter: blur(20px);
+  background: rgba(17,17,17,0.95);
+  box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
+}
+.contact-modal.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.contact-modal h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  margin-bottom: 0.25rem;
+  color: var(--gold);
+}
+.contact-modal p {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ash);
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.1em;
+}
+.contact-modal .form-field {
+  margin-bottom: 1rem;
+}
+.contact-modal input, .contact-modal textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--ivory);
+  padding: 0.7rem 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+}
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.modal-buttons button {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.8rem;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+.modal-buttons button:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--ash);
+  font-size: 1rem;
+  cursor: pointer;
+}
+@media (max-width: 900px) {
+  .case-hero { grid-template-columns: 1fr; }
+  .case-hero-content { padding: 3rem 2rem; border-right: none; }
+  .section-container { padding: 3rem 2rem; }
+  .process-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .comp-pair-imgs { grid-template-columns: 1fr; }
+  .site-header { padding: 1rem 2rem; }
+}
+@media (max-width: 600px) {
+  .case-stats { flex-direction: column; gap: 1rem; }
+  .next-project-inner { padding: 2rem 1rem; }
+  .case-meta { flex-direction: column; gap: 1rem; }
+}
 </style>
 </head>
 <body>
-<header class="site-header"><a href="imagens.html" class="header-back"><i class="fas fa-arrow-left"></i> Voltar</a><span class="header-section-name">Antes &amp; Depois</span></header>
-<div class="comp-hero">
-  <h2 class="comp-title"><span>Priscila Fantin</span> — Adams Magazine</h2>
-  <p style="color:var(--mist); max-width:700px; margin-top:1rem;">Entre força e sensibilidade, Priscila Fantin revela uma feminilidade que nasce da verdade, do autoconhecimento e da liberdade de ser quem se é.<br><br>Nesta edição especial, a atriz fala sobre vulnerabilidade como potência, moda como extensão da identidade e escolhas que refletem conforto, discrição e essência.<br><br>Quando a luz vem de dentro, nada precisa gritar por fora.</p>
-  <div class="comp-meta"><div><div class="comp-meta-label">Fotografia</div><div class="comp-meta-val">Renan Deodato</div></div><div><div class="comp-meta-label">Maquiagem</div><div class="comp-meta-val">Amanda Almeida</div></div><div><div class="comp-meta-label">Modelo</div><div class="comp-meta-val">Priscila Fantin</div></div><div><div class="comp-meta-label">Edição</div><div class="comp-meta-val">Ibrahim</div></div></div>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<header class="site-header">
+  <a href="imagens.html" class="header-back"><i class="fas fa-arrow-left"></i> Voltar para imagens</a>
+  <span class="header-section-name">Edição de Imagem</span>
+</header>
+
+<!-- HERO com carrossel das imagens D(11) a D(15) -->
+<div class="case-hero">
+  <div class="case-hero-content">
+    <div class="case-tag">// Edição de Imagem · 2025</div>
+    <h1 class="case-title">Priscila Fantin</h1>
+    <div class="case-subhead">Adams Magazine · Essência</div>
+    <div class="case-meta">
+      <div class="meta-item">
+        <div class="meta-label">Fotografia</div>
+        <div class="meta-val">Renan Deodato</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Maquiagem</div>
+        <div class="meta-val">Amanda Almeida</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Modelo</div>
+        <div class="meta-val">Priscila Fantin</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Edição</div>
+        <div class="meta-val">Ibrahim</div>
+      </div>
+    </div>
+    <p style="font-size:1rem; line-height:1.7; color:var(--mist); margin-bottom:2rem;">Entre força e sensibilidade, Priscila Fantin revela uma feminilidade que nasce da verdade, do autoconhecimento e da liberdade de ser quem se é. Nesta edição especial, a atriz fala sobre vulnerabilidade como potência, moda como extensão da identidade e escolhas que refletem conforto, discrição e essência.</p>
+    <div class="case-stats">
+      <div class="stat"><div class="stat-number">5</div><div class="stat-label">composições</div></div>
+      <div class="stat"><div class="stat-number">4</div><div class="stat-label">técnicas aplicadas</div></div>
+      <div class="stat"><div class="stat-number">2</div><div class="stat-label">semanas de pós-produção</div></div>
+    </div>
+  </div>
+  <div class="case-hero-media" id="heroCarouselWrap"></div>
 </div>
-<div class="comp-body" id="comp-body"></div>
-<footer class="site-footer"><span class="footer-copy">© 2026 Ibrahim</span><div class="footer-gold-line"></div></footer>
-<div id="modal" class="modal"><button class="modal-close-btn" id="modal-close"><i class="fas fa-times"></i></button><div class="modal-content"><img class="modal-img" id="modal-img" src=""></div><button class="modal-zoom-btn" id="modal-zoom"><i class="fas fa-search-plus"></i></button></div>
+
+<!-- DESAFIO & CONTEXTO -->
+<div class="section-container">
+  <div class="section-label">01 · Contexto e desafio</div>
+  <div class="section-title">O conceito por trás das imagens</div>
+  <div class="process-grid">
+    <div class="process-card">
+      <h3>Persona</h3>
+      <p>Priscila Fantin traz sua experiência como atriz para o editorial, revelando uma feminilidade construída na verdade, no autoconhecimento e na liberdade de ser quem se é.</p>
+    </div>
+    <div class="process-card">
+      <h3>Estética</h3>
+      <p>Entre a força e a delicadeza, as imagens capturam momentos de introspecção e autenticidade, com luz suave e composições que valorizam a expressão genuína.</p>
+    </div>
+    <div class="process-card">
+      <h3>Styling</h3>
+      <p>Roupas que funcionam como extensão da identidade: conforto, discrição e elegância sem esforço. Cada peça escolhida para não gritar, mas para falar por si mesma.</p>
+    </div>
+    <div class="process-card">
+      <h3>Essência</h3>
+      <p>Quando a luz vem de dentro, nada precisa gritar por fora. O editorial celebra a vulnerabilidade como potência e a moda como forma de expressão autêntica.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESSO TÉCNICO -->
+<div class="section-container" style="background: var(--deep);">
+  <div class="section-label">02 · Processo técnico</div>
+  <div class="section-title">Da raw à publicação</div>
+  <div class="process-grid">
+    <div class="process-card">
+      <h3>Correção de cor e contraste</h3>
+      <p>Ajuste da temperatura para tons neutros e levemente quentes, valorizando a pele e criando uma atmosfera intimista e natural, sem artificialidades.</p>
+    </div>
+    <div class="process-card">
+      <h3>Dodge & Burn</h3>
+      <p>Suave esculpimento dos volumes faciais e corporais, respeitando a anatomia e mantendo a naturalidade, apenas realçando a luz interna da modelo.</p>
+    </div>
+    <div class="process-card">
+      <h3>Retoque de pele e textura</h3>
+      <p>Preservação da textura e das marcas que contam histórias. Apenas pequenas correções pontuais, mantendo a autenticidade da pele e da expressão.</p>
+    </div>
+    <div class="process-card">
+      <h3>Vinheta e atmosfera</h3>
+      <p>Vinheta muito sutil aplicada apenas para concentrar o olhar no rosto e na expressão, reforçando a ideia de introspecção e entrega.</p>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTADO: COMPARATIVOS ANTES E DEPOIS -->
+<div class="section-container">
+  <div class="section-label">03 · Resultado</div>
+  <div class="section-title">Antes e depois da edição</div>
+  <div id="comparativos-container"></div>
+</div>
+
+<!-- PRÓXIMO PROJETO - link para Gabriela Lima -->
+<div class="next-project">
+  <div class="next-project-inner">
+    <h3>Próximo projeto</h3>
+    <p>Agora, conheça a edição do editorial de <strong>Gabriela Lima</strong> — minimalismo dramático e iluminação circular.</p>
+    <a href="gabriela.html" class="next-btn">Ver estudo completo <i class="fas fa-arrow-right"></i></a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <span class="footer-copy">© 2026 Ibrahim · Todos os direitos reservados</span>
+  <div class="footer-gold-line"></div>
+</footer>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+  <button class="modal-close-btn" id="modal-close"><i class="fas fa-times"></i></button>
+  <div class="modal-content">
+    <img class="modal-img" id="modal-img" src="">
+  </div>
+  <button class="modal-zoom-btn" id="modal-zoom"><i class="fas fa-search-plus"></i></button>
+</div>
+
+<!-- BOTÃO FLUTUANTE + MODAL DE CONTATO -->
 <button class="float-contact-btn" id="floatContactBtn"><i class="fas fa-comment-dots"></i></button>
-<div class="contact-modal" id="contactModal"><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button><h3>Contato</h3><p>Envie uma mensagem rápida</p><div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div><div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div><div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div><div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div></div>
+<div class="contact-modal" id="contactModal">
+  <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+  <h3>Contato</h3>
+  <p>Envie uma mensagem rápida</p>
+  <div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div>
+  <div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div>
+  <div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div>
+  <div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div>
+</div>
+
 <script>
-const container = document.getElementById('comp-body');
-for(let i=11; i<=15; i++) {
-  const num = String(i).padStart(2,'0');
-  const antesLQ = `1x/A(${num}).webp`;
-  const depoisLQ = `1x/D(${num}).webp`;
-  const antesHD = `1x/A${num}.webp`;
-  const depoisHD = `1x/D${num}.webp`;
-  const pair = document.createElement('div'); pair.className = 'comp-pair';
-  pair.innerHTML = `<div class="comp-pair-label">Composição ${i-10}</div><div class="comp-pair-imgs"><div class="comp-img-wrap" data-hd="${antesHD}"><span class="comp-img-badge">Antes</span><img src="${antesLQ}" loading="lazy"></div><div class="comp-img-wrap" data-hd="${depoisHD}"><span class="comp-img-badge" style="color:var(--gold-light)">Depois</span><img src="${depoisLQ}" loading="lazy"></div></div>`;
-  container.appendChild(pair);
+// ============================================================
+// 1. CARROSSEL DO HERO (imagens D(11) a D(15) - baixa qualidade)
+// ============================================================
+const imagensHero = [
+  "1x/D(11).webp", "1x/D(12).webp", "1x/D(13).webp", "1x/D(14).webp", "1x/D(15).webp"
+];
+const imagensHeroAlta = [
+  "1x/D11.webp", "1x/D12.webp", "1x/D13.webp", "1x/D14.webp", "1x/D15.webp"
+];
+
+const heroWrap = document.getElementById('heroCarouselWrap');
+const heroTrack = document.createElement('div');
+heroTrack.className = 'carousel-track';
+// Duplica para efeito infinito suave
+[...imagensHero, ...imagensHero].forEach(src => {
+  const slide = document.createElement('div');
+  slide.className = 'carousel-slide';
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = 'Priscila Fantin - resultado final';
+  slide.appendChild(img);
+  heroTrack.appendChild(slide);
+});
+heroWrap.appendChild(heroTrack);
+
+let heroPos = 0, heroSpeed = 0.28;
+let heroSlideW = heroWrap.offsetWidth;
+let heroLoopW = heroSlideW * imagensHero.length;
+
+function animateHero() {
+  heroPos += heroSpeed;
+  if (heroPos >= heroLoopW) heroPos -= heroLoopW;
+  heroTrack.style.transform = `translateX(-${heroPos}px)`;
+  requestAnimationFrame(animateHero);
 }
-setTimeout(() => { document.querySelectorAll('.comp-img-wrap').forEach(wrap => { const hd = wrap.getAttribute('data-hd'); if(hd) { const img = wrap.querySelector('img'); if(img) img.src = hd; } }); }, 5000);
-const modal = document.getElementById('modal'), modalImg = document.getElementById('modal-img');
+animateHero();
+window.addEventListener('resize', () => {
+  heroSlideW = heroWrap.offsetWidth;
+  heroLoopW = heroSlideW * imagensHero.length;
+});
+
+// Clique nas imagens do carrossel: abre modal com a versão de alta qualidade
+const heroSlides = document.querySelectorAll('#heroCarouselWrap .carousel-slide');
+heroSlides.forEach((slide, idx) => {
+  slide.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const originalIndex = idx % imagensHero.length;
+    openModal(imagensHeroAlta[originalIndex]);
+  });
+});
+
+// ============================================================
+// 2. COMPARATIVOS (imagens 11 a 15 - baixa qualidade com parênteses)
+// ============================================================
+const pares = [
+  { antesLow: "1x/A(11).webp", depoisLow: "1x/D(11).webp", antesHigh: "1x/A11.webp", depoisHigh: "1x/D11.webp" },
+  { antesLow: "1x/A(12).webp", depoisLow: "1x/D(12).webp", antesHigh: "1x/A12.webp", depoisHigh: "1x/D12.webp" },
+  { antesLow: "1x/A(13).webp", depoisLow: "1x/D(13).webp", antesHigh: "1x/A13.webp", depoisHigh: "1x/D13.webp" },
+  { antesLow: "1x/A(14).webp", depoisLow: "1x/D(14).webp", antesHigh: "1x/A14.webp", depoisHigh: "1x/D14.webp" },
+  { antesLow: "1x/A(15).webp", depoisLow: "1x/D(15).webp", antesHigh: "1x/A15.webp", depoisHigh: "1x/D15.webp" }
+];
+
+const container = document.getElementById('comparativos-container');
+pares.forEach((par, idx) => {
+  const pairDiv = document.createElement('div');
+  pairDiv.className = 'comp-pair';
+  pairDiv.innerHTML = `
+    <div class="comp-pair-label">Composição ${idx + 1}</div>
+    <div class="comp-pair-imgs">
+      <div class="comp-img-wrap" data-high="${par.antesHigh}">
+        <span class="comp-img-badge">Antes</span>
+        <img src="${par.antesLow}" alt="Antes da edição" loading="lazy">
+      </div>
+      <div class="comp-img-wrap" data-high="${par.depoisHigh}">
+        <span class="comp-img-badge" style="color:var(--gold-light)">Depois</span>
+        <img src="${par.depoisLow}" alt="Depois da edição" loading="lazy">
+      </div>
+    </div>
+  `;
+  container.appendChild(pairDiv);
+});
+
+// ============================================================
+// 3. MODAL
+// ============================================================
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modal-img');
 let isZoomed = false;
-function openModal(src) { modalImg.src = src; modal.style.display = 'flex'; requestAnimationFrame(() => modal.style.opacity = '1'); if(isZoomed) { modalImg.classList.remove('zoomed'); isZoomed = false; document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>'; } }
-function closeModal() { modal.style.opacity = '0'; setTimeout(() => modal.style.display = 'none', 300); }
-function toggleZoom() { if(isZoomed) { modalImg.classList.remove('zoomed'); document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>'; } else { modalImg.classList.add('zoomed'); document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-minus"></i>'; } isZoomed = !isZoomed; }
+
+function openModal(src) {
+  modalImg.src = src;
+  modal.style.display = 'flex';
+  requestAnimationFrame(() => modal.style.opacity = '1');
+  if (isZoomed) {
+    modalImg.classList.remove('zoomed');
+    isZoomed = false;
+    document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>';
+  }
+}
+
+function closeModal() {
+  modal.style.opacity = '0';
+  setTimeout(() => modal.style.display = 'none', 300);
+}
+
+function toggleZoom() {
+  if (isZoomed) {
+    modalImg.classList.remove('zoomed');
+    document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-plus"></i>';
+  } else {
+    modalImg.classList.add('zoomed');
+    document.getElementById('modal-zoom').innerHTML = '<i class="fas fa-search-minus"></i>';
+  }
+  isZoomed = !isZoomed;
+}
+
 document.getElementById('modal-close').addEventListener('click', closeModal);
-modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 document.getElementById('modal-zoom').addEventListener('click', toggleZoom);
 modalImg.addEventListener('dblclick', toggleZoom);
-document.querySelectorAll('.comp-img-wrap').forEach(wrap => { const hd = wrap.getAttribute('data-hd'); if(hd) { wrap.addEventListener('click', (e) => { e.stopPropagation(); openModal(hd); }); } });
-// Sons
+document.addEventListener('keydown', (e) => {
+  if (modal.style.display === 'flex') {
+    if (e.key === 'Escape') closeModal();
+  }
+});
+
+// Adiciona evento de clique nos comparativos
+document.querySelectorAll('.comp-img-wrap').forEach(wrap => {
+  const highSrc = wrap.getAttribute('data-high');
+  if (highSrc) {
+    wrap.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openModal(highSrc);
+    });
+  }
+});
+
+// ============================================================
+// 4. CURSOR PERSONALIZADO
+// ============================================================
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', (e) => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(${cursor.dataset.scale || 1})`;
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.body.addEventListener('mouseenter', (e) => {
+  if (e.target.matches && (e.target.matches('button, a, .comp-img-wrap, .carousel-slide, .header-back, .next-btn, .float-contact-btn'))) {
+    cursor.dataset.scale = '2.5';
+    ring.style.width = '48px';
+    ring.style.height = '48px';
+    ring.style.opacity = '0.3';
+  }
+}, true);
+document.body.addEventListener('mouseleave', (e) => {
+  if (e.target.matches && (e.target.matches('button, a, .comp-img-wrap, .carousel-slide, .header-back, .next-btn, .float-contact-btn'))) {
+    cursor.dataset.scale = '1';
+    ring.style.width = '36px';
+    ring.style.height = '36px';
+    ring.style.opacity = '0.5';
+  }
+}, true);
+
+// ============================================================
+// 5. SONS DE INTERAÇÃO
+// ============================================================
 let audioCtx = null, soundEnabled = false;
-function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundEnabled = true; }
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  soundEnabled = true;
+}
 function playSound(type) {
   if (!soundEnabled || !audioCtx) return;
   const now = audioCtx.currentTime;
   if (type === 'click') {
-    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
-    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 523.25;
-    gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
-    osc.start(now); osc.stop(now + 0.2);
+    const gain = audioCtx.createGain();
+    gain.connect(audioCtx.destination);
+    gain.gain.value = 0;
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine';
+    osc.connect(gain);
+    osc.frequency.value = 523.25;
+    gain.gain.setValueAtTime(0.1, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+    osc.start(now);
+    osc.stop(now + 0.2);
   } else if (type === 'hover') {
-    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
-    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 392;
+    const gain = audioCtx.createGain();
+    gain.connect(audioCtx.destination);
+    gain.gain.value = 0;
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine';
+    osc.connect(gain);
+    osc.frequency.value = 392;
     osc.frequency.exponentialRampToValueAtTime(523.25, now + 0.15);
-    gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
-    osc.start(now); osc.stop(now + 0.25);
+    gain.gain.setValueAtTime(0.08, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+    osc.start(now);
+    osc.stop(now + 0.25);
   }
 }
-const unlockAudio = () => { if (!audioCtx) initAudio(); if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); };
+const unlockAudio = () => {
+  if (!audioCtx) initAudio();
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+};
 document.body.addEventListener('click', unlockAudio, { once: true });
 document.body.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
 let lastHover = 0;
-document.querySelectorAll('button, a, .comp-img-wrap, .header-back').forEach(el => {
-  el.addEventListener('mouseenter', () => { const now = Date.now(); if (now - lastHover > 80) { playSound('hover'); lastHover = now; } });
+document.querySelectorAll('button, a, .comp-img-wrap, .carousel-slide, .header-back, .next-btn, .float-contact-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    const now = Date.now();
+    if (now - lastHover > 80) { playSound('hover'); lastHover = now; }
+  });
   el.addEventListener('click', () => playSound('click'));
 });
-// Botão flutuante
-const floatBtn = document.getElementById('floatContactBtn'), contactModalDiv = document.getElementById('contactModal'), closeModalBtn = document.getElementById('closeModalBtn'), modalWhats = document.getElementById('modalWhatsBtn'), modalEmail = document.getElementById('modalEmailBtn');
-function toggleContactModal(open) { if (open) contactModalDiv.classList.add('open'); else contactModalDiv.classList.remove('open'); }
-floatBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleContactModal(!contactModalDiv.classList.contains('open')); });
-closeModalBtn.addEventListener('click', () => toggleContactModal(false));
-document.addEventListener('click', (e) => { if (contactModalDiv.classList.contains('open') && !contactModalDiv.contains(e.target) && e.target !== floatBtn && !floatBtn.contains(e.target)) toggleContactModal(false); });
-modalWhats.addEventListener('click', () => { const nome = document.getElementById('modal-nome').value.trim(), email = document.getElementById('modal-email').value.trim(), msg = document.getElementById('modal-msg').value.trim(); if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; } window.open(`https://wa.me/5511947846658?text=*Nome:* ${encodeURIComponent(nome)}%0a*E-mail:* ${encodeURIComponent(email)}%0a*Mensagem:* ${encodeURIComponent(msg)}`, '_blank'); toggleContactModal(false); });
-modalEmail.addEventListener('click', () => { const nome = document.getElementById('modal-nome').value.trim(), email = document.getElementById('modal-email').value.trim(), msg = document.getElementById('modal-msg').value.trim(); if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; } window.open(`mailto:jaymeibrahim@gmail.com?subject=Contato via portfólio&body=Nome: ${encodeURIComponent(nome)}%0AEmail: ${encodeURIComponent(email)}%0A%0A${encodeURIComponent(msg)}`, '_blank'); toggleContactModal(false); });
+
+// ============================================================
+// 6. BOTÃO FLUTUANTE E MODAL DE CONTATO
+// ============================================================
+const floatBtn = document.getElementById('floatContactBtn');
+const contactModalDiv = document.getElementById('contactModal');
+const closeContact = document.getElementById('closeModalBtn');
+const modalWhats = document.getElementById('modalWhatsBtn');
+const modalEmailBtn = document.getElementById('modalEmailBtn');
+
+function toggleContact(open) {
+  if (open) contactModalDiv.classList.add('open');
+  else contactModalDiv.classList.remove('open');
+}
+floatBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleContact(!contactModalDiv.classList.contains('open')); });
+closeContact.addEventListener('click', () => toggleContact(false));
+document.addEventListener('click', (e) => {
+  if (contactModalDiv.classList.contains('open') && !contactModalDiv.contains(e.target) && e.target !== floatBtn && !floatBtn.contains(e.target))
+    toggleContact(false);
+});
+modalWhats.addEventListener('click', () => {
+  const nome = document.getElementById('modal-nome').value.trim();
+  const email = document.getElementById('modal-email').value.trim();
+  const msg = document.getElementById('modal-msg').value.trim();
+  if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; }
+  window.open(`https://wa.me/5511947846658?text=*Nome:* ${encodeURIComponent(nome)}%0a*E-mail:* ${encodeURIComponent(email)}%0a*Mensagem:* ${encodeURIComponent(msg)}`, '_blank');
+  toggleContact(false);
+});
+modalEmailBtn.addEventListener('click', () => {
+  const nome = document.getElementById('modal-nome').value.trim();
+  const email = document.getElementById('modal-email').value.trim();
+  const msg = document.getElementById('modal-msg').value.trim();
+  if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; }
+  window.open(`mailto:jaymeibrahim@gmail.com?subject=Contato via portfólio - Editorial Priscila Fantin&body=Nome: ${encodeURIComponent(nome)}%0AEmail: ${encodeURIComponent(email)}%0A%0A${encodeURIComponent(msg)}`, '_blank');
+  toggleContact(false);
+});
 </script>
 </body>
 </html>
