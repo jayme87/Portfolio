@@ -11,39 +11,256 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-:root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); min-height: 100vh; display: flex; flex-direction: column; }
-.site-header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 4rem; background: rgba(11,11,11,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(244,208,61,0.12); }
-.header-back { display: flex; align-items: center; gap: 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ash); text-decoration: none; }
+:root {
+  --ink: #0b0b0b;
+  --ivory: #e9e9ea;
+  --gold: #f4d03d;
+  --gold-light: #f7dc6f;
+  --ash: #8a8480;
+  --mist: #d4cfc6;
+  --deep: #111111;
+  --cream: #ebe5d8;
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: var(--ink);
+  color: var(--ivory);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+/* CUSTOM CURSOR */
+.cursor {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transform: translate3d(-50%, -50%, 0);
+  transition: transform 0.05s;
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.5;
+  transform: translate3d(-50%, -50%, 0);
+  transition: width 0.2s, height 0.2s, opacity 0.2s;
+}
+/* HEADER */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 4rem;
+  background: rgba(11,11,11,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(244,208,61,0.12);
+}
+.header-back {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ash);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
 .header-back:hover { color: var(--gold); }
-.header-section-name { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.8; }
-.portfolio-hero { padding: 5rem 4rem 3rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.portfolio-hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 7vw, 8rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.03em; }
-.portfolio-hero-title em { display: block; font-style: italic; color: var(--gold); }
-.imagens-grid { max-width: 1000px; margin: 0 auto; padding: 4rem 2rem; display: flex; flex-direction: column; gap: 5rem; }
-.imagem-card { transition: var(--transition-smooth); cursor: pointer; background: rgba(255,255,255,0.02); border-radius: 8px; overflow: hidden; }
-.imagem-card:hover { transform: translateY(-8px); background: rgba(255,255,255,0.04); }
-.imagem-card-carousel { position: relative; overflow: hidden; aspect-ratio: 16/9; background: #0a0a0a; }
-.imagem-carousel-track { display: flex; height: 100%; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
-.imagem-carousel-slide { flex: 0 0 100%; overflow: hidden; }
-.imagem-carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.imagem-carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(11,11,11,0.7); backdrop-filter: blur(8px); border: 1px solid rgba(244,208,61,0.25); color: var(--ivory); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1rem; z-index: 5; opacity: 0; transition: opacity 0.2s; border-radius: 50%; }
-.imagem-card:hover .imagem-carousel-btn { opacity: 1; }
+.header-section-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+}
+/* HERO */
+.portfolio-hero {
+  padding: 5rem 4rem 3rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.portfolio-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 7vw, 8rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+.portfolio-hero-title em {
+  display: block;
+  font-style: italic;
+  color: var(--gold);
+}
+/* GRID DE CARDS COM CARROSSEL */
+.imagens-grid {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+.imagem-card {
+  transition: var(--transition-smooth);
+  cursor: pointer;
+  background: rgba(255,255,255,0.02);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.imagem-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.04);
+}
+.imagem-card-carousel {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  background: #0a0a0a;
+}
+.imagem-carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.imagem-carousel-slide {
+  flex: 0 0 100%;
+  overflow: hidden;
+}
+.imagem-carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Botões do carrossel */
+.imagem-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(11,11,11,0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(244,208,61,0.25);
+  color: var(--ivory);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.2s;
+  border-radius: 50%;
+}
+.imagem-card:hover .imagem-carousel-btn {
+  opacity: 1;
+}
 .imagem-carousel-prev { left: 1rem; }
 .imagem-carousel-next { right: 1rem; }
-.imagem-carousel-dots { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 5; }
-.imagem-carousel-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.5); transition: all 0.2s; }
-.imagem-carousel-dot.active { background: var(--gold); transform: scale(1.2); }
-.imagem-card-info { padding: 2rem; }
-.imagem-card-num { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 0.5rem; }
-.imagem-card-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--ivory); margin-bottom: 0.5rem; }
-.imagem-card-sub { font-size: 1rem; color: var(--ash); font-style: italic; margin-bottom: 1rem; }
-.imagem-card-cta { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); opacity: 0; transform: translateY(4px); transition: opacity 0.2s, transform 0.2s; }
-.imagem-card:hover .imagem-card-cta { opacity: 1; transform: translateY(0); }
-.site-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
-.footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--ash); }
-.footer-gold-line { height: 1px; width: 80px; background: linear-gradient(90deg, var(--gold), transparent); }
+/* Dots */
+.imagem-carousel-dots {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+}
+.imagem-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  transition: all 0.2s;
+}
+.imagem-carousel-dot.active {
+  background: var(--gold);
+  transform: scale(1.2);
+}
+/* Info do card */
+.imagem-card-info {
+  padding: 2rem;
+}
+.imagem-card-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.imagem-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--ivory);
+  margin-bottom: 0.5rem;
+}
+.imagem-card-sub {
+  font-size: 1rem;
+  color: var(--ash);
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+.imagem-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.imagem-card:hover .imagem-card-cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* FOOTER */
+.site-footer {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 2rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--ash);
+}
+.footer-gold-line {
+  height: 1px;
+  width: 80px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+/* RESPONSIVIDADE */
 @media (max-width: 768px) {
   .site-header { padding: 1rem 2rem; }
   .portfolio-hero { padding: 3rem 2rem; }
@@ -52,111 +269,422 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
   .imagem-card-info { padding: 1.5rem; }
   .imagem-carousel-btn { width: 32px; height: 32px; font-size: 0.8rem; }
 }
-.float-contact-btn { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: var(--transition-smooth); z-index: 1050; border: none; cursor: pointer; }
-.float-contact-btn:hover { transform: scale(1.08); background: var(--gold-light); }
-.contact-modal { position: fixed; bottom: 5rem; right: 2rem; width: 380px; max-width: calc(100vw - 2rem); background: var(--deep); border: 1px solid rgba(244,208,61,0.3); border-radius: 12px; padding: 1.8rem; z-index: 1051; backdrop-filter: blur(20px); background: rgba(17,17,17,0.95); box-shadow: 0 20px 35px rgba(0,0,0,0.4); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; visibility: hidden; transform: translateY(15px); }
-.contact-modal.open { opacity: 1; visibility: visible; transform: translateY(0); }
-.contact-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 0.25rem; color: var(--gold); }
-.contact-modal p { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--ash); margin-bottom: 1.5rem; letter-spacing: 0.1em; }
-.contact-modal .form-field { margin-bottom: 1rem; }
-.contact-modal input, .contact-modal textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: var(--ivory); padding: 0.7rem 1rem; font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; }
-.modal-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
-.modal-buttons button { flex: 1; background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.8rem; transition: var(--transition-smooth); cursor: pointer; }
-.modal-buttons button:hover { background: var(--gold); color: var(--ink); }
-.close-modal { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--ash); font-size: 1rem; cursor: pointer; }
+/* BOTÃO FLUTUANTE E MODAL DE CONTATO */
+.float-contact-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  font-size: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transition: var(--transition-smooth);
+  z-index: 1050;
+  border: none;
+  cursor: pointer;
+}
+.float-contact-btn:hover {
+  transform: scale(1.08);
+  background: var(--gold-light);
+}
+.contact-modal {
+  position: fixed;
+  bottom: 5rem;
+  right: 2rem;
+  width: 380px;
+  max-width: calc(100vw - 2rem);
+  background: var(--deep);
+  border: 1px solid rgba(244,208,61,0.3);
+  border-radius: 12px;
+  padding: 1.8rem;
+  z-index: 1051;
+  backdrop-filter: blur(20px);
+  background: rgba(17,17,17,0.95);
+  box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
+}
+.contact-modal.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.contact-modal h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  margin-bottom: 0.25rem;
+  color: var(--gold);
+}
+.contact-modal p {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ash);
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.1em;
+}
+.contact-modal .form-field {
+  margin-bottom: 1rem;
+}
+.contact-modal input, .contact-modal textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--ivory);
+  padding: 0.7rem 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+}
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.modal-buttons button {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.8rem;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+.modal-buttons button:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--ash);
+  font-size: 1rem;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
-<header class="site-header"><a href="index.html" class="header-back"><i class="fas fa-arrow-left"></i> Início</a><span class="header-section-name">Edição de Imagens</span></header>
-<div class="portfolio-hero"><h2 class="portfolio-hero-title">Edição de<br><em>Imagens</em></h2></div>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<header class="site-header">
+  <a href="index.html" class="header-back"><i class="fas fa-arrow-left"></i> Início</a>
+  <span class="header-section-name">Edição de Imagens</span>
+</header>
+
+<div class="portfolio-hero">
+  <h2 class="portfolio-hero-title">Edição de<br><em>Imagens</em></h2>
+</div>
+
 <div class="imagens-grid" id="imagens-grid"></div>
-<footer class="site-footer"><span class="footer-copy">© 2026 Ibrahim · Edição de Imagens</span><div class="footer-gold-line"></div></footer>
+
+<footer class="site-footer">
+  <span class="footer-copy">© 2026 Ibrahim · Edição de Imagens</span>
+  <div class="footer-gold-line"></div>
+</footer>
+
+<!-- BOTÃO FLUTUANTE + MODAL DE CONTATO -->
 <button class="float-contact-btn" id="floatContactBtn"><i class="fas fa-comment-dots"></i></button>
-<div class="contact-modal" id="contactModal"><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button><h3>Contato</h3><p>Envie uma mensagem rápida</p><div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div><div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div><div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div><div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div></div>
+<div class="contact-modal" id="contactModal">
+  <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+  <h3>Contato</h3>
+  <p>Envie uma mensagem rápida</p>
+  <div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div>
+  <div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div>
+  <div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div>
+  <div class="modal-buttons"><button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button><button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button></div>
+</div>
+
 <script>
+// ============================================================
+// 1. PROJETOS E LINKS (mesmos dados)
+// ============================================================
 const projetosImagens = [
-  { id: 'gabriela', titulo: 'Gabriela Lima', sub: 'O Foco · Edição de Imagem', imagens: ['1x/Antes e Depois 1.webp','1x/Antes e Depois 2.webp','1x/Antes e Depois 3.webp','1x/Antes e Depois 4.webp','1x/Antes e Depois 5.webp'] },
-  { id: 'camila', titulo: 'Camila Massoni', sub: 'Adams Magazine · Capa', imagens: ['1x/Antes e Depois 6.webp','1x/Antes e Depois 7.webp','1x/Antes e Depois 8.webp','1x/Antes e Depois 9.webp','1x/Antes e Depois 10.webp'] },
-  { id: 'priscila', titulo: 'Priscila Fantin', sub: 'Adams Magazine · Capa', imagens: ['1x/Antes e Depois 11.webp','1x/Antes e Depois 12.webp','1x/Antes e Depois 13.webp','1x/Antes e Depois 14.webp','1x/Antes e Depois 15.webp'] }
+  {
+    id: 'gabriela',
+    titulo: 'Gabriela Lima',
+    sub: 'O Foco · Edição de Imagem',
+    imagens: [
+      '1x/Antes e Depois 1.webp',
+      '1x/Antes e Depois 2.webp',
+      '1x/Antes e Depois 3.webp',
+      '1x/Antes e Depois 4.webp',
+      '1x/Antes e Depois 5.webp'
+    ]
+  },
+  {
+    id: 'camila',
+    titulo: 'Camila Massoni',
+    sub: 'Adams Magazine · Capa',
+    imagens: [
+      '1x/Antes e Depois 6.webp',
+      '1x/Antes e Depois 7.webp',
+      '1x/Antes e Depois 8.webp',
+      '1x/Antes e Depois 9.webp',
+      '1x/Antes e Depois 10.webp'
+    ]
+  },
+  {
+    id: 'priscila',
+    titulo: 'Priscila Fantin',
+    sub: 'Adams Magazine · Capa',
+    imagens: [
+      '1x/Antes e Depois 11.webp',
+      '1x/Antes e Depois 12.webp',
+      '1x/Antes e Depois 13.webp',
+      '1x/Antes e Depois 14.webp',
+      '1x/Antes e Depois 15.webp'
+    ]
+  }
 ];
+
 const grid = document.getElementById('imagens-grid');
+
 projetosImagens.forEach((p, i) => {
-  const card = document.createElement('div'); card.className = 'imagem-card';
-  const carouselWrap = document.createElement('div'); carouselWrap.className = 'imagem-card-carousel';
-  const track = document.createElement('div'); track.className = 'imagem-carousel-track';
+  const card = document.createElement('div');
+  card.className = 'imagem-card';
+
+  // Carrossel
+  const carouselWrap = document.createElement('div');
+  carouselWrap.className = 'imagem-card-carousel';
+
+  const track = document.createElement('div');
+  track.className = 'imagem-carousel-track';
+
   p.imagens.forEach(src => {
-    const slide = document.createElement('div'); slide.className = 'imagem-carousel-slide';
-    const img = document.createElement('img'); img.src = src; img.alt = p.titulo; img.loading = 'lazy';
-    slide.appendChild(img); track.appendChild(slide);
+    const slide = document.createElement('div');
+    slide.className = 'imagem-carousel-slide';
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = p.titulo;
+    img.loading = 'lazy';
+    slide.appendChild(img);
+    track.appendChild(slide);
   });
   carouselWrap.appendChild(track);
-  const dotsWrap = document.createElement('div'); dotsWrap.className = 'imagem-carousel-dots';
+
+  // Dots
+  const dotsWrap = document.createElement('div');
+  dotsWrap.className = 'imagem-carousel-dots';
   const dots = p.imagens.map((_, di) => {
-    const d = document.createElement('div'); d.className = 'imagem-carousel-dot' + (di === 0 ? ' active' : '');
-    dotsWrap.appendChild(d); return d;
+    const d = document.createElement('div');
+    d.className = 'imagem-carousel-dot' + (di === 0 ? ' active' : '');
+    dotsWrap.appendChild(d);
+    return d;
   });
   carouselWrap.appendChild(dotsWrap);
-  const prevBtn = document.createElement('button'); prevBtn.className = 'imagem-carousel-btn imagem-carousel-prev'; prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-  const nextBtn = document.createElement('button'); nextBtn.className = 'imagem-carousel-btn imagem-carousel-next'; nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-  carouselWrap.appendChild(prevBtn); carouselWrap.appendChild(nextBtn);
+
+  // Botões anterior/próximo
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'imagem-carousel-btn imagem-carousel-prev';
+  prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'imagem-carousel-btn imagem-carousel-next';
+  nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  carouselWrap.appendChild(prevBtn);
+  carouselWrap.appendChild(nextBtn);
   card.appendChild(carouselWrap);
-  const info = document.createElement('div'); info.className = 'imagem-card-info';
+
+  // Info
+  const info = document.createElement('div');
+  info.className = 'imagem-card-info';
   info.innerHTML = `
     <div class="imagem-card-num">0${i+1}</div>
     <div class="imagem-card-title">${p.titulo}</div>
     <div class="imagem-card-sub">${p.sub}</div>
-    <div class="imagem-card-cta">Ver antes &amp; depois <i class="fas fa-arrow-right"></i></div>`;
+    <div class="imagem-card-cta">Ver antes &amp; depois <i class="fas fa-arrow-right"></i></div>
+  `;
   card.appendChild(info);
+  grid.appendChild(card);
+
+  // Lógica do carrossel (manual + autoplay)
   let cur = 0;
   const goTo = (idx) => {
     cur = (idx + p.imagens.length) % p.imagens.length;
     track.style.transform = `translateX(-${cur * 100}%)`;
     dots.forEach((d, di) => d.classList.toggle('active', di === cur));
   };
-  prevBtn.addEventListener('click', e => { e.stopPropagation(); goTo(cur-1); });
-  nextBtn.addEventListener('click', e => { e.stopPropagation(); goTo(cur+1); });
-  dots.forEach((d, di) => d.addEventListener('click', e => { e.stopPropagation(); goTo(di); }));
-  card.addEventListener('click', () => window.location.href = `${p.id}.html`);
-  grid.appendChild(card);
-  let auto = setInterval(() => goTo(cur+1), 4000);
+
+  prevBtn.addEventListener('click', (e) => { e.stopPropagation(); goTo(cur - 1); });
+  nextBtn.addEventListener('click', (e) => { e.stopPropagation(); goTo(cur + 1); });
+  dots.forEach((d, di) => {
+    d.addEventListener('click', (e) => { e.stopPropagation(); goTo(di); });
+  });
+
+  // Autoplay
+  let auto = setInterval(() => goTo(cur + 1), 4000);
   card.addEventListener('mouseenter', () => clearInterval(auto));
-  card.addEventListener('mouseleave', () => { clearInterval(auto); auto = setInterval(() => goTo(cur+1), 4000); });
+  card.addEventListener('mouseleave', () => {
+    clearInterval(auto);
+    auto = setInterval(() => goTo(cur + 1), 4000);
+  });
+
+  // Clique no card: leva para a página do caso de estudo
+  card.addEventListener('click', () => {
+    window.location.href = `${p.id}.html`;
+  });
 });
-// Sons
-let audioCtx = null, soundEnabled = false;
-function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundEnabled = true; }
+
+// ============================================================
+// 2. CURSOR PERSONALIZADO
+// ============================================================
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mx = e.clientX;
+  my = e.clientY;
+  cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(${cursor.dataset.scale || 1})`;
+});
+
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.body.addEventListener('mouseenter', (e) => {
+  if (e.target.matches && (e.target.matches('button, a, .imagem-card, .header-back, .float-contact-btn'))) {
+    cursor.dataset.scale = '2.5';
+    ring.style.width = '48px';
+    ring.style.height = '48px';
+    ring.style.opacity = '0.3';
+  }
+}, true);
+
+document.body.addEventListener('mouseleave', (e) => {
+  if (e.target.matches && (e.target.matches('button, a, .imagem-card, .header-back, .float-contact-btn'))) {
+    cursor.dataset.scale = '1';
+    ring.style.width = '36px';
+    ring.style.height = '36px';
+    ring.style.opacity = '0.5';
+  }
+}, true);
+
+// ============================================================
+// 3. SONS DE INTERAÇÃO
+// ============================================================
+let audioCtx = null;
+let soundEnabled = false;
+
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  soundEnabled = true;
+}
+
 function playSound(type) {
   if (!soundEnabled || !audioCtx) return;
   const now = audioCtx.currentTime;
   if (type === 'click') {
-    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
-    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 523.25;
-    gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
-    osc.start(now); osc.stop(now + 0.2);
+    const gain = audioCtx.createGain();
+    gain.connect(audioCtx.destination);
+    gain.gain.value = 0;
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine';
+    osc.connect(gain);
+    osc.frequency.value = 523.25;
+    gain.gain.setValueAtTime(0.1, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+    osc.start(now);
+    osc.stop(now + 0.2);
   } else if (type === 'hover') {
-    const gain = audioCtx.createGain(); gain.connect(audioCtx.destination); gain.gain.value = 0;
-    const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.connect(gain); osc.frequency.value = 392;
+    const gain = audioCtx.createGain();
+    gain.connect(audioCtx.destination);
+    gain.gain.value = 0;
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine';
+    osc.connect(gain);
+    osc.frequency.value = 392;
     osc.frequency.exponentialRampToValueAtTime(523.25, now + 0.15);
-    gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
-    osc.start(now); osc.stop(now + 0.25);
+    gain.gain.setValueAtTime(0.08, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+    osc.start(now);
+    osc.stop(now + 0.25);
   }
 }
-const unlockAudio = () => { if (!audioCtx) initAudio(); if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); };
+
+const unlockAudio = () => {
+  if (!audioCtx) initAudio();
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+};
+
 document.body.addEventListener('click', unlockAudio, { once: true });
 document.body.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+
 let lastHover = 0;
-document.querySelectorAll('button, a, .imagem-card').forEach(el => {
-  el.addEventListener('mouseenter', () => { const now = Date.now(); if (now - lastHover > 80) { playSound('hover'); lastHover = now; } });
+document.querySelectorAll('button, a, .imagem-card, .header-back, .float-contact-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    const now = Date.now();
+    if (now - lastHover > 80) {
+      playSound('hover');
+      lastHover = now;
+    }
+  });
   el.addEventListener('click', () => playSound('click'));
 });
-// Botão flutuante
-const floatBtn = document.getElementById('floatContactBtn'), contactModalDiv = document.getElementById('contactModal'), closeModalBtn = document.getElementById('closeModalBtn'), modalWhats = document.getElementById('modalWhatsBtn'), modalEmail = document.getElementById('modalEmailBtn');
-function toggleContactModal(open) { if (open) contactModalDiv.classList.add('open'); else contactModalDiv.classList.remove('open'); }
-floatBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleContactModal(!contactModalDiv.classList.contains('open')); });
-closeModalBtn.addEventListener('click', () => toggleContactModal(false));
-document.addEventListener('click', (e) => { if (contactModalDiv.classList.contains('open') && !contactModalDiv.contains(e.target) && e.target !== floatBtn && !floatBtn.contains(e.target)) toggleContactModal(false); });
-modalWhats.addEventListener('click', () => { const nome = document.getElementById('modal-nome').value.trim(), email = document.getElementById('modal-email').value.trim(), msg = document.getElementById('modal-msg').value.trim(); if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; } window.open(`https://wa.me/5511947846658?text=*Nome:* ${encodeURIComponent(nome)}%0a*E-mail:* ${encodeURIComponent(email)}%0a*Mensagem:* ${encodeURIComponent(msg)}`, '_blank'); toggleContactModal(false); });
-modalEmail.addEventListener('click', () => { const nome = document.getElementById('modal-nome').value.trim(), email = document.getElementById('modal-email').value.trim(), msg = document.getElementById('modal-msg').value.trim(); if (!nome || !email || !msg) { alert('Preencha nome, e-mail e mensagem.'); return; } window.open(`mailto:jaymeibrahim@gmail.com?subject=Contato via portfólio&body=Nome: ${encodeURIComponent(nome)}%0AEmail: ${encodeURIComponent(email)}%0A%0A${encodeURIComponent(msg)}`, '_blank'); toggleContactModal(false); });
+
+// ============================================================
+// 4. BOTÃO FLUTUANTE E MODAL DE CONTATO
+// ============================================================
+const floatBtn = document.getElementById('floatContactBtn');
+const contactModalDiv = document.getElementById('contactModal');
+const closeContact = document.getElementById('closeModalBtn');
+const modalWhats = document.getElementById('modalWhatsBtn');
+const modalEmailBtn = document.getElementById('modalEmailBtn');
+
+function toggleContact(open) {
+  if (open) contactModalDiv.classList.add('open');
+  else contactModalDiv.classList.remove('open');
+}
+
+floatBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  toggleContact(!contactModalDiv.classList.contains('open'));
+});
+closeContact.addEventListener('click', () => toggleContact(false));
+document.addEventListener('click', (e) => {
+  if (contactModalDiv.classList.contains('open') && !contactModalDiv.contains(e.target) && e.target !== floatBtn && !floatBtn.contains(e.target))
+    toggleContact(false);
+});
+modalWhats.addEventListener('click', () => {
+  const nome = document.getElementById('modal-nome').value.trim();
+  const email = document.getElementById('modal-email').value.trim();
+  const msg = document.getElementById('modal-msg').value.trim();
+  if (!nome || !email || !msg) {
+    alert('Preencha nome, e-mail e mensagem.');
+    return;
+  }
+  window.open(`https://wa.me/5511947846658?text=*Nome:* ${encodeURIComponent(nome)}%0a*E-mail:* ${encodeURIComponent(email)}%0a*Mensagem:* ${encodeURIComponent(msg)}`, '_blank');
+  toggleContact(false);
+});
+modalEmailBtn.addEventListener('click', () => {
+  const nome = document.getElementById('modal-nome').value.trim();
+  const email = document.getElementById('modal-email').value.trim();
+  const msg = document.getElementById('modal-msg').value.trim();
+  if (!nome || !email || !msg) {
+    alert('Preencha nome, e-mail e mensagem.');
+    return;
+  }
+  window.open(`mailto:jaymeibrahim@gmail.com?subject=Contato via portfólio&body=Nome: ${encodeURIComponent(nome)}%0AEmail: ${encodeURIComponent(email)}%0A%0A${encodeURIComponent(msg)}`, '_blank');
+  toggleContact(false);
+});
 </script>
 </body>
 </html>
