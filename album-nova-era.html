@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ibrahim · Album Nova Era</title>
+<link rel="icon" type="image/webp" href="1x/IB.webp">
+<meta property="og:title" content="Ibrahim · Album Nova Era">
+<meta property="og:description" content="Visualizers e identidade audiovisual do álbum Nova Era — 6 faixas, 6 vídeos.">
+<meta property="og:image" content="1x/Capa do Album.webp">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+
+/* ── HEADER ── */
+.site-header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 4rem; background: rgba(11,11,11,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(244,208,61,0.12); }
+.header-back { display: flex; align-items: center; gap: 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ash); text-decoration: none; transition: var(--transition-smooth); }
+.header-back:hover { color: var(--gold); }
+.header-section-name { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.8; }
+
+/* ── HERO DO PROJETO ── */
+.project-hero { position: relative; min-height: 70vh; display: flex; align-items: flex-end; overflow: hidden; }
+.project-hero-bg { position: absolute; inset: 0; z-index: 0; }
+.project-hero-bg img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.35); transform: scale(1.04); }
+.project-hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(11,11,11,0.2) 0%, rgba(11,11,11,0.85) 100%); }
+.project-hero-content { position: relative; z-index: 1; padding: 4rem; width: 100%; animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+.project-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.35em; color: var(--gold); text-transform: uppercase; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 1rem; }
+.project-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); }
+.project-hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 9rem); font-weight: 900; line-height: 0.88; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
+.project-hero-title em { display: block; font-style: italic; color: var(--gold); }
+.project-hero-meta { display: flex; gap: 3rem; flex-wrap: wrap; }
+.meta-item { }
+.meta-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.25em; color: var(--ash); text-transform: uppercase; margin-bottom: 0.3rem; }
+.meta-value { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--ivory); font-style: italic; }
+
+/* ── LINHA DIVISÓRIA ── */
+.section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(244,208,61,0.2), transparent); margin: 0; }
+
+/* ── WRAPPER CENTRAL ── */
+.project-body { max-width: 1000px; margin: 0 auto; padding: 5rem 2rem; }
+
+/* ── CAPAS ── */
+.section-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); opacity: 0.7; margin-bottom: 2rem; }
+.covers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 5rem; }
+.cover-img-wrap { position: relative; overflow: hidden; border-radius: 4px; aspect-ratio: 1/1; background: #0a0a0a; }
+.cover-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
+.cover-img-wrap:hover img { transform: scale(1.03); }
+.cover-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.2rem 1.5rem; background: linear-gradient(transparent, rgba(11,11,11,0.92)); font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+
+/* ── TRACKLIST ── */
+.tracklist { margin-bottom: 5rem; }
+.tracklist-table { width: 100%; border-collapse: collapse; }
+.tracklist-table thead tr { border-bottom: 1px solid rgba(244,208,61,0.15); }
+.tracklist-table th { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ash); padding: 0 1rem 1rem 0; text-align: left; font-weight: 400; }
+.tracklist-table th:last-child { text-align: right; padding-right: 0; }
+.track-row { border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer; transition: background 0.2s; }
+.track-row:hover { background: rgba(244,208,61,0.04); }
+.track-row td { padding: 1.4rem 1rem 1.4rem 0; vertical-align: middle; }
+.track-row td:last-child { padding-right: 0; text-align: right; }
+.track-row-num { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--gold); width: 48px; }
+.track-row-thumb { width: 52px; }
+.track-row-thumb img { width: 44px; height: 44px; object-fit: cover; border-radius: 3px; display: block; }
+.track-row-name { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--ivory); }
+.track-row-type { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ash); }
+.track-row-play { color: var(--ash); font-size: 0.85rem; transition: color 0.2s, transform 0.2s; }
+.track-row:hover .track-row-play { color: var(--gold); transform: scale(1.2); }
+
+/* ── DISCO GRID ── */
+.discos-section { margin-bottom: 5rem; }
+.discos-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; }
+.disco-wrap { position: relative; cursor: pointer; }
+.disco-wrap:hover { z-index: 2; }
+.disco-inner { border-radius: 50%; overflow: hidden; aspect-ratio: 1/1; transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s; }
+.disco-wrap:hover .disco-inner { transform: scale(1.08) rotate(6deg); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+.disco-inner img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(25%); transition: filter 0.3s; }
+.disco-wrap:hover .disco-inner img { filter: grayscale(0%); }
+.disco-label { text-align: center; margin-top: 0.6rem; font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; color: var(--ash); transition: color 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.disco-wrap:hover .disco-label { color: var(--gold); }
+
+/* ── ÁLBUM OVERVIEW ── */
+.album-overview { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-bottom: 5rem; align-items: center; }
+.album-overview-img { position: relative; overflow: hidden; border-radius: 4px; aspect-ratio: 4/5; background: #0a0a0a; }
+.album-overview-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.album-overview-text { }
+.overview-tag { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+.overview-tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--gold); }
+.overview-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 900; line-height: 1; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+.overview-title em { font-style: italic; color: var(--gold); }
+.overview-desc { font-size: 1.1rem; line-height: 1.75; color: var(--mist); }
+.overview-stats { display: flex; gap: 2rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.06); }
+.stat-item { }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: var(--gold); line-height: 1; }
+.stat-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ash); margin-top: 0.3rem; }
+
+/* ── LIGHTBOX ── */
+.video-lightbox { position: fixed; inset: 0; z-index: 3000; background: rgba(5,5,5,0.97); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+.video-lightbox.open { opacity: 1; visibility: visible; }
+.video-lightbox-inner { position: relative; width: 90vw; max-width: 1100px; }
+.lightbox-video { width: 100%; border-radius: 4px; display: block; max-height: 82vh; background: #000; }
+.lightbox-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.lightbox-title-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; color: var(--ivory); }
+.lightbox-close { background: none; border: 1px solid rgba(244,208,61,0.3); color: var(--ash); font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.5rem 1rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition-smooth); }
+.lightbox-close:hover { color: var(--gold); border-color: var(--gold); }
+.lightbox-nav { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 1.2rem; }
+.lightbox-nav-btn { background: transparent; border: 1px solid rgba(244,208,61,0.25); color: var(--ash); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition-smooth); font-size: 0.9rem; }
+.lightbox-nav-btn:hover { border-color: var(--gold); color: var(--gold); }
+.lightbox-track-num { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--ash); }
+
+/* ── FOOTER ── */
+.site-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+.footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--ash); }
+.footer-gold-line { height: 1px; width: 80px; background: linear-gradient(90deg, var(--gold), transparent); }
+
+/* ── FLOAT CONTACT ── */
+.float-contact-btn { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: var(--transition-smooth); z-index: 1050; border: none; cursor: pointer; }
+.float-contact-btn:hover { transform: scale(1.08); background: var(--gold-light); }
+.contact-modal { position: fixed; bottom: 5rem; right: 2rem; width: 380px; max-width: calc(100vw - 2rem); background: rgba(17,17,17,0.95); border: 1px solid rgba(244,208,61,0.3); border-radius: 12px; padding: 1.8rem; z-index: 1051; backdrop-filter: blur(20px); box-shadow: 0 20px 35px rgba(0,0,0,0.4); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; visibility: hidden; transform: translateY(15px); }
+.contact-modal.open { opacity: 1; visibility: visible; transform: translateY(0); }
+.contact-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 0.25rem; color: var(--gold); }
+.contact-modal p { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--ash); margin-bottom: 1.5rem; letter-spacing: 0.1em; }
+.contact-modal .form-field { margin-bottom: 1rem; }
+.contact-modal label { display: block; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ash); margin-bottom: 0.4rem; }
+.contact-modal input, .contact-modal textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: var(--ivory); padding: 0.7rem 1rem; font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; outline: none; }
+.contact-modal input:focus, .contact-modal textarea:focus { border-color: rgba(244,208,61,0.4); }
+.modal-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
+.modal-buttons button { flex: 1; background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.8rem; transition: var(--transition-smooth); cursor: pointer; }
+.modal-buttons button:hover { background: var(--gold); color: var(--ink); }
+.close-modal { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--ash); font-size: 1rem; cursor: pointer; }
+
+@media (max-width: 768px) {
+  .site-header { padding: 1rem 2rem; }
+  .project-hero-content { padding: 2.5rem 2rem; }
+  .project-hero-meta { gap: 1.5rem; }
+  .project-body { padding: 3rem 1.2rem; }
+  .covers-grid { grid-template-columns: 1fr; }
+  .album-overview { grid-template-columns: 1fr; }
+  .discos-grid { grid-template-columns: repeat(3, 1fr); }
+  .tracklist-table thead { display: none; }
+  .track-row-type { display: none; }
+}
+@media (max-width: 480px) {
+  .discos-grid { grid-template-columns: repeat(2, 1fr); }
+  .overview-stats { gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="videos.html" class="header-back"><i class="fas fa-arrow-left"></i> Vídeos</a>
+  <span class="header-section-name">Album Nova Era</span>
+</header>
+
+<!-- HERO -->
+<div class="project-hero">
+  <div class="project-hero-bg">
+    <img src="1x/Capa do Album.webp" alt="Album Nova Era" fetchpriority="high">
+  </div>
+  <div class="project-hero-content">
+    <div class="project-eyebrow">Edição de Vídeos · 2026</div>
+    <h1 class="project-hero-title">Album<br><em>Nova Era</em></h1>
+    <div class="project-hero-meta">
+      <div class="meta-item">
+        <div class="meta-label">Tipo</div>
+        <div class="meta-value">Visualizers</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Faixas</div>
+        <div class="meta-value">6 vídeos</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Ano</div>
+        <div class="meta-value">2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="project-body">
+
+  <!-- OVERVIEW -->
+  <div class="album-overview">
+    <div class="album-overview-img">
+      <img src="1x/Album.webp" alt="Album Nova Era" loading="lazy">
+    </div>
+    <div class="album-overview-text">
+      <div class="overview-tag">Sobre o projeto</div>
+      <h2 class="overview-title">Uma era.<br><em>Seis faixas.</em></h2>
+      <p class="overview-desc">Edição completa dos visualizers do álbum <em>Nova Era</em> — identidade audiovisual coesa do início ao fim, com capas, artes de disco e vídeos para cada faixa.</p>
+      <div class="overview-stats">
+        <div class="stat-item">
+          <div class="stat-num">6</div>
+          <div class="stat-label">Visualizers</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">2</div>
+          <div class="stat-label">Capas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">6</div>
+          <div class="stat-label">Artes de Disco</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAPAS -->
+  <div class="section-label">Artes do Álbum</div>
+  <div class="covers-grid">
+    <div class="cover-img-wrap">
+      <img src="1x/Capa do Album.webp" alt="Capa do Álbum" loading="lazy">
+      <div class="cover-caption">Capa do Álbum</div>
+    </div>
+    <div class="cover-img-wrap">
+      <img src="1x/Contracapa do Album.webp" alt="Contracapa do Álbum" loading="lazy">
+      <div class="cover-caption">Contracapa do Álbum</div>
+    </div>
+  </div>
+
+  <!-- TRACKLIST -->
+  <div class="tracklist">
+    <div class="section-label">Tracklist · Visualizers</div>
+    <table class="tracklist-table">
+      <thead>
+        <tr>
+          <th style="width:48px">#</th>
+          <th style="width:60px"></th>
+          <th>Faixa</th>
+          <th>Formato</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tracklist-body"></tbody>
+    </table>
+  </div>
+
+  <!-- DISCOS -->
+  <div class="discos-section">
+    <div class="section-label">Artes dos Discos</div>
+    <div class="discos-grid" id="discos-grid"></div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <span class="footer-copy">© 2026 Ibrahim · Album Nova Era</span>
+  <div class="footer-gold-line"></div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="video-lightbox" id="videoLightbox">
+  <div class="video-lightbox-inner">
+    <div class="lightbox-header">
+      <div class="lightbox-title-text" id="lightboxTitle"></div>
+      <button class="lightbox-close" id="lightboxClose"><i class="fas fa-times"></i> Fechar</button>
+    </div>
+    <video class="lightbox-video" id="lightboxVideo" controls preload="none"></video>
+    <div class="lightbox-nav">
+      <button class="lightbox-nav-btn" id="lightboxPrev"><i class="fas fa-chevron-left"></i></button>
+      <span class="lightbox-track-num" id="lightboxNum"></span>
+      <button class="lightbox-nav-btn" id="lightboxNext"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- FLOAT CONTACT -->
+<button class="float-contact-btn" id="floatContactBtn"><i class="fas fa-comment-dots"></i></button>
+<div class="contact-modal" id="contactModal">
+  <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+  <h3>Contato</h3><p>Envie uma mensagem rápida</p>
+  <div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div>
+  <div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div>
+  <div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div>
+  <div class="modal-buttons">
+    <button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+    <button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button>
+  </div>
+</div>
+
+<script>
+// ── DADOS ──
+const faixas = [
+  { num: '01', nome: 'Banco do Carona', thumb: '1x/1- Capa - Banco do Carona.webp', video: '1x/1- Banco do Carona.mp4' },
+  { num: '02', nome: 'Patek',           thumb: '1x/2 - Capa - Patek.webp',          video: '1x/2 - Patek.mp4' },
+  { num: '03', nome: 'Velar',           thumb: '1x/3 - Capa - Velar.webp',          video: '1x/3 - Velar.mp4' },
+  { num: '04', nome: 'Envolvido',       thumb: '1x/4 - Capa - Envolvido.webp',      video: '1x/4 - Envolvido.mp4' },
+  { num: '05', nome: 'Aquariana',       thumb: '1x/5 - Capa - Aquariana.webp',      video: '1x/5 - Aquariana.mp4' },
+  { num: '06', nome: 'Rockstar 3',      thumb: '1x/6 - Capa - Rockstar 3.webp',     video: '1x/6 - Rockstar 3.mp4' },
+];
+
+const discos = [
+  { nome: 'Banco do Carona', img: '1x/1- Disco - Banco do Carona.webp' },
+  { nome: 'Patek',           img: '1x/2 - Disco - Patek.webp' },
+  { nome: 'Velar',           img: '1x/3 - Disco - Velar.webp' },
+  { nome: 'Envolvido',       img: '1x/4 - Disco - Envolvido.webp' },
+  { nome: 'Aquariana',       img: '1x/5 - Disco - Aquariana.webp' },
+  { nome: 'Rockstar 3',      img: '1x/6 - Disco - Rockstar 3.webp' },
+];
+
+// ── TRACKLIST ──
+const tbody = document.getElementById('tracklist-body');
+faixas.forEach((f, i) => {
+  const tr = document.createElement('tr');
+  tr.className = 'track-row';
+  tr.innerHTML = `
+    <td class="track-row-num">${f.num}</td>
+    <td class="track-row-thumb"><img src="${f.thumb}" alt="${f.nome}" loading="lazy"></td>
+    <td><div class="track-row-name">${f.nome}</div></td>
+    <td class="track-row-type">Visualizer</td>
+    <td class="track-row-play"><i class="fas fa-play"></i></td>`;
+  tr.addEventListener('click', () => openVideo(i));
+  tbody.appendChild(tr);
+});
+
+// ── DISCOS ──
+const discosGrid = document.getElementById('discos-grid');
+discos.forEach(d => {
+  const wrap = document.createElement('div');
+  wrap.className = 'disco-wrap';
+  wrap.innerHTML = `
+    <div class="disco-inner"><img src="${d.img}" alt="Disco – ${d.nome}" loading="lazy"></div>
+    <div class="disco-label">${d.nome}</div>`;
+  discosGrid.appendChild(wrap);
+});
+
+// ── LIGHTBOX ──
+let currentTrack = 0;
+const lightbox    = document.getElementById('videoLightbox');
+const lbVideo     = document.getElementById('lightboxVideo');
+const lbTitle     = document.getElementById('lightboxTitle');
+const lbNum       = document.getElementById('lightboxNum');
+const lbClose     = document.getElementById('lightboxClose');
+const lbPrev      = document.getElementById('lightboxPrev');
+const lbNext      = document.getElementById('lightboxNext');
+
+function openVideo(idx) {
+  currentTrack = idx;
+  const f = faixas[idx];
+  lbVideo.src = f.video;
+  lbTitle.textContent = f.nome;
+  lbNum.textContent = `${f.num} / 06`;
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  lbVideo.play().catch(() => {});
+}
+function closeVideo() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+  lbVideo.pause();
+  lbVideo.src = '';
+}
+function navVideo(dir) {
+  lbVideo.pause();
+  currentTrack = (currentTrack + dir + faixas.length) % faixas.length;
+  const f = faixas[currentTrack];
+  lbVideo.src = f.video;
+  lbTitle.textContent = f.nome;
+  lbNum.textContent = `${f.num} / 06`;
+  lbVideo.play().catch(() => {});
+}
+
+lbClose.addEventListener('click', closeVideo);
+lbPrev.addEventListener('click', () => navVideo(-1));
+lbNext.addEventListener('click', () => navVideo(1));
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeVideo(); });
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeVideo();
+  if (e.key === 'ArrowLeft') navVideo(-1);
+  if (e.key === 'ArrowRight') navVideo(1);
+});
+
+// ── SOM ──
+let audioCtx = null, soundEnabled = false;
+function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundEnabled = true; }
+function playSound(type) {
+  if (!soundEnabled || !audioCtx) return;
+  const now = audioCtx.currentTime;
+  if (type === 'click') { const g=audioCtx.createGain(); g.connect(audioCtx.destination); const o=audioCtx.createOscillator(); o.type='sine'; o.connect(g); o.frequency.value=523.25; g.gain.setValueAtTime(0.1,now); g.gain.exponentialRampToValueAtTime(0.0001,now+0.2); o.start(now); o.stop(now+0.2); }
+  else if (type === 'hover') { const g=audioCtx.createGain(); g.connect(audioCtx.destination); const o=audioCtx.createOscillator(); o.type='sine'; o.connect(g); o.frequency.value=392; o.frequency.exponentialRampToValueAtTime(523.25,now+0.15); g.gain.setValueAtTime(0.08,now); g.gain.exponentialRampToValueAtTime(0.0001,now+0.25); o.start(now); o.stop(now+0.25); }
+}
+const unlockAudio = () => { if (!audioCtx) initAudio(); if (audioCtx?.state==='suspended') audioCtx.resume(); };
+document.body.addEventListener('click', unlockAudio, { once: true });
+document.body.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+let lastHover = 0;
+document.querySelectorAll('button, a, .track-row, .disco-wrap').forEach(el => {
+  el.addEventListener('mouseenter', () => { const t=Date.now(); if(t-lastHover>80){playSound('hover');lastHover=t;} });
+  el.addEventListener('click', () => playSound('click'));
+});
+
+// ── FLOAT CONTACT ──
+const floatBtn=document.getElementById('floatContactBtn'), modal=document.getElementById('contactModal'), closeBtn=document.getElementById('closeModalBtn');
+function toggleModal(o){modal.classList[o?'add':'remove']('open');}
+floatBtn.addEventListener('click',e=>{e.stopPropagation();toggleModal(!modal.classList.contains('open'));});
+closeBtn.addEventListener('click',()=>toggleModal(false));
+document.addEventListener('click',e=>{if(modal.classList.contains('open')&&!modal.contains(e.target)&&e.target!==floatBtn&&!floatBtn.contains(e.target))toggleModal(false);});
+document.getElementById('modalWhatsBtn').addEventListener('click',()=>{const n=document.getElementById('modal-nome').value.trim(),e=document.getElementById('modal-email').value.trim(),m=document.getElementById('modal-msg').value.trim();if(!n||!e||!m){alert('Preencha todos os campos.');return;}window.open(`https://wa.me/5511947846658?text=*Nome:* ${encodeURIComponent(n)}%0a*E-mail:* ${encodeURIComponent(e)}%0a*Mensagem:* ${encodeURIComponent(m)}`,'_blank');toggleModal(false);});
+document.getElementById('modalEmailBtn').addEventListener('click',()=>{const n=document.getElementById('modal-nome').value.trim(),e=document.getElementById('modal-email').value.trim(),m=document.getElementById('modal-msg').value.trim();if(!n||!e||!m){alert('Preencha todos os campos.');return;}window.open(`mailto:jaymeibrahim@gmail.com?subject=Contato via portfólio&body=Nome: ${encodeURIComponent(n)}%0AEmail: ${encodeURIComponent(e)}%0A%0A${encodeURIComponent(m)}`,'_blank');toggleModal(false);});
+</script>
+</body>
+</html>

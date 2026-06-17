@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ibrahim · Edição de Vídeos</title>
+<link rel="icon" type="image/webp" href="1x/IB.webp">
+<meta property="og:title" content="Ibrahim · Edição de Vídeos">
+<meta property="og:description" content="Projetos de edição de vídeo: visualizers, clips e identidade audiovisual.">
+<meta property="og:image" content="1x/IB.webp">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root { --ink: #0b0b0b; --ivory: #e9e9ea; --gold: #f4d03d; --gold-light: #f7dc6f; --ash: #8a8480; --mist: #d4cfc6; --deep: #111111; --cream: #ebe5d8; --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: var(--ivory); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+
+.site-header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 4rem; background: rgba(11,11,11,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(244,208,61,0.12); }
+.header-back { display: flex; align-items: center; gap: 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ash); text-decoration: none; transition: var(--transition-smooth); }
+.header-back:hover { color: var(--gold); }
+.header-section-name { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.8; }
+
+.portfolio-hero { padding: 5rem 4rem 3rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.portfolio-hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 7vw, 8rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.03em; }
+.portfolio-hero-title em { display: block; font-style: italic; color: var(--gold); }
+
+.videos-grid { max-width: 1000px; margin: 0 auto; padding: 4rem 2rem; display: flex; flex-direction: column; gap: 5rem; }
+
+/* CARD — mesmo padrão de identidades.html */
+.video-card { transition: var(--transition-smooth); cursor: pointer; background: rgba(255,255,255,0.02); border-radius: 8px; overflow: hidden; text-decoration: none; display: block; color: inherit; }
+.video-card:hover { transform: translateY(-8px); background: rgba(255,255,255,0.04); }
+.video-card-cover { position: relative; overflow: hidden; aspect-ratio: 16/9; background: #0a0a0a; }
+.video-card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+.video-card:hover .video-card-cover img { transform: scale(1.02); }
+.video-card-cover-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(11,11,11,0); transition: background 0.3s; }
+.video-card:hover .video-card-cover-overlay { background: rgba(11,11,11,0.35); }
+.video-card-play { width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1.4rem; opacity: 0; transform: scale(0.8); transition: opacity 0.3s, transform 0.3s; }
+.video-card:hover .video-card-play { opacity: 1; transform: scale(1); }
+.video-card-info { padding: 2rem; }
+.video-card-num { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 0.5rem; }
+.video-card-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--ivory); margin-bottom: 0.5rem; }
+.video-card-sub { font-size: 1rem; color: var(--ash); font-style: italic; margin-bottom: 1rem; }
+.video-card-cta { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); opacity: 0; transform: translateY(4px); transition: opacity 0.2s, transform 0.2s; }
+.video-card:hover .video-card-cta { opacity: 1; transform: translateY(0); }
+
+.site-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+.footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--ash); }
+.footer-gold-line { height: 1px; width: 80px; background: linear-gradient(90deg, var(--gold), transparent); }
+
+.float-contact-btn { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: var(--transition-smooth); z-index: 1050; border: none; cursor: pointer; }
+.float-contact-btn:hover { transform: scale(1.08); background: var(--gold-light); }
+.contact-modal { position: fixed; bottom: 5rem; right: 2rem; width: 380px; max-width: calc(100vw - 2rem); background: rgba(17,17,17,0.95); border: 1px solid rgba(244,208,61,0.3); border-radius: 12px; padding: 1.8rem; z-index: 1051; backdrop-filter: blur(20px); box-shadow: 0 20px 35px rgba(0,0,0,0.4); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; visibility: hidden; transform: translateY(15px); }
+.contact-modal.open { opacity: 1; visibility: visible; transform: translateY(0); }
+.contact-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 0.25rem; color: var(--gold); }
+.contact-modal p { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--ash); margin-bottom: 1.5rem; letter-spacing: 0.1em; }
+.contact-modal .form-field { margin-bottom: 1rem; }
+.contact-modal label { display: block; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ash); margin-bottom: 0.4rem; }
+.contact-modal input, .contact-modal textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: var(--ivory); padding: 0.7rem 1rem; font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; outline: none; }
+.contact-modal input:focus, .contact-modal textarea:focus { border-color: rgba(244,208,61,0.4); }
+.modal-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
+.modal-buttons button { flex: 1; background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.8rem; transition: var(--transition-smooth); cursor: pointer; }
+.modal-buttons button:hover { background: var(--gold); color: var(--ink); }
+.close-modal { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--ash); font-size: 1rem; cursor: pointer; }
+
+@media (max-width: 768px) {
+  .site-header { padding: 1rem 2rem; }
+  .portfolio-hero { padding: 3rem 2rem; }
+  .videos-grid { padding: 2rem 1rem; gap: 3rem; }
+  .video-card-title { font-size: 1.6rem; }
+  .video-card-info { padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="header-back"><i class="fas fa-arrow-left"></i> Início</a>
+  <span class="header-section-name">Edição de Vídeos</span>
+</header>
+
+<div class="portfolio-hero">
+  <h2 class="portfolio-hero-title">Edição de<br><em>Vídeos</em></h2>
+</div>
+
+<div class="videos-grid">
+  <a href="album-nova-era.html" class="video-card">
+    <div class="video-card-cover">
+      <img src="1x/Capa do Album.webp" alt="Album Nova Era" loading="lazy">
+      <div class="video-card-cover-overlay">
+        <div class="video-card-play"><i class="fas fa-play"></i></div>
+      </div>
+    </div>
+    <div class="video-card-info">
+      <div class="video-card-num">01</div>
+      <div class="video-card-title">Album Nova Era</div>
+      <div class="video-card-sub">Edição de Vídeos · Visualizers para Álbum Musical</div>
+      <div class="video-card-cta">Ver projeto <i class="fas fa-arrow-right"></i></div>
+    </div>
+  </a>
+</div>
+
+<footer class="site-footer">
+  <span class="footer-copy">© 2026 Ibrahim · Edição de Vídeos</span>
+  <div class="footer-gold-line"></div>
+</footer>
+
+<button class="float-contact-btn" id="floatContactBtn"><i class="fas fa-comment-dots"></i></button>
+<div class="contact-modal" id="contactModal">
+  <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+  <h3>Contato</h3><p>Envie uma mensagem rápida</p>
+  <div class="form-field"><label>Nome</label><input type="text" id="modal-nome" placeholder="Seu nome"></div>
+  <div class="form-field"><label>E-mail</label><input type="email" id="modal-email" placeholder="seu@email.com"></div>
+  <div class="form-field"><label>Mensagem</label><textarea id="modal-msg" rows="3" placeholder="Sua mensagem..."></textarea></div>
+  <div class="modal-buttons">
+    <button id="modalWhatsBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+    <button id="modalEmailBtn"><i class="fas fa-envelope"></i> E-mail</button>
+  </div>
+</div>
+
+<script>
+let audioCtx = null, soundEnabled = false;
+function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundEnabled = true; }
+function playSound(type) {
+  if (!soundEnabled || !audioCtx) return;
+  const now = audioCtx.currentTime;
+  if (type === 'click') { const g = audioCtx.createGain(); g.connect(audioCtx.destination); const o = audioCtx.createOscillator(); o.type='sine'; o.connect(g); o.frequency.value=523.25; g.gain.setValueAtTime(0.1,now); g.gain.exponentialRampToValueAtTime(0.0001,now+0.2); o.start(now); o.stop(now+0.2); }
+  else if (type === 'hover') { const g = audioCtx.createGain(); g.connect(audioCtx.destination); const o = audioCtx.createOscillator(); o.type='sine'; o.connect(g); o.frequency.value=392; o.frequency.exponentialRampToValueAtTime(523.25,now+0.15); g.gain.setValueAtTime(0.08,now); g.gain.exponentialRampToValueAtTime(0.0001,now+0.25); o.start(now); o.stop(now+0.25); }
+}
+const unlockAudio = () => { if (!audioCtx) initAudio(); if (audioCtx?.state==='suspended') audioCtx.resume(); };
+document.body.addEventListener('click', unlockAudio, { once: true });
+document.body.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+let lastHover = 0;
+document.querySelectorAll('button, a, .video-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { const t=Date.now(); if(t-lastHover>80){playSound('hover');lastHover=t;} });
+  el.addEventListener('click', () => playSound('click'));
+});
+const floatBtn=document.getElementById('floatContactBtn'), modal=document.getElementById('contactModal'), closeBtn=document.getElementById('closeModalBtn');
+function toggleModal(o){modal.classList[o?'add':'remove']('open');}
+floatBtn.addEventListener('click',e=>{e.stopPropagation();toggleModal(!modal.classList.contains('open'));});
+closeBtn.addEventListener('click',()=>toggleModal(false));
+document.addEventListener('click',e=>{if(modal.classList.contains('open')&&!modal.contains(e.target)&&e.target!==floatBtn&&!floatBtn.contains(e.target))toggleModal(false);});
+document.getElementById('modalWhatsBtn').addEventListener('click',()=>{const n=document.getElementById('modal-nome').value.trim(),e=document.getElementById('modal-email').value.trim(),m=document.getElementById('modal-msg').value.trim();if(!n||!e||!m){alert('Preencha todos os campos.');return;}window.open(`https://wa.me/5511947846658?text=*Nome:* ${encodeURIComponent(n)}%0a*E-mail:* ${encodeURIComponent(e)}%0a*Mensagem:* ${encodeURIComponent(m)}`,'_blank');toggleModal(false);});
+document.getElementById('modalEmailBtn').addEventListener('click',()=>{const n=document.getElementById('modal-nome').value.trim(),e=document.getElementById('modal-email').value.trim(),m=document.getElementById('modal-msg').value.trim();if(!n||!e||!m){alert('Preencha todos os campos.');return;}window.open(`mailto:jaymeibrahim@gmail.com?subject=Contato via portfólio&body=Nome: ${encodeURIComponent(n)}%0AEmail: ${encodeURIComponent(e)}%0A%0A${encodeURIComponent(m)}`,'_blank');toggleModal(false);});
+</script>
+</body>
+</html>
