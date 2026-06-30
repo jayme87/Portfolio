@@ -244,27 +244,70 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
   border: 1px solid rgba(244,208,61,0.3); padding: 0.3rem 0.8rem; border-radius: 2px;
 }
 .faixa-title-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; }
-/* 4 imagens (capa, composição, fundo) + 1 tile de play = grade 2x2 */
-.faixa-media-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-.faixa-img-wrap {
+/* 1 camada de imagens interativas (fundo→capa→disco) + 1 tile de play */
+.faixa-media-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+
+/* ── PILHA INTERATIVA: FUNDO → CAPA → DISCO ── */
+.faixa-stack {
   position: relative; overflow: hidden; border-radius: 4px;
-  aspect-ratio: 16/9; background: #0a0a0a;
+  aspect-ratio: 16/9; background: #0a0a0a; cursor: none;
 }
-.faixa-img-wrap img {
+.faixa-stack-bg {
+  position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.6s;
 }
-.faixa-img-wrap:hover img { transform: scale(1.03); }
-.faixa-img-label {
+.faixa-stack.show-capa .faixa-stack-bg,
+.faixa-stack.show-disco .faixa-stack-bg {
+  transform: scale(1.08);
+  filter: brightness(0.55) blur(1px);
+}
+.faixa-stack-capa {
+  position: absolute; top: 50%; left: 50%;
+  width: 62%; aspect-ratio: 1616/1264;
+  transform: translate(-50%, -50%) scale(0.4);
+  opacity: 0;
+  border-radius: 6px; overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+  border: 1px solid rgba(244,208,61,0.2);
+  transition: transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.4s;
+  pointer-events: none;
+  z-index: 2;
+}
+.faixa-stack.show-capa .faixa-stack-capa,
+.faixa-stack.show-disco .faixa-stack-capa {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+.faixa-stack.show-disco .faixa-stack-capa {
+  transform: translate(-65%, -50%) scale(0.85);
+}
+.faixa-stack-capa img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.faixa-stack-disco {
+  position: absolute; top: 50%; left: 50%;
+  width: 48%; aspect-ratio: 1/1;
+  transform: translate(-50%, -50%) translateX(0) scale(0.6) rotate(0deg);
+  opacity: 0;
+  border-radius: 50%; overflow: hidden;
+  box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+  transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.5s;
+  pointer-events: none;
+  z-index: 1;
+}
+.faixa-stack.show-disco .faixa-stack-disco {
+  opacity: 1;
+  transform: translate(8%, -50%) scale(1) rotate(18deg);
+}
+.faixa-stack-disco img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.faixa-stack-label {
   position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 0.8rem 1rem;
+  padding: 0.8rem 1rem; z-index: 3;
   background: linear-gradient(transparent, rgba(11,11,11,0.88));
   font-family: 'DM Mono', monospace; font-size: 0.55rem;
   letter-spacing: 0.2em; text-transform: uppercase; color: var(--ash);
 }
-/* Tile play — ocupa as 2 colunas restantes como célula única */
 .faixa-play-tile {
-  grid-column: span 2;
   position: relative; overflow: hidden; border-radius: 4px;
   aspect-ratio: 16/5; background: #0a0a0a; cursor: none;
   display: flex; align-items: center; justify-content: center;
@@ -391,7 +434,9 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
   .overview-grid { grid-template-columns: 1fr; }
   .discos-grid { grid-template-columns: repeat(3, 1fr); }
   .faixa-media-grid { grid-template-columns: 1fr; }
-  .faixa-play-tile { grid-column: span 1; aspect-ratio: 16/9; }
+  .faixa-play-tile { aspect-ratio: 16/9; }
+  .faixa-stack-capa { width: 78%; }
+  .faixa-stack-disco { width: 62%; }
   .tracklist-table thead { display: none; }
   .td-type { display: none; }
 }
@@ -610,7 +655,7 @@ function animateRing() {
 }
 animateRing();
 
-const INTERACTIVE = 'button, a, .track-row, .faixa-play-tile, .disco-wrap, .faixa-img-wrap, .float-contact-btn, .header-back';
+const INTERACTIVE = 'button, a, .track-row, .faixa-play-tile, .disco-wrap, .faixa-stack, .float-contact-btn, .header-back';
 
 document.body.addEventListener('mouseenter', (e) => {
   if (e.target.matches && e.target.matches(INTERACTIVE)) {
@@ -712,17 +757,15 @@ faixas.forEach((f, i) => {
       <span class="faixa-title-text">${f.nome}</span>
     </div>
     <div class="faixa-media-grid">
-      <div class="faixa-img-wrap">
-        <img src="${f.capa}"       alt="Capa – ${f.nome}"        loading="lazy">
-        <div class="faixa-img-label">Capa</div>
-      </div>
-      <div class="faixa-img-wrap">
-        <img src="${f.composicao}" alt="Composição – ${f.nome}"  loading="lazy">
-        <div class="faixa-img-label">Composição</div>
-      </div>
-      <div class="faixa-img-wrap">
-        <img src="${f.fundo}"      alt="Fundo – ${f.nome}"       loading="lazy">
-        <div class="faixa-img-label">Fundo</div>
+      <div class="faixa-stack" data-idx="${i}">
+        <img class="faixa-stack-bg" src="${f.fundo}" alt="Fundo – ${f.nome}" loading="lazy">
+        <div class="faixa-stack-capa">
+          <img src="${f.capa}" alt="Capa – ${f.nome}" loading="lazy">
+        </div>
+        <div class="faixa-stack-disco">
+          <img src="${f.disco}" alt="Disco – ${f.nome}" loading="lazy">
+        </div>
+        <div class="faixa-stack-label">Fundo · Capa · Disco</div>
       </div>
       <div class="faixa-play-tile" data-idx="${i}">
         <img class="play-bg" src="${f.capa}" alt="" loading="lazy">
@@ -734,8 +777,17 @@ faixas.forEach((f, i) => {
     </div>`;
   block.querySelector('.faixa-play-tile').addEventListener('click', () => openVideo(i));
   attachSounds(block.querySelector('.faixa-play-tile'));
-  // sons nas imgs hover
-  block.querySelectorAll('.faixa-img-wrap').forEach(w => attachSounds(w));
+  // pilha interativa: clique no fundo revela a capa, clique na capa revela o disco
+  const stack = block.querySelector('.faixa-stack');
+  stack.addEventListener('click', (e) => {
+    if (stack.classList.contains('show-disco')) return;
+    if (stack.classList.contains('show-capa')) {
+      stack.classList.add('show-disco');
+    } else {
+      stack.classList.add('show-capa');
+    }
+  });
+  attachSounds(stack);
   gallery.appendChild(block);
 });
 
