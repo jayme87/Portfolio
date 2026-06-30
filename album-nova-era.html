@@ -251,21 +251,23 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 .faixa-stack {
   position: relative; overflow: hidden; border-radius: 4px;
   aspect-ratio: 1/1; background: #0a0a0a; cursor: none;
+  --px: 0px; --py: 0px;
 }
 .faixa-stack-bg {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%; object-fit: cover; display: block;
+  position: absolute; inset: -6%;
+  width: 112%; height: 112%; object-fit: cover; display: block;
   transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.6s;
+  transform: translate(calc(var(--px) * -0.4), calc(var(--py) * -0.4));
 }
 .faixa-stack.show-capa .faixa-stack-bg,
 .faixa-stack.show-disco .faixa-stack-bg {
-  transform: scale(1.08);
+  transform: translate(calc(var(--px) * -0.4), calc(var(--py) * -0.4)) scale(1.08);
   filter: brightness(0.55) blur(1px);
 }
 .faixa-stack-capa {
   position: absolute; top: 50%; left: 50%;
   width: 50%; aspect-ratio: 1/1;
-  transform: translate(-50%, -50%) scale(0.4);
+  transform: translate(calc(-50% + var(--px) * 0.9), calc(-50% + var(--py) * 0.9)) scale(0.4);
   opacity: 0;
   border-radius: 6px; overflow: hidden;
   box-shadow: 0 20px 50px rgba(0,0,0,0.55);
@@ -277,17 +279,18 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 .faixa-stack.show-capa .faixa-stack-capa,
 .faixa-stack.show-disco .faixa-stack-capa {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate(calc(-50% + var(--px) * 0.9), calc(-50% + var(--py) * 0.9)) scale(1);
   pointer-events: auto;
+  transition: transform 0.12s linear, opacity 0.4s;
 }
 .faixa-stack.show-disco .faixa-stack-capa {
-  transform: translate(-65%, -50%) scale(0.85);
+  transform: translate(calc(-65% + var(--px) * 0.9), calc(-50% + var(--py) * 0.9)) scale(0.85);
 }
 .faixa-stack-capa img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .faixa-stack-disco {
   position: absolute; top: 50%; left: 50%;
   width: calc(50% - 60px); aspect-ratio: 1/1;
-  transform: translate(-50%, -50%) translateX(0) scale(0.6) rotate(0deg);
+  transform: translate(calc(-50% + var(--px) * 0.9), calc(-50% + var(--py) * 0.9)) scale(0.6);
   opacity: 0;
   border-radius: 50%; overflow: hidden;
   box-shadow: 0 18px 45px rgba(0,0,0,0.6);
@@ -295,9 +298,23 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
   pointer-events: none;
   z-index: 1;
 }
+.faixa-stack-disco-spin {
+  width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
+}
 .faixa-stack.show-disco .faixa-stack-disco {
   opacity: 1;
-  transform: translate(8%, -50%) scale(1) rotate(18deg);
+  transform: translate(calc(8% + var(--px) * 0.9), calc(-50% + var(--py) * 0.9)) scale(1);
+  transition: transform 0.12s linear, opacity 0.5s;
+}
+.faixa-stack.show-disco .faixa-stack-disco-spin {
+  animation: disco-spin 4.5s linear infinite;
+}
+@keyframes disco-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .faixa-stack.show-disco .faixa-stack-disco-spin { animation: none; }
 }
 .faixa-stack-disco img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .faixa-stack-label {
@@ -761,7 +778,9 @@ faixas.forEach((f, i) => {
           <img src="${f.capa}" alt="Capa – ${f.nome}" loading="lazy">
         </div>
         <div class="faixa-stack-disco">
-          <img src="${f.disco}" alt="Disco – ${f.nome}" loading="lazy">
+          <div class="faixa-stack-disco-spin">
+            <img src="${f.disco}" alt="Disco – ${f.nome}" loading="lazy">
+          </div>
         </div>
         <div class="faixa-stack-label">Fundo · Capa · Disco</div>
       </div>
@@ -786,6 +805,19 @@ faixas.forEach((f, i) => {
     }
   });
   attachSounds(stack);
+  // parallax sutil controlado pelo mouse (capa/disco em primeiro plano, fundo em segundo)
+  stack.addEventListener('mousemove', (e) => {
+    const rect = stack.getBoundingClientRect();
+    const relX = (e.clientX - rect.left) / rect.width - 0.5;
+    const relY = (e.clientY - rect.top) / rect.height - 0.5;
+    const maxShift = 14; // px
+    stack.style.setProperty('--px', `${(relX * maxShift).toFixed(2)}px`);
+    stack.style.setProperty('--py', `${(relY * maxShift).toFixed(2)}px`);
+  });
+  stack.addEventListener('mouseleave', () => {
+    stack.style.setProperty('--px', '0px');
+    stack.style.setProperty('--py', '0px');
+  });
   gallery.appendChild(block);
 });
 
