@@ -252,6 +252,7 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
   position: relative; overflow: hidden; border-radius: 4px;
   aspect-ratio: 1/1; background: #0a0a0a; cursor: none;
   --px: 0px; --py: 0px;
+  perspective: 1200px;
 }
 .faixa-stack-bg {
   position: absolute; inset: -6%;
@@ -264,47 +265,68 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
   transform: translate(calc(var(--px) * -0.4), calc(var(--py) * -0.4)) scale(1.08);
   filter: brightness(0.55) blur(1px);
 }
-.faixa-stack-capa {
+
+/* posicionador da capa: cuida só de posição/escala/parallax (entrada e deslocamento lateral) */
+.faixa-stack-capa-pos {
   position: absolute; top: 50%; left: 50%;
   width: 50%; aspect-ratio: 1/1;
   transform: translate(calc(-50% + var(--px) * 0.9), calc(-50% + var(--py) * 0.9)) scale(0.4);
   opacity: 0;
-  border-radius: 6px; overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.55);
-  border: 1px solid rgba(244,208,61,0.2);
   transition: transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.4s;
   pointer-events: none;
   z-index: 2;
 }
-.faixa-stack.show-capa .faixa-stack-capa,
-.faixa-stack.show-disco .faixa-stack-capa {
+.faixa-stack.show-capa .faixa-stack-capa-pos,
+.faixa-stack.show-disco .faixa-stack-capa-pos {
   opacity: 1;
   transform: translate(calc(-50% + var(--px) * 0.9), calc(-50% + var(--py) * 0.9)) scale(1);
   pointer-events: auto;
   transition: transform 0.12s linear, opacity 0.4s;
 }
-.faixa-stack.show-disco .faixa-stack-capa {
+.faixa-stack.show-disco .faixa-stack-capa-pos {
   transform: translate(calc(-65% + var(--px) * 0.9), calc(-50% + var(--py) * 0.9)) scale(0.85);
 }
+/* giro da capa: rotação independente da posição, acionado via classes one-shot */
+.faixa-stack-capa {
+  width: 100%; height: 100%;
+  border-radius: 6px; overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+  border: 1px solid rgba(244,208,61,0.2);
+}
+.faixa-stack-capa.spin-once { animation: capa-spin-once 0.7s ease-in-out; }
+.faixa-stack-capa.spin-twice { animation: capa-spin-once 0.35s ease-in-out 2; }
+@keyframes capa-spin-once {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
 .faixa-stack-capa img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.faixa-stack-disco {
+
+/* posicionador do disco: posição/escala/parallax/entrada-saída lateral */
+.faixa-stack-disco-pos {
   position: absolute; top: 50%; left: 50%;
   width: calc(50% - 60px); aspect-ratio: 1/1;
   transform: translate(calc(-50% + var(--px) * 0.9), calc(-50% + var(--py) * 0.9)) scale(0.6);
   opacity: 0;
-  border-radius: 50%; overflow: hidden;
+  border-radius: 50%;
   box-shadow: 0 18px 45px rgba(0,0,0,0.6);
   transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.5s;
   pointer-events: none;
   z-index: 1;
 }
-.faixa-stack-disco-spin {
-  width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
-}
-.faixa-stack.show-disco .faixa-stack-disco {
+.faixa-stack.show-disco .faixa-stack-disco-pos {
   opacity: 1;
   transform: translate(calc(8% + var(--px) * 0.9), calc(-50% + var(--py) * 0.9)) scale(1);
   transition: transform 0.12s linear, opacity 0.5s;
+}
+/* recolhimento rápido "sugado" para dentro da capa */
+.faixa-stack-disco-pos.suck-in {
+  transition: transform 0.28s cubic-bezier(0.55,0,0.85,0.35), opacity 0.28s ease-in;
+  transform: translate(calc(-50% + var(--px) * 0.9), calc(-50% + var(--py) * 0.9)) scale(0.15) !important;
+  opacity: 0 !important;
+}
+/* giro contínuo do próprio disco no eixo, sempre que estiver para fora */
+.faixa-stack-disco-spin {
+  width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
 }
 .faixa-stack.show-disco .faixa-stack-disco-spin {
   animation: disco-spin 4.5s linear infinite;
@@ -315,8 +337,10 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 }
 @media (prefers-reduced-motion: reduce) {
   .faixa-stack.show-disco .faixa-stack-disco-spin { animation: none; }
+  .faixa-stack-capa.spin-once,
+  .faixa-stack-capa.spin-twice { animation: none; }
 }
-.faixa-stack-disco img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.faixa-stack-disco-pos img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .faixa-stack-label {
   position: absolute; bottom: 0; left: 0; right: 0;
   padding: 0.8rem 1rem; z-index: 3;
@@ -774,10 +798,12 @@ faixas.forEach((f, i) => {
     <div class="faixa-media-grid">
       <div class="faixa-stack" data-idx="${i}">
         <img class="faixa-stack-bg" src="${f.fundo}" alt="Fundo – ${f.nome}" loading="lazy">
-        <div class="faixa-stack-capa">
-          <img src="${f.capa}" alt="Capa – ${f.nome}" loading="lazy">
+        <div class="faixa-stack-capa-pos">
+          <div class="faixa-stack-capa">
+            <img src="${f.capa}" alt="Capa – ${f.nome}" loading="lazy">
+          </div>
         </div>
-        <div class="faixa-stack-disco">
+        <div class="faixa-stack-disco-pos">
           <div class="faixa-stack-disco-spin">
             <img src="${f.disco}" alt="Disco – ${f.nome}" loading="lazy">
           </div>
@@ -794,14 +820,50 @@ faixas.forEach((f, i) => {
     </div>`;
   block.querySelector('.faixa-play-tile').addEventListener('click', () => openVideo(i));
   attachSounds(block.querySelector('.faixa-play-tile'));
-  // pilha interativa: clique no fundo revela a capa, clique na capa revela o disco
-  const stack = block.querySelector('.faixa-stack');
+  // pilha interativa: fundo → capa → disco, com zonas de clique distintas
+  const stack    = block.querySelector('.faixa-stack');
+  const capaPos  = block.querySelector('.faixa-stack-capa-pos');
+  const capaEl   = block.querySelector('.faixa-stack-capa');
+  const discoPos = block.querySelector('.faixa-stack-disco-pos');
+
   stack.addEventListener('click', (e) => {
-    if (stack.classList.contains('show-disco')) return;
-    if (stack.classList.contains('show-capa')) {
-      stack.classList.add('show-disco');
-    } else {
+    const clickedOnCapa = capaPos.contains(e.target);
+    const hasCapa  = stack.classList.contains('show-capa');
+    const hasDisco = stack.classList.contains('show-disco');
+
+    if (!hasCapa) {
+      // estado 1: nada visível ainda → qualquer clique revela a capa
       stack.classList.add('show-capa');
+      return;
+    }
+
+    if (clickedOnCapa) {
+      if (!hasDisco) {
+        // clique na capa → disco sai
+        stack.classList.add('show-disco');
+      } else {
+        // clique na capa com disco fora → disco volta pra dentro
+        stack.classList.remove('show-disco');
+      }
+      return;
+    }
+
+    // clique fora da capa (no fundo), com a capa já visível
+    if (hasDisco) {
+      // disco é sugado rapidamente + capa gira duas vezes em sequência
+      discoPos.classList.add('suck-in');
+      stack.classList.remove('show-disco');
+      capaEl.classList.remove('spin-once');
+      capaEl.classList.add('spin-twice');
+      setTimeout(() => {
+        discoPos.classList.remove('suck-in');
+        capaEl.classList.remove('spin-twice');
+      }, 400);
+    } else {
+      // capa gira uma vez
+      capaEl.classList.remove('spin-twice');
+      capaEl.classList.add('spin-once');
+      setTimeout(() => capaEl.classList.remove('spin-once'), 750);
     }
   });
   attachSounds(stack);
