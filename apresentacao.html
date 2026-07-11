@@ -85,6 +85,20 @@ body { font-family: 'Cormorant Garamond', serif; background: var(--ink); color: 
 @media (max-width: 600px) { .about-contact-btns { flex-direction: column; } }
 img.img-fade { opacity: 0; transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 img.img-fade.img-show { opacity: 1; }
+.about-summary-section { max-width: 1300px; margin: 0 auto; padding: 6rem 4rem 0; }
+.summary-inner { display: grid; grid-template-columns: 220px 1fr; gap: 4rem; align-items: start; }
+.summary-label-col { position: sticky; top: 110px; }
+.summary-text p { font-size: 1.15rem; line-height: 1.9; color: var(--mist); font-weight: 300; margin-bottom: 1.7rem; }
+.summary-text p:last-child { margin-bottom: 0; }
+.summary-text p:first-of-type::first-letter { font-family: 'Playfair Display', serif; font-size: 3.6rem; font-weight: 900; float: left; line-height: 0.78; padding-right: 0.15em; padding-top: 0.06em; color: var(--gold); }
+.summary-text .hl { color: var(--gold-light); font-style: italic; }
+.reveal-el { opacity: 0; transform: translateY(28px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal-el.reveal-show { opacity: 1; transform: translateY(0); }
+@media (max-width: 900px) {
+  .about-summary-section { padding: 4rem 2rem 0; }
+  .summary-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+  .summary-label-col { position: static; }
+}
 .float-contact-btn { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: var(--transition-smooth); z-index: 1050; border: none; cursor: pointer; }
 .float-contact-btn:hover { transform: scale(1.08); background: var(--gold-light); }
 .contact-modal { position: fixed; bottom: 5rem; right: 2rem; width: 380px; max-width: calc(100vw - 2rem); background: var(--deep); border: 1px solid rgba(244,208,61,0.3); border-radius: 12px; padding: 1.8rem; z-index: 1051; backdrop-filter: blur(20px); background: rgba(17,17,17,0.95); box-shadow: 0 20px 35px rgba(0,0,0,0.4); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; visibility: hidden; transform: translateY(15px); }
@@ -109,6 +123,16 @@ img.img-fade.img-show { opacity: 1; }
     <p class="about-role">Designer especializado em identidades visuais e edição de imagem e vídeo. Transformo ideias em experiências visuais únicas e memoráveis.</p>
     <div class="about-services"><a href="identidades.html" class="service-tag active-tag">Identidade Visual</a><a href="imagens.html" class="service-tag active-tag">Edição de Imagens</a><a href="videos.html" class="service-tag active-tag">Edição de Vídeos</a></div>
     <div class="about-contact-btns"><a href="https://wa.me/5511947846658?text=Ol%C3%A1%20Ibrahim.%20Estava%20vendo%20seu%20trabalho%2C%20e%20gostaria%20de%20entrar%20em%20contato%20contigo!" target="_blank" class="btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp</a><a href="mailto:jaymeibrahim@gmail.com" class="btn-outline"><i class="fas fa-envelope"></i> E-mail</a></div>
+  </div>
+</div>
+<div class="about-summary-section">
+  <div class="summary-inner">
+    <div class="summary-label-col"><div class="section-label" style="margin-bottom:0;">Trajetória</div></div>
+    <div class="summary-text">
+      <p class="reveal-el">Designer Gráfico e Produtor Audiovisual, comecei minha trajetória atuando como designer em um clube de tiro em Guarulhos e, em seguida, cursei dois anos de estágio em uma produtora de vídeos — período em que adquiri habilidade em <span class="hl">Gravação de Áudio e Vídeo em Estúdio</span>, <span class="hl">Edição de Vídeos</span>, <span class="hl">Transmissão ao Vivo</span> e <span class="hl">Elaboração de Material EAD</span>.</p>
+      <p class="reveal-el">Na sequência, trabalhei por dois anos na confecção, edição e elaboração de produtos audiovisuais para uma das maiores agências de moda do país. Saí por não haver perspectiva de crescimento e fui para outra agência, na qual fiquei responsável por toda a parte visual e por todos os diferentes profissionais que tive em minha equipe em estúdio por mais de um ano.</p>
+      <p class="reveal-el">Hoje, sigo atuando como freelancer — tanto como <span class="hl">Designer</span> quanto como <span class="hl">Produtor Audiovisual</span>.</p>
+    </div>
   </div>
 </div>
 <div class="about-body"><div class="two-cols"><div><div class="section-label">Experiências</div><div class="exp-item"><div class="exp-period">02/2025 → 03/2026</div><div class="exp-title">Líder / Supervisor de Estúdio</div><div class="exp-company">Pregiato · São Paulo, SP</div><p class="exp-desc">Liderei uma equipe de editores em um estúdio audiovisual, coordenando todos os processos e orientando os profissionais envolvidos na edição dos trabalhos ao longo de um ano.</p></div><div class="exp-item"><div class="exp-period">10/2023 → 02/2025</div><div class="exp-title">Editor de Imagem</div><div class="exp-company">Vogue · São Paulo, SP</div><p class="exp-desc">Atendi demandas semanais da área audiovisual com edições de imagem e vídeo. Criei automatizações nos processos de edição, reduzindo significativamente a carga de trabalho da equipe.</p></div><div class="exp-item"><div class="exp-period">05/2021 → 03/2023</div><div class="exp-title">Estágio em Produção Audiovisual</div><div class="exp-company">Produtora NGB · São Paulo, SP</div><p class="exp-desc">Atuei em gravação de áudio e vídeo em estúdio, edição de vídeos, transmissão ao vivo via internet e elaboração de material EAD.</p></div><div class="exp-item"><div class="exp-period">06/2020 → 06/2021</div><div class="exp-title">Designer Gráfico Júnior</div><div class="exp-company">CETTS – Clube de Tiro Tático Souza</div><p class="exp-desc">Edição e confecção de imagens, vídeos e flyers.</p></div></div><div><div class="section-label">Formação</div><div class="cert-item"><div class="exp-period">05/2018 → 05/2021 · Completo</div><button class="cert-title" data-cert="1x/CERT1.webp">Design Gráfico</button><div class="exp-company">Escola SAGA</div><p class="exp-desc">Curso técnico profissionalizante para uso avançado de softwares como Animate, After Effects, Illustrator, Photoshop e Premiere.</p></div><div class="cert-item"><div class="exp-period">11/2025 → 02/2026 · Completo</div><button class="cert-title" data-cert="1x/CERT2.webp">Grid Designer</button><div class="exp-company">Focus Academy</div><p class="exp-desc">Curso profissionalizante para criação de identidades visuais técnicas com Illustrator.</p></div><div class="cert-item"><div class="exp-period">02/2021 → 12/2023 · Incompleto</div><div class="cert-title">Produção Audiovisual</div><div class="exp-company">Universidade Paulista</div><p class="exp-desc">Tecnólogo para operação, supervisão e gestão de tecnologias aplicadas à produção audiovisual e multimídia.</p></div></div></div></div>
@@ -165,6 +189,9 @@ document.querySelectorAll('.cert-title[data-cert]').forEach(btn => btn.addEventL
 document.getElementById('btn-send-form').addEventListener('click', () => { const nome = document.getElementById('f-nome').value, email = document.getElementById('f-email').value, msg = document.getElementById('f-msg').value; if (!nome || !email || !msg) { alert('Preencha todos os campos.'); return; } window.open(`mailto:jaymeibrahim@gmail.com?subject=Contato via portfólio&body=Nome: ${encodeURIComponent(nome)}%0AEmail: ${encodeURIComponent(email)}%0A%0A${encodeURIComponent(msg)}`); });
 const fadeObserver = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) { const img = entry.target; fadeObserver.unobserve(img); img.classList.add('img-show'); } }); }, { rootMargin: '60px' });
 document.querySelectorAll('img[loading="lazy"]').forEach(img => { img.classList.add('img-fade'); fadeObserver.observe(img); });
+// Reveal da seção de trajetória
+const revealObserver = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) { revealObserver.unobserve(entry.target); entry.target.classList.add('reveal-show'); } }); }, { rootMargin: '-40px', threshold: 0.15 });
+document.querySelectorAll('.reveal-el').forEach((el, idx) => { el.style.transitionDelay = `${idx * 0.12}s`; revealObserver.observe(el); });
 // Botão flutuante
 const floatBtn = document.getElementById('floatContactBtn'), contactModalDiv = document.getElementById('contactModal'), closeModalBtn = document.getElementById('closeModalBtn'), modalWhats = document.getElementById('modalWhatsBtn'), modalEmail = document.getElementById('modalEmailBtn');
 function toggleContactModal(open) { if (open) contactModalDiv.classList.add('open'); else contactModalDiv.classList.remove('open'); }
